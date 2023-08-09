@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('provider_id')->constrained('streaming_service_provider')->onDelete('cascade');
             $table->integer('price')->comment('unit: usd, cent');
             $table->foreignId('type_price_id')->constrained('type_price')->onDelete('cascade');
-            $table->foreignId('moive_resolution_id')->constrained('moive_resolution')->onDelete('cascade');
+            $table->foreignId('movie_resolution_id')->constrained('movie_resolution')->onDelete('cascade');
             $table->string('url')->nullable();
             $table->timestamps();
         });
