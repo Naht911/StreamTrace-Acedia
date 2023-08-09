@@ -32,4 +32,3 @@ return new class extends Migration
         Schema::dropIfExists('service_plans');
     }
 };
-// SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'provider' (Connection: mysql, SQL: alter table `moive_provider` add constraint `moive_provider_provider_id_foreign` foreign key (`provider_id`) references `provider` (`id`) on delete cascade)

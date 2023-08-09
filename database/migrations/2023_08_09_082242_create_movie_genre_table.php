@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('moive_resolution', function (Blueprint $table) {
+        Schema::create('movie_genre', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('movie_id')->constrained('movie')->onDelete('cascade');
+            $table->foreignId('genre_id')->constrained('genre')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('moive_resolution');
+        Schema::dropIfExists('moive_genre');
     }
 };
