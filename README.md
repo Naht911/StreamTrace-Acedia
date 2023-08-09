@@ -4,6 +4,8 @@
 
 Copy file tạo file .env > copy nội dung file .evn.example qua
 
+Chỉnh sửa thông tin database trong file .env
+
 ### Chạy các lệnh sau theo thứ tự:
 
 ```
