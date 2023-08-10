@@ -22,7 +22,7 @@ class MovieController extends Controller
         $country = $request->country ?? null;
         $language = $request->language ?? null;
         $movies = Movie::query();
-        $per_page = $request->per_page ?? 10;
+        $per_page = $request->per_page ?? 20;
         if ($name) {
             $movies = $movies->where('title', 'like', '%' . $name . '%');
         }
