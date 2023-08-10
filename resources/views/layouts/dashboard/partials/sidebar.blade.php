@@ -1,21 +1,10 @@
 <header class="main-nav">
-     <div class="sidebar-user text-center"><a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a><img class="img-90 rounded-circle" src="/assets/images/dashboard/1.png"
-               alt="">
-          <div class="badge-bottom"><span class="badge badge-primary">New</span></div><a href="#">
-               <h6 class="mt-3 f-14 f-w-600">Emay Walter</h6>
+     <div class="sidebar-user text-center">
+
+          <img class="img-90 rounded-circle" src="/assets/images/dashboard/1.png" alt="">
+          <div class="badge-bottom"><span class="badge badge-primary">Admin</span></div><a href="#">
+               <h6 class="mt-3 f-14 f-w-600">Name</h6>
           </a>
-          <p class="mb-0 font-roboto">Human Resources Department</p>
-          <ul>
-               <li><span><span class="counter">19.8</span>k</span>
-                    <p>Follow</p>
-               </li>
-               <li><span>2 year</span>
-                    <p>Experince</p>
-               </li>
-               <li><span><span class="counter">95.2</span>k</span>
-                    <p>Follower </p>
-               </li>
-          </ul>
      </div>
      <nav>
           <div class="main-navbar">
@@ -27,7 +16,7 @@
                          </li>
                          <li class="sidebar-main-title">
                               <div>
-                                   <h6>General </h6>
+                                   <h6>Streaming Services </h6>
                               </div>
                          </li>
                          <li class="dropdown"><a class="nav-link menu-title my-2" href="javascript:void(0)">
@@ -62,7 +51,7 @@
                               </a>
                               <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('dashboard/movie') }};">
                                    <li>
-                                        <a class="{{ routeActive('dashboard.movie.create_movie') }}" href="#">
+                                        <a href="{{ route('dashboard.movie.create_movie') }}" class="{{ routeActive('dashboard.movie.create_movie') }}">
                                              <i class="fa-solid fa-plus"></i>
                                              <span>Add New Movie</span>
                                         </a>
@@ -74,7 +63,7 @@
                                         </a>
                                    </li>
                                    <li>
-                                        <a class="submenu-title active" href="javascript:void(0)">
+                                        <a class="submenu-title" href="javascript:void(0)">
                                              <i class="fa-solid fa-tags"></i>
                                              <span>Genre</span>
                                         </a>
