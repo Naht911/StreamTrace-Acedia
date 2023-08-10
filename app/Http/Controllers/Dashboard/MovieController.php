@@ -35,29 +35,10 @@ class MovieController extends Controller
         $poster = $request->poster ?? null; //image
         $trailer_url = $request->trailer_url ?? null;
         $synopsis = $request->synopsis ?? null;
-        if (!$title) {
-            return response()->json(['status' => 0, 'message' => 'Title is required']);
-        }
-        if (!$slug) {
-            return response()->json(['status' => 0, 'message' => 'Slug is required']);
-        }
-        if (!$genre) {
-            return response()->json(['status' => 0, 'message' => 'Genre is required']);
-        }
-        if (!$duration) {
-            return response()->json(['status' => 0, 'message' => 'Duration is required']);
-        }
-        if (!$release_year) {
-            return response()->json(['status' => 0, 'message' => 'Release year is required']);
-        }
-        if (!$poster) {
-            return response()->json(['status' => 0, 'message' => 'Poster is required']);
-        }
-        if (!$trailer_url) {
-            return response()->json(['status' => 0, 'message' => 'Trailer url is required']);
-        }
-        if (!$synopsis) {
-            return response()->json(['status' => 0, 'message' => 'Synopsis is required']);
+        $language = $request->language ?? null;
+        $country = $request->country ?? null;
+        if (!$title || !$original_title || !$slug || !$genre || !$duration || !$release_year || !$poster || !$trailer_url || !$synopsis || !$language || !$country) {
+            return response()->json(['status' => 0, 'message' => 'You must fill all the fields']);
         }
         //check title over 255 characters
         if (strlen($title) > 255) {
@@ -97,11 +78,11 @@ class MovieController extends Controller
         $check = in_array($extension, $allowedfileExtension);
         if (!$check) {
             // nếu có file nào không đúng đuôi mở rộng thì đổi flag thành false
-            return response()->json(array('status' => 0, 'message' => "Not a valid file extension!"));
+            return response()->json(array('status' => 0, 'message' => "Poster is not a valid image file!"));
         }
         $file_type = $image->getMimeType();
         if ($file_type != 'image/jpeg' && $file_type != 'image/png' && $file_type != 'image/jpg') {
-            return response()->json(array('status' => 0, 'message' => "Not a valid file type!"));
+            return response()->json(array('status' => 0, 'message' => "Poster is not a valid image file!"));
         }
         $image_resize = Img::make($image->getRealPath());
         // $image_resize->resize(300, 450);
@@ -117,6 +98,8 @@ class MovieController extends Controller
         $movie->poster_url = $path ;
         $movie->trailer_url = $trailer_url;
         $movie->synopsis = $synopsis;
+        $movie->language = $language;
+        $movie->country = $country;
         $movie->save();
         //insert genre
         $movie->genres()->attach($genre);
@@ -157,7 +140,7 @@ class MovieController extends Controller
         $check_slug = Genre::where('slug', $slug)->first();
         if ($check_slug) {
             return response()->json([
-                'status' => 0,
+                'status' => 1,
                 'message' => 'Genre slug already exists'
             ]);
         }

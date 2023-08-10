@@ -68,7 +68,7 @@
                                                   <label class="form-label">Genres</label>
                                                   <select class="form-control form-control-lg list-category" multiple="multiple" name="genre[]" id="genre">
                                                        @foreach ($genres as $genre)
-                                                            <option value="{{ $genre->slug }}">{{ $genre->name }}</option>
+                                                            <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                                                        @endforeach
                                                   </select>
                                              </div>
@@ -99,14 +99,26 @@
                                         </div>
                                         <div class="col-md-12 col-sm-12">
                                              <div class="mb-3">
-                                                  <label class="form-label" for="file-input">Trailer Url</label>
+                                                  <label class="form-label" for="trailer_url">Trailer Url</label>
                                                   <input class="form-control form-control-lg" type="text" id="trailer_url" name="trailer_url">
+                                             </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                             <div class="mb-3">
+                                                  <label class="form-label" for="country">Country</label>
+                                                  <input class="form-control form-control-lg" type="text" id="country" name="country">
+                                             </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                             <div class="mb-3">
+                                                  <label class="form-label" for="language">Language</label>
+                                                  <input class="form-control form-control-lg" type="text" id="language" name="language">
                                              </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
 
                                              <div class="mb-3">
-                                                  <label class="form-label" for="file-input">Synopsis:</label>
+                                                  <label class="form-label" for="editor1">Synopsis:</label>
                                                   <textarea id="editor1" name="editor1" cols="30" rows="10"></textarea>
                                              </div>
                                         </div>

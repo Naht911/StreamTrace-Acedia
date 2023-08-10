@@ -48,6 +48,12 @@
 
      </div>
 
+
+
+
+@endsection
+
+@push('scripts')
      <script>
           $.ajaxSetup({
                headers: {
@@ -102,23 +108,33 @@
                          success: function(data) {
                               $("#submit").text("Save");
                               $('#submit').prop('disabled', false);
-                              if (data.status_code == 1) {
-                                   swal("Done !", data.message, "success");
+                              if (data.status == 1) {
+                                   Swal.fire({
+                                        // position: 'top-end',
+                                        icon: 'success',
+                                        title: data.message,
+                                        // showConfirmButton: false,
+                                        // timer: 1500
+                                   })
 
                                    $('#create_pin')[0].reset();
 
                               } else {
-                                   swal("Error !", data.message, "error");
+                                      Swal.fire({
+                                         icon: 'error',
+                                         title: 'Oops...',
+                                         text: data.message,
+                                      })
                               }
                          },
                          error: function(data) {
                               $("#submit").text("Lưu");
                               $('#submit').prop('disabled', false);
-                              swal(
-                                   "Error !",
-                                   "Something went wrong! Please try again later.",
-                                   "error"
-                              );
+                                Swal.fire({
+                                     icon: 'error',
+                                     title: 'Oops...',
+                                     text: 'Something went wrong!',
+                                })
 
                          }
 
@@ -126,11 +142,4 @@
                })
           })
      </script>
-
-
-
-@endsection
-
-@push('scripts')
-     <script></script>
 @endpush
