@@ -2,7 +2,7 @@
     <div class="sidebar-user text-center"><a class="setting-primary" href="javascript:void(0)"><i
                 data-feather="settings"></i></a><img class="img-90 rounded-circle" src="/assets/images/dashboard/1.png"
             alt="">
-        <div class="badge-bottom"><span class="badge badge-primary">New</span></div><a href="user-profile.html">
+        <div class="badge-bottom"><span class="badge badge-primary">New</span></div><a href="#">
             <h6 class="mt-3 f-14 f-w-600">Emay Walter</h6>
         </a>
         <p class="mb-0 font-roboto">Human Resources Department</p>
@@ -32,29 +32,29 @@
                             <h6>General </h6>
                         </div>
                     </li>
-                    <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
+                    <li class="dropdown"><a class="nav-link menu-title my-2" href="javascript:void(0)"><i
                                 data-feather="monitor"></i><span>Providers</span></a>
                         <ul class="nav-submenu menu-content">
                             {{-- <li><a href=""><i data-feather="film"><span>Movie</span></a></li> --}}
-                            <li><a class="" href="support-ticket.html"><i
+                            <li><a class="" href="#"><i
                                         data-feather="video"></i><span>Genre</span></a></li>
-                            <li><a class="" href="support-ticket.html"><i
+                            <li><a class="" href="#"><i
                                         data-feather="film"></i><span>movie</span></a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link menu-title link-nav" href="support-ticket.html"><i
+                    <li><a class="nav-link menu-title link-nav my-2" href="#"><i
                                 data-feather="user"></i><span>USer</span></a></li>
                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
                                 data-feather="airplay"></i><span>Performance</span></a>
                         <ul class="nav-submenu menu-content">
-                            <li><a class="" href="support-ticket.html"><i
+                            <li><a class="" href="#"><i
                                         data-feather="bookmark"></i><span>Top Bookmark</span></a></li>
-                            <li><a class="" href="support-ticket.html"><i
+                            <li><a class="" href="#"><i
                                         data-feather="globe"></i><span>Top Streaming Service</span></a></li>
                         </ul>
                     </li>
 
-                    <li><a class="nav-link menu-title link-nav" href="support-ticket.html"><i
+                    <li><a class="nav-link menu-title link-nav my-2" href="#"><i
                                 data-feather="help-circle"></i><span>FAQ</span></a></li>
                 </ul>
             </div>
