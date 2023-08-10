@@ -117,12 +117,12 @@ $(window).resize(function () {
         $('.page-main-header').removeClass("close_icon");
     }
 
-    if (widthwindow >= 768) {
-        $('.toggle-sidebar').click(function () {
-            $('.main-nav').toggleClass('close_icon');
-            $('.page-main-header').toggleClass('close_icon');
-        });
-    }
+    // if (widthwindow >= 768) {
+    //     $('.toggle-sidebar').click(function () {
+    //         $('.main-nav').toggleClass('close_icon');
+    //         $('.page-main-header').toggleClass('close_icon');
+    //     });
+    // }
 });
 
 // horizontal arrowss
