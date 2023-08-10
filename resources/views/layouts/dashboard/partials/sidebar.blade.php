@@ -54,14 +54,15 @@
 
                               </ul>
                          </li>
-                         <li class="dropdown"><a class="nav-link menu-title my-2" href="javascript:void(0)">
+
+                         <li class="dropdown">
+                              <a class="nav-link menu-title my-2  {{ prefixActive('dashboard/movie') }}" href="javascript:void(0)">
                                    <i data-feather="monitor"></i>
                                    <span>Movie</span>
                               </a>
-                              <ul class="nav-submenu menu-content">
-                                   {{-- <li><a href=""><i data-feather="film"><span>Movie</span></a></li> --}}
+                              <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('dashboard/movie') }};">
                                    <li>
-                                        <a class="" href="#">
+                                        <a class="{{ routeActive('dashboard.movie.create_movie') }}" href="#">
                                              <i class="fa-solid fa-plus"></i>
                                              <span>Add New Movie</span>
                                         </a>
@@ -79,7 +80,7 @@
                                         </a>
                                         <ul class="nav-sub-childmenu submenu-content" style="display: block;">
                                              <li>
-                                                  <a href="#" class="">
+                                                  <a href="{{ route('dashboard.movie.create_genre') }}" class="{{ routeActive('dashboard.movie.create_genre') }}">
                                                        <i class="fa-solid fa-plus"></i>
                                                        <span> Create Genre </span>
                                                   </a>
