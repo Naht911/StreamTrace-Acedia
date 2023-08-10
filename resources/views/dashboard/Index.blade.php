@@ -1,15 +1,14 @@
-@extends('dashboard.layouts.admin')
- 
+@extends('layouts.dashboard.dashboard_layout')
+
 @section('title')
-<title>Admin</title>
+     <title>Admin</title>
 @endsection
 @section('css')
-  
 @endsection
- 
- 
+
+
 @section('content')
-    <p>content.</p>
+     <p>content.</p>
 @endsection
 
 @section('js')
