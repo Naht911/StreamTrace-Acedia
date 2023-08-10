@@ -62,10 +62,14 @@
             @include('dashboard.partials.siderbar')
 
             <div class="page-body">
-                @yield('content')
+                <div class="container-fluid dashboard-default-sec">
+                    <div class="row">
+                        @yield('content')
+                    </div>
+                </div>
             </div>
 
-            
+
             @include('dashboard.partials.footer')
 
         </div>

@@ -93,15 +93,15 @@ $('.toggle-sidebar').click(function () {
 
 //responsive sidebar
 var $window = $(window);
-var widthwindow = $window.width();
-(function ($) {
-    "use strict";
-    if (widthwindow + 17 <= 993) {
-        $('.toggle-sidebar').attr('checked', false);
-        $('.main-nav').addClass("close_icon");
-        $('.page-main-header').addClass("close_icon");
-    }
-})(jQuery);
+// var widthwindow = $window.width();
+// (function ($) {
+//     "use strict";
+//     if (widthwindow + 17 <= 993) {
+//         $('.toggle-sidebar').attr('checked', false);
+//         $('.main-nav').addClass("close_icon");
+//         $('.page-main-header').addClass("close_icon");
+//     }
+// })(jQuery);
 
 
 $(window).resize(function () {
