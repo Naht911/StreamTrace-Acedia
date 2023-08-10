@@ -21,8 +21,9 @@ Route::get('/', function () {
 Route::prefix('dashboard')->middleware([])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('movie')->group(function () {
-        Route::get('/add', [MovieController::class, 'add'])->name('dashboard.movie.add');
-        Route::post('/add', [MovieController::class, 'store'])->name('dashboard.movie.store');
+        Route::get('/add', [MovieController::class, 'create_movie'])->name('dashboard.movie.create_movie');
+        Route::post('/add', [MovieController::class, 'store_movie'])->name('dashboard.movie.store_movie');
         Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
+        Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
     });
 });

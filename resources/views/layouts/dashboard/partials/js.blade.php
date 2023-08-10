@@ -19,8 +19,9 @@
  <!-- Plugins JS Ends-->
  <!-- Theme js-->
  <script src="/assets/js/script.js"></script>
-  <script src="/assets/js/app.js"></script>
-
+ <script src="/assets/js/app.js"></script>
+ <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  @stack('scripts')
  <!-- login js-->
  <!-- Plugin used-->
