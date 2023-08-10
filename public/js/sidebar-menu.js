@@ -93,7 +93,7 @@ $('.toggle-sidebar').click(function () {
 
 //responsive sidebar
 var $window = $(window);
-// var widthwindow = $window.width();
+var widthwindow = $window.width();
 // (function ($) {
 //     "use strict";
 //     if (widthwindow + 17 <= 993) {
