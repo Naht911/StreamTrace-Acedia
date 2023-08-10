@@ -12,16 +12,55 @@ use App\Models\Movie;
 
 class MovieController extends Controller
 {
-
+    public function list_movie(Request $request)
+    {
+        //search filter
+        $name = $request->name ?? null;
+        $genre = $request->genre ?? null;
+        $release_year = $request->release_year ?? null;
+        $duration = $request->duration ?? null;
+        $country = $request->country ?? null;
+        $language = $request->language ?? null;
+        $movies = Movie::query();
+        $per_page = $request->per_page ?? 10;
+        if ($name) {
+            $movies = $movies->where('title', 'like', '%' . $name . '%');
+        }
+        if ($genre) {
+            $movies = $movies->where('genre', 'like', '%' . $genre . '%');
+        }
+        if ($release_year) {
+            $movies = $movies->where('release_year', 'like', '%' . $release_year . '%');
+        }
+        if ($duration) {
+            $movies = $movies->where('duration', 'like', '%' . $duration . '%');
+        }
+        if ($country) {
+            $movies = $movies->where('country', 'like', '%' . $country . '%');
+        }
+        if ($language) {
+            $movies = $movies->where('language', 'like', '%' . $language . '%');
+        }
+        $movies = $movies->with('providers')->paginate($per_page);
+        // dd($movies);
+        //add query string to pagination links
+        $movies->appends(request()->query());
+        $genres = Genre::all();
+        $data = [
+            'genres' => $genres,
+            'movies' => $movies
+        ];
+        return view('dashboard.movie.list_movie', $data);
+    }
     public function create_movie()
     {
         $genres = Genre::all();
         $data = [
             'genres' => $genres
         ];
-
         return view('dashboard.movie.add_movie', $data);
     }
+
 
     public function store_movie(Request $request)
     {
@@ -68,7 +107,7 @@ class MovieController extends Controller
         #upload image
         $image = $request->file('poster');
         //image name format: slug + time() + extension
-        $image_name = $slug .'-'. time() . '.' . $image->getClientOriginalExtension();
+        $image_name = $slug . '-' . time() . '.' . $image->getClientOriginalExtension();
         //image path
         $image_path = public_path('/uploads/images/poster/' . $image_name);
         $path = '/uploads/images/poster/' . $image_name;
@@ -95,7 +134,7 @@ class MovieController extends Controller
         $movie->slug = $slug;
         $movie->duration = $duration;
         $movie->release_year = $release_year;
-        $movie->poster_url = $path ;
+        $movie->poster_url = $path;
         $movie->trailer_url = $trailer_url;
         $movie->synopsis = $synopsis;
         $movie->language = $language;

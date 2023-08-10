@@ -57,7 +57,7 @@
                                         </a>
                                    </li>
                                    <li>
-                                        <a class="" href="#">
+                                        <a href="{{ route('dashboard.movie.list_movie') }}" class="{{ routeActive('dashboard.movie.list_movie') }}">
                                              <i class="fa-solid fa-list"></i>
                                              <span>List Movie</span>
                                         </a>
