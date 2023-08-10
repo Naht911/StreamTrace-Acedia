@@ -23,6 +23,7 @@
  <script src="/assets/js/app.js"></script>
  <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://malsup.github.io/jquery.form.js"></script> 
  @stack('scripts')
  <!-- login js-->
  <!-- Plugin used-->
