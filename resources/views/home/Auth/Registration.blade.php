@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <title>Login</title>
+    <title>Registration</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
@@ -38,15 +38,11 @@
             <div class="row m-0">
                 <div class="col-12 p-0">
                     <div class="login-card">
-                        <form class="theme-form login-form" action="{{ route('RegisterPost') }}" method="POST">
+                        <form id="Registration" class="theme-form login-form" action="{{ route('RegisterPost') }}"
+                            method="POST">
                             @csrf
                             <h4>Create your account</h4>
                             <h6>Enter your personal details to create account</h6>
-                            @if (Session::has('error'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ Session::get('error') }}
-                                </div>
-                            @endif
                             <div class="form-group">
                                 <label>Your Name</label>
                                 <div class="small-group">
@@ -68,24 +64,15 @@
                             <div class="form-group">
                                 <label>Password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
-                                    <input class="form-control" type="password" name="password" required=""
-                                        placeholder="*********">
-                                    <div class="show-hide"><span class="show"> </span></div>
+                                    <input class="form-control" type="password" id="password" name="password"
+                                        required="" placeholder="*********">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Confirm password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
-                                    <input class="form-control" type="password" name="password_confirmation" required=""
-                                        placeholder="*********">
-                                    <div class="show-hide"><span class="show"> </span></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input id="checkbox1" type="checkbox">
-                                    <label class="text-muted" for="checkbox1">Agree with <span>Privacy Policy
-                                        </span></label>
+                                    <input class="form-control" type="password" name="password_confirmation"
+                                        id="password_confirmation" required="" placeholder="*********">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -99,6 +86,136 @@
         </div>
     </section>
     @include('layouts.dashboard.partials.js')
+
+    <script>
+        function check() {
+            var isCheckOK = true;
+
+            var email = document.getElementById("email").value;
+            var patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+
+            if (!patternEmail.test(email)) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Invalid email!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            var password = document.getElementById("password").value;
+            var uppercaseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+            if (!(password.length >= 8 && uppercaseRegex.test(password))) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Need 8 characters and 1 uppercase letter and number!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            return isCheckOK;
+        }
+
+        function check() {
+            var isCheckOK = true;
+            var name = document.getElementById("name").value;
+            var patternName = /^(?=[a-zA-Z]{3,}$)[a-zA-Z]+(null|\s*)$/;
+
+            if (!(name.length >= 3 && patternName.test(name))) {
+                Swal.fire({
+                    title: "Error",
+                    text: "at least 3 characters and no numbers, special characters!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            var email = document.getElementById("email").value;
+            var patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
+
+            if (!patternEmail.test(email)) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Invalid email!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            var password = document.getElementById("password").value;
+            var uppercaseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+
+            if (!(password.length >= 8 && uppercaseRegex.test(password))) {
+                Swal.fire({
+                    title: "Error",
+                    text: "need 8 characters and 1 uppercase letter and number!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            var retypePassword = document.getElementById("password_confirmation").value;
+
+            if (password !== retypePassword) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Password incorrect!",
+                    type: "error"
+                });
+                isCheckOK = false;
+            }
+
+            return isCheckOK;
+        }
+        $(document).ready(function() {
+            // Xử lý đăng nhập
+            $("#Registration").ajaxForm({
+                dataType: 'json',
+                url: '{{ route('RegisterPost') }}',
+                beforeSend: function() {
+                    isCheckOK = check();
+                    if (isCheckOK == false) {
+                        return false;
+                    }
+                },
+                success: function(data) {
+                    if (data.status == 0) {
+                        $("#Registration").resetForm();
+                        Swal.fire({
+                            title: "finished!",
+                            text: data.message,
+                            type: "success",
+                            confirmButtonClass: 'btn-success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.assign('/login');
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: data.message,
+                            type: "error",
+                            confirmButtonClass: 'btn-danger',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "There was an error in the execution!",
+                        type: "error",
+                        confirmButtonClass: 'btn-danger',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 

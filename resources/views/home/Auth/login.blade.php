@@ -38,33 +38,26 @@
             <div class="row">
                 <div class="col-xl-12 p-0">
                     <div class="login-card">
-                        <form class="theme-form login-form" action="{{ route('loginPost') }}" method="POST">
+                        <form id="Login" class="theme-form login-form" action="{{ route('loginPost') }}"
+                            method="POST">
                             @csrf
-                            @if (Session::has('success'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ Session::get('success') }}
-                                </div>
-                            @endif
-                            @if (Session::has('error'))
-                                <div class="alert alert-danger" role="alert">
-                                    {{ Session::get('error') }}
-                                </div>
-                            @endif
                             <h4>Login</h4>
                             <h6>Welcome back! Log in to your account.</h6>
                             <div class="form-group">
                                 <label>Email Address</label>
                                 <div class="input-group"><span class="input-group-text"><i
                                             class="icon-email"></i></span>
-                                    <input class="form-control" type="email" name="email" required=""
-                                        placeholder="Test@gmail.com">
+                                    <input class="form-control" type="email" name="email" id="email"
+                                        required="" placeholder="Test@gmail.com">
+                                    </p>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
-                                    <input class="form-control" type="password" name="password" required=""
-                                        placeholder="*********">
+                                    <input class="form-control" type="password" name="password" id="password"
+                                        required="" placeholder="*********">
                                     <div class="show-hide"><span class="show"> </span></div>
                                 </div>
                             </div>
@@ -77,7 +70,8 @@
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="">Create Account</a></p>
+                            <p>Don't have account?<a class="ms-2" href="{{ route('Registration') }}">Create
+                                    Account</a></p>
                         </form>
                     </div>
                 </div>
@@ -85,6 +79,53 @@
         </div>
     </section>
     @include('layouts.dashboard.partials.js')
+
+    <script>
+        $(document).ready(function() {
+            // Xử lý đăng nhập
+            $("#Login").ajaxForm({
+                dataType: 'json',
+                url: '{{ route('loginPost') }}',
+                beforeSend: function() {
+                    Swal.showLoading()
+                },
+                success: function(data) {
+                    if (data.status == 0) {
+                        $("#Login").resetForm();
+                        Swal.fire({
+                                title: "finished!",
+                                text: data.message,
+                                type: "success",
+                                confirmButtonClass: 'btn-success',
+                                confirmButtonText: 'OK'
+                            })
+                            .then((result) => {
+                                if (result.value) {
+                                    window.location.assign('/dashboard');
+                                }
+                            });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: data.message,
+                            type: "error",
+                            confirmButtonClass: 'btn-danger',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "There was an error in the execution!",
+                        type: "error",
+                        confirmButtonClass: 'btn-danger',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 
