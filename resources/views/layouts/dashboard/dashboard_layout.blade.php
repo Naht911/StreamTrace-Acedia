@@ -55,7 +55,9 @@
                <!-- footer end-->
           </div>
      </div>
+
      @include('layouts.dashboard.partials.js')
+     @yield('aaa')
 </body>
 
 </html>

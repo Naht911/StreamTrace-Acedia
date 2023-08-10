@@ -19,6 +19,8 @@
  <!-- Plugins JS Ends-->
  <!-- Theme js-->
  <script src="/assets/js/script.js"></script>
- @yield('js')
+  <script src="/assets/js/app.js"></script>
+
+ @stack('scripts')
  <!-- login js-->
  <!-- Plugin used-->
