@@ -14,7 +14,19 @@
 
                <div class="col-xl-12 box-col-12 des-xl-100 top-dealer-sec">
                     <div class="card">
-                         Nội dung nè
+                        <div class="card-header">
+                            <h5>Dashboard</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center">
+                                <a href="{{ route('dashboard.movie.create_genre') }}" class="btn btn-sm btn-success">
+                                    Create Genre
+                                </a>
+                                <a href="{{ route('dashboard.movie.create_movie') }}" class="btn btn-sm btn-success">
+                                    Create New Movie
+                                </a>
+                            </p>
+                        </div>
                     </div>
                </div>
 
