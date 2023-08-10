@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MovieController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Home\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,9 @@ use App\Http\Controllers\Home\AuthController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/feedback', [FeedbackController::class, 'feedback']);
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
@@ -40,5 +44,13 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::post('/add', [MovieController::class, 'store_movie'])->name('dashboard.movie.store_movie');
         Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
         Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
+    });
+    Route::prefix('feedback')->group(function () {
+
+        Route::POST('/postFeedback', [FeedbackController::class, 'store']); //admin
+        Route::get('/viewFeedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.viewFeedback');
+        Route::get('/destroyFeedback/{id}', [FeedbackController::class, 'destroy']);
+        Route::get('/viewEditFeedback/{id?}', [FeedbackController::class, 'viewUpdate']);
+        Route::post('/editFeedback', [FeedbackController::class, 'update']);
     });
 });
