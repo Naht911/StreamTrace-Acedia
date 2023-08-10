@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MovieController;
 use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FAQController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,5 +55,17 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::get('/destroyFeedback/{id}', [FeedbackController::class, 'destroy']);
         Route::get('/viewEditFeedback/{id?}', [FeedbackController::class, 'viewUpdate']);
         Route::post('/editFeedback', [FeedbackController::class, 'update']);
+    });
+    Route::prefix('FAQ')->group(function () {
+
+        Route::get('/viewUserFAQ', [FAQController::class, 'showAllUser']);
+        Route::get('/viewAdminFAQ', [FAQController::class, 'showAllAdmin'])->name('dashboard.FAQ.viewAdminFAQ');
+        Route::get('/createNewFAQ', function () {
+            return view('dashboard.FAQ.add_frequently_asked_questions'); //view user
+        });
+        Route::post('/postFAQ', [FAQController::class, 'create_new']);
+        Route::get('/destroyFAQ/{id}', [FAQController::class, 'destroy']);
+        Route::get('/vieweditFAQ/{id}', [FAQController::class, 'viewUpdate']);
+        Route::post('/editFAQ', [FAQController::class, 'update']);
     });
 });
