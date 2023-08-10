@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MovieController;
+use App\Http\Controllers\Home\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,13 @@ use App\Http\Controllers\Dashboard\MovieController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
+
+Route::get('/Registration', [AuthController::class, 'Register'])->name('Registration');
+Route::post('/Registration', [AuthController::class, 'RegisterPost'])->name('RegisterPost');
+
 
 Route::prefix('dashboard')->middleware([])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

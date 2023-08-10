@@ -41,4 +41,11 @@
 
 <!-- Container-fluid Ends-->
 @push('scripts')
+<script>
+     Swal.fire(
+  'Good job!',
+  'You clicked the button!',
+  'success'
+)
+</script>
 @endpush
