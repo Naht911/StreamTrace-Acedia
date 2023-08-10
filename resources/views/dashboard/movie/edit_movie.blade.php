@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.dashboard_layout')
-@section('title', 'Add Movie')
+@section('title', 'Edit Movie')
 
 
 
@@ -47,20 +47,22 @@
                                         <div class="col-md-6 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="name">Movie title</label>
-                                                  <input class="form-control form-control-lg" id="title" name="title" type="text" placeholder="Movie name" onkeyup="gen_slug(this)">
+                                                  <input class="form-control form-control-lg" id="title" name="title" type="text" placeholder="Movie name" onkeyup="gen_slug(this)"
+                                                       value="{{ $movie->title }}">
                                              </div>
                                         </div>
 
                                         <div class="col-md-6 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="original_title">Movie Original Title</label>
-                                                  <input class="form-control form-control-lg" id="original_title" name="original_title" type="text" placeholder="Movie Original Title">
+                                                  <input class="form-control form-control-lg" id="original_title" name="original_title" type="text" placeholder="Movie Original Title"
+                                                       value="{{ $movie->original_title }}">
                                              </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="slug">Slug</label>
-                                                  <input class="form-control form-control-lg" id="slug" name="slug" type="text" placeholder="Slug">
+                                                  <input class="form-control form-control-lg" id="slug" name="slug" type="text" placeholder="Slug" value="{{ $movie->slug }}">
                                              </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
@@ -68,7 +70,8 @@
                                                   <label class="form-label">Genres</label>
                                                   <select class="form-control form-control-lg list-category" multiple="multiple" name="genre[]" id="genre">
                                                        @foreach ($genres as $genre)
-                                                            <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                                                            <option value="{{ $genre->id }}" @foreach ($movie->genres as $movie_genre) @if ($movie_genre->id == $genre->id) selected @endif @endforeach>
+                                                                 {{ $genre->name }}</option>
                                                        @endforeach
                                                   </select>
                                              </div>
@@ -76,7 +79,7 @@
                                         <div class="col-md-6 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="duration">Duration</label>
-                                                  <input class="form-control form-control-lg" id="duration" name="duration" type="text" placeholder="Duration">
+                                                  <input class="form-control form-control-lg" id="duration" name="duration" type="text" placeholder="Duration" value="{{ $movie->duration }}">
                                              </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
@@ -84,42 +87,48 @@
                                                   <label class="form-label" for="release_year">Release Year</label>
                                                   <select class="form-control form-control-lg" id="release_year" name="release_year">
                                                        @for ($i = 2024; $i >= 1900; $i--)
-                                                            <option value="{{ $i }}">{{ $i }}</option>
+                                                            <option value="{{ $i }}" @if ($movie->release_year == $i) selected @endif>{{ $i }}</option>
                                                        @endfor
 
                                                   </select>
                                              </div>
                                         </div>
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-8 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="file-input">Poster</label>
                                                   <input class="form-control form-control-lg" type="file" id="file-input" name="poster">
-                                                  <div class="alert alert-success" id="thumb-output"></div>
+                                                  <div class="alert alert-success" id="thumb-new"><small><i>No poster have been selected yet</i></small></div>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12">
+                                             <label for="">Current Poster</label>
+                                             <div class="mb-3">
+                                                  <img src="{{ asset($movie->poster_url) }}" alt="" class="thumb" id="thumb-old" onclick="zoom('{{ asset($movie->poster_url) }}')">
                                              </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="trailer_url">Trailer Url</label>
-                                                  <input class="form-control form-control-lg" type="text" id="trailer_url" name="trailer_url">
+                                                  <input class="form-control form-control-lg" type="text" id="trailer_url" name="trailer_url" value="{{ $movie->trailer_url }}">
                                              </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="country">Country</label>
-                                                  <input class="form-control form-control-lg" type="text" id="country" name="country">
+                                                  <input class="form-control form-control-lg" type="text" id="country" name="country" value="{{ $movie->country }}">
                                              </div>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                              <div class="mb-3">
                                                   <label class="form-label" for="language">Language</label>
-                                                  <input class="form-control form-control-lg" type="text" id="language" name="language">
+                                                  <input class="form-control form-control-lg" type="text" id="language" name="language" value="{{ $movie->language }}">
                                              </div>
                                         </div>
                                         <div class="col-md-12 col-sm-12">
 
                                              <div class="mb-3">
                                                   <label class="form-label" for="editor1">Synopsis:</label>
-                                                  <textarea id="editor1" name="editor1" cols="30" rows="10"></textarea>
+                                                  <textarea id="editor1" name="editor1" cols="30" rows="10">{{ $movie->synopsis }}</textarea>
                                              </div>
                                         </div>
                                    </div>
@@ -147,7 +156,7 @@
                <style>
                     .img-thumb-temp {
                          /* width: 100%;
-                                                                                                                                                                                                                                                               height: 100%; */
+                                                                                                                                                                                                                                                                              height: 100%; */
                          object-fit: cover;
                          display: inline;
                          /* position: absolute; */
@@ -229,7 +238,7 @@
           $(document).ready(function() {
                $('#file-input').on('change', function() { //on file input change
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
-                         $('#thumb-output').html(''); //clear html of output element
+                         $('#thumb-new').html(''); //clear html of output element
                          var data = $(this)[0].files; //this file data
                          $.each(data, function(index, file) { //loop though each file
                               if (/(\.|\/)(gif|jpe?g|png)$/i.test(file.type)) { //check supported file type
@@ -237,10 +246,10 @@
                                    fRead.onload = (function(file) { //trigger function on successful read
                                         return function(e) {
                                              var div = `
-                                            <div class="card card-img" style="hight: 200px;">
-                                                 <img src="${e.target.result}" class="thumb" id="img_${index}" onclick="zoom('${e.target.result}')">
+                                            <div id="div-chua-anh" class="card card-img" style="hight: 200px;">
+                                                 <img src="${e.target.result}" class="thumb" id="img_new" onclick="zoom('${e.target.result}')">
                                             </div>`;
-                                             $('#thumb-output').append(div); //append image to output element
+                                             $('#thumb-new').html(div); //append image to output element
                                         };
                                    })(file);
                                    fRead.readAsDataURL(file); //URL representing the file's data.
@@ -288,7 +297,7 @@
                               }, false);
                               return xhr;
                          },
-                         url: "{{ route('dashboard.movie.store_movie') }}",
+                         url: "{{ route('dashboard.movie.update_movie', $movie->id) }}",
                          method: "POST",
                          processData: false,
                          contentType: false,
@@ -300,9 +309,15 @@
                               $('#submit').prop('disabled', false);
                               if (data.status == 1) {
                                    swal("Done!", data.message, "success");
-                                   $('#create_pin')[0].reset();
-                                   $('#thumb-output img').remove();
-                                   clearForm();
+
+                                   //nếu có thay đổi ảnh thì cập nhật ảnh ở img_new vào thumb_old
+                                   if ($('#thumb-new').html() != '<small><i>No poster have been selected yet</i></small>') {
+                                        $('#thumb-old').attr('src', $('#div-chua-anh img').attr('src'));
+                                        //đưa thumb-new về mặc định
+                                        $('#thumb-new').html('<small><i>No poster have been selected yet</i></small>');
+                                   }
+                                   $('#thumb-new img').remove();
+                                   //    clearForm();
                               } else if (data.status == 2) {
                                    swal("Error!", data.message, "error");
                                    //  window.location.assign('/login');
@@ -324,14 +339,15 @@
 
 
           });
+
           function clearForm() {
-                    console.log('clear');
-                    $('#create_pin')[0].reset();
-                    $('#thumb-output img').remove();
-                    //clear ckeditor
-                    CKEDITOR.instances.editor1.setData('');
-                    //clear select2
-                    $('.list-category').val(null).trigger('change');
-               }
+               console.log('clear');
+               $('#create_pin')[0].reset();
+               $('#thumb-new img').remove();
+               //clear ckeditor
+               CKEDITOR.instances.editor1.setData('');
+               //clear select2
+               $('.list-category').val(null).trigger('change');
+          }
      </script>
 @endpush
