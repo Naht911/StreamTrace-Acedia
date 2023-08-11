@@ -51,6 +51,9 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::get('/list_genre', [MovieController::class, 'list_genre'])->name('dashboard.movie.list_genre');
         Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
         Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
+        Route::get('/edit_genre/{id?}', [MovieController::class, 'edit_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.edit_genre');
+        Route::post('/edit_genre/{id?}', [MovieController::class, 'update_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.update_genre');
+        Route::post('/delete_genre', [MovieController::class, 'delete_genre'])->name('dashboard.movie.delete_genre');
     });
     Route::prefix('provider')->group(function () {
         // Route::get('/add', [MovieController::class, 'create_movie'])->name('dashboard.movie.create_movie');

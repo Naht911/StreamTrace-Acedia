@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.dashboard_layout')
-@section('title', 'List Movie')
+@section('title', 'List Genre')
 
 
 
@@ -30,56 +30,26 @@
                                         <tr>
                                              <th scope="col">#</th>
                                              <th scope="col">Name</th>
-                                             <th scope="col">Genres</th>
-                                             <th scope="col">Providers</th>
+                                             <th scope="col">Count movies</th>
                                              <th scope="col">Action</th>
                                         </tr>
                                    </thead>
                                    <tbody>
-                                        @if ($movies->isEmpty())
+                                        @if ($genres->isEmpty())
                                              <tr>
-                                                  <td colspan="5" class="text-center">No Data</td>
+                                                  <td colspan="4" class="text-center">No Data</td>
                                              </tr>
                                         @else
-                                             @foreach ($movies as $movie)
+                                             @foreach ($genres as $genre)
                                                   <tr>
-                                                       <th scope="row">{{ $movie->id }}</th>
-                                                       <td>{{ $movie->title }}</td>
-                                                       <td>
-                                                            @if ($movie->genres != null)
-                                                                 @foreach ($movie->genres as $genre)
-                                                                      <a href="{{ route('dashboard.movie.list_movie', addParam('genre', $genre->slug)) }}">
-                                                                           <span class="badge badge-sm badge-primary">
-                                                                                {{ $genre->name }}
-                                                                           </span>
-                                                                      </a>
-                                                                 @endforeach
-                                                            @endif
-                                                       </td>
-                                                       <td>
+                                                       <th scope="row">{{ $genre->id }}</th>
+                                                       <td>{{ $genre->name }}</td>
+                                                       <td>{{ number_format($genre->movies->count()) }}</td>
 
-                                                            @if ($movie->providers != null)
-                                                                 @if ($movie->providers_distinct->count() > 1)
-                                                                      @foreach ($movie->providers_distinct as $provider)
-                                                                           <a href="{{ route('dashboard.movie.list_movie', addParam('provider', $provider->name)) }}">
-                                                                                <span class="badge badge-sm badge-warning">
-                                                                                     {{ $provider->name }}
-                                                                                </span>
-                                                                           </a>
-                                                                      @endforeach
-                                                                 @else
-                                                                      <a href="{{ route('dashboard.movie.list_movie', addParam('provider', 'none')) }}">
-                                                                           <span class="badge badge-sm badge-warning">
-                                                                                No Provider
-                                                                           </span>
-                                                                      </a>
-                                                                 @endif
-                                                            @endif
-                                                       </td>
 
                                                        <td>
-                                                            <a href="{{ route('dashboard.movie.edit_movie', $movie->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                                            <button class="btn btn-sm btn-danger" onclick="del_movie({{ $movie->id }})">Delete</button>
+                                                            <a href="{{ route('dashboard.movie.edit_genre', $genre->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                            <button class="btn btn-sm btn-danger" onclick="del_genre({{ $genre->id }})">Delete</button>
                                                        </td>
                                                   </tr>
                                              @endforeach
@@ -90,7 +60,7 @@
                          </div>
 
                          <div class="card-footer text-end">
-                              {{ $movies->links() }}
+                              {{ $genres->links() }}
                               <a href="{{ route('dashboard') }}" class="btn btn-danger">Back to Dashboard</a>
                          </div>
 
@@ -109,7 +79,7 @@
 <!-- Container-fluid Ends-->
 @push('scripts')
      <script>
-          function del_movie(id) {
+          function del_genre(id) {
                //sweet alert confirm
                Swal.fire({
                     title: 'Are you sure?' + id,
@@ -124,7 +94,7 @@
                     if (result.isConfirmed) {
                          //ajax delete
                          $.ajax({
-                              url: "{{ route('dashboard.movie.delete_movie') }}",
+                              url: "{{ route('dashboard.movie.delete_genre') }}",
                               type: "POST",
                               data: {
                                    "_token": "{{ csrf_token() }}",
@@ -133,7 +103,7 @@
                               beforeSend: function() {
                                    Swal.fire({
                                         title: 'Please Wait !',
-                                        html: 'Deleting Movie',
+                                        html: 'Deleting genre',
                                         allowOutsideClick: false,
                                         showCancelButton: false,
                                         showConfirmButton: false,
@@ -180,7 +150,7 @@
                     } else {
                          Swal.fire(
                               'Cancelled!',
-                              'Your movie is safe :)',
+                              'Your genre is safe :)',
                               'warning'
                          )
                     }
