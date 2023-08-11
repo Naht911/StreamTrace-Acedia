@@ -133,9 +133,21 @@ class AuthController extends Controller
             ->where('token', $token)
             ->first();
 
+
         if (!$passwordResetToken) {
             return abort(404);
         }
+
+        $currentTimestamp = now()->timestamp;
+        $tokenCreatedAtTimestamp = strtotime($passwordResetToken->created_at);
+
+        $timeDifferenceInMinutes = ($currentTimestamp - $tokenCreatedAtTimestamp) / 60;
+
+        // dd($timeDifferenceInMinutes);
+        if ($timeDifferenceInMinutes > 100.0) {
+            return abort(404);
+        }
+
         return view('home/Auth/getpass', compact('user', 'token'));
     }
 
