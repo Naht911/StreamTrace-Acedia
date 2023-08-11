@@ -179,6 +179,7 @@ class MovieController extends Controller
         if ($file_type != 'image/jpeg' && $file_type != 'image/png' && $file_type != 'image/jpg') {
             return response()->json(array('status' => 0, 'message' => "Poster is not a valid image file!"));
         }
+        checkAndCreateFolder('/uploads/images/poster/');
         $image_resize = Img::make($image->getRealPath());
         // $image_resize->resize(300, 450);
         $image_resize->save($image_path);
@@ -275,6 +276,7 @@ class MovieController extends Controller
             //image path
             $image_path = public_path('/uploads/images/poster/' . $image_name);
             $path = '/uploads/images/poster/' . $image_name;
+            checkAndCreateFolder('/uploads/images/poster/');
             //resize image
             $allowedfileExtension = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $extension = strtolower($image->getClientOriginalExtension());

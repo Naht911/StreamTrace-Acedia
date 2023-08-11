@@ -325,7 +325,7 @@
 
           });
           function clearForm() {
-                    console.log('clear');
+
                     $('#create_pin')[0].reset();
                     $('#thumb-output img').remove();
                     //clear ckeditor
