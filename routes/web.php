@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\StreamingProviderController;
 use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\Home\HomeController;
 use App\Models\StreamingServiceProvider;
 
 /*
@@ -20,9 +21,13 @@ use App\Models\StreamingServiceProvider;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('movie')->group(function () {
+
+    Route::get('/{id}', [HomeController::class, 'movie_detail'])->name('home.movie.movie_detail');
 });
+
+
 
 Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
 
@@ -65,7 +70,6 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::post('/edit_movie_provider/{movie_id}/{id}', [MovieController::class, 'update_movie_provider'])->where(['movie_id' => '[0-9]+', 'id' => '[0-9]+'])->name('dashboard.movie.update_movie_provider');
 
         Route::post('/delete_movie_provider', [MovieController::class, 'delete_movie_provider'])->name('dashboard.movie.delete_movie_provider');
-
     });
     Route::prefix('provider')->group(function () {
         Route::get('/', [StreamingProviderController::class, 'list_provider'])->name('dashboard.provider.list_provider');
