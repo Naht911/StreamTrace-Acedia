@@ -55,10 +55,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="icon-lock"></i>
+                                    </span>
                                     <input class="form-control" type="password" name="password" id="password"
                                         required="" placeholder="*********">
-                                    <div class="show-hide"><span class="show"> </span></div>
+                                    <span class="input-group-text" id="toggleIcon" onclick="togglePasswordVisibility()">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -68,7 +73,7 @@
                                 </div><a class="link" href="{{ route('forgetpass') }}">Forgot password?</a>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                                <button class="btn btn-primary btn-block inline-block" type="submit">Sign in</button>
                             </div>
                             <p>Don't have account?<a class="ms-2" href="{{ route('Registration') }}">Create
                                     Account</a></p>
@@ -81,6 +86,19 @@
     @include('layouts.dashboard.partials.js')
 
     <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("password");
+            var toggleIcon = document.getElementById("toggleIcon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+
         $(document).ready(function() {
             // Xử lý đăng nhập
             $("#Login").ajaxForm({

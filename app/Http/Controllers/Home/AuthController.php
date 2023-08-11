@@ -63,18 +63,20 @@ class AuthController extends Controller
 
     public function loginPost(Request $request)
     {
-        $credetials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+        try {
+            $credetials = [
+                'email' => $request->email,
+                'password' => $request->password,
+            ];
 
-        if (Auth::attempt($credetials)) {
-            // return redirect()->route('dashboard')->with('success', 'Login Success');
-            return response()->json(['status' => 0, 'message' => 'Login Success']);
+            if (Auth::attempt($credetials)) {
+                return response()->json(['status' => 0, 'message' => 'Login Success']);
+            }
+
+            return response()->json(['status' => 1, 'message' => 'Error Email or Password']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => -1, 'message' => 'An error occurred while processing your request.']);
         }
-
-        // return back()->with('error', 'Error Email or Password');
-        return response()->json(['status' => 1, 'message' => 'Error Email or Password']);
     }
 
     public function logout()
@@ -92,86 +94,89 @@ class AuthController extends Controller
 
     public function forgetpassPost(Request $request)
     {
+        try {
+            if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+                return response()->json(['status' => 1, 'message' => 'Invalid email format']);
+            }
 
-        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            return response()->json(['status' => 1, 'message' => 'Invalid email format']);
+            $existingUser = User::where('email', $request->email)->first();
+            if (!$existingUser) {
+                return response()->json(['status' => 1, 'message' => 'Email does not exist']);
+            }
+
+            $token = strtoupper(Str::random(20));
+            $user = User::where('email', $request->email)->first();
+
+            $passwordResetToken = PasswordResetToken::where('email', $user->email)->first();
+
+            if ($passwordResetToken) {
+                $passwordResetToken->update(['token' => $token]);
+            } else {
+                $passwordResetToken = PasswordResetToken::create([
+                    'email' => $user->email,
+                    'token' => $token,
+                ]);
+            }
+
+            Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
+                $email->subject('acedia - password retrieval');
+                $email->to($user->email, $user->name);
+            });
+
+            return response()->json(['status' => 0, 'message' => 'Please check your email to complete the password reset process.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => -1, 'message' => 'An error occurred while processing your request.']);
         }
-
-        $existingUser = User::where('email', $request->email)->first();
-        if (!$existingUser) {
-            return response()->json(['status' => 1, 'message' => 'Email does not exist']);
-        }
-
-        $token = strtoupper(Str::random(20));
-        $user = User::where('email', $request->email)->first();
-
-        $passwordResetToken = PasswordResetToken::where('email', $user->email)->first();
-
-        if ($passwordResetToken) {
-            $passwordResetToken->update(['token' => $token]);
-        } else {
-            $passwordResetToken = PasswordResetToken::create([
-                'email' => $user->email,
-                'token' => $token,
-            ]);
-        }
-
-        Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
-            $email->subject('acedia - password retrieval');
-            $email->to($user->email, $user->name);
-        });
-
-        return response()->json(['status' => 0, 'message' => 'Please check your email to complete the password reset process.']);
     }
 
 
     public function getpass(user $user, $token)
     {
-        $user = User::findOrFail($user->id);
+        try {
+            $user = User::findOrFail($user->id);
 
-        $passwordResetToken = PasswordResetToken::where('email', $user->email)
-            ->where('token', $token)
-            ->first();
+            $passwordResetToken = PasswordResetToken::where('email', $user->email)
+                ->where('token', $token)
+                ->first();
 
+            if (!$passwordResetToken) {
+                return abort(404);
+            }
 
-        if (!$passwordResetToken) {
-            return abort(404);
+            return view('home/Auth/getpass', compact('user', 'token'));
+        } catch (\Exception $e) {
+            // Handle the exception and return an error view
+            return view('home/Auth/error')->with('message', 'An error occurred while processing your request.');
         }
-
-        $currentTimestamp = now()->timestamp;
-        $tokenCreatedAtTimestamp = strtotime($passwordResetToken->created_at);
-
-        $timeDifferenceInMinutes = ($currentTimestamp - $tokenCreatedAtTimestamp) / 60;
-
-        // dd($timeDifferenceInMinutes);
-        if ($timeDifferenceInMinutes > 100.0) {
-            return abort(404);
-        }
-
-        return view('home/Auth/getpass', compact('user', 'token'));
     }
 
     public function getpassPost(Request $request, User $user, $token)
     {
 
-        if (strlen($request->password) < 8 || $request->password !== $request->password_confirmation) {
-            return response()->json(['status' => 1, 'message' => 'Invalid password']);
+        try {
+            if (strlen($request->password) < 8 || $request->password !== $request->password_confirmation) {
+                return response()->json(['status' => 1, 'message' => 'Invalid password']);
+            }
+
+            $user = User::findOrFail($user->id);
+
+            $passwordResetToken = PasswordResetToken::where('email', $user->email)
+                ->where('token', $token)
+                ->first();
+
+            if (!$passwordResetToken) {
+                return abort(404);
+            }
+
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+
+            $passwordResetToken->delete();
+
+            return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 1, 'message' => 'An error occurred while resetting the password.']);
         }
-
-        $user = User::findOrFail($user->id);
-
-        $passwordResetToken = PasswordResetToken::where('email', $user->email)
-            ->where('token', $token)
-            ->first();
-
-        if (!$passwordResetToken) {
-            return abort(404);
-        }
-        $user->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        $passwordResetToken->delete();
-        return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
     }
 }

@@ -42,7 +42,7 @@
                             action="{{ route('forgetpassPost') }}">
                             @csrf
                             <h4>forget password</h4>
-                            <div class="form-group">
+                            <div class="form-group mt-2 mb-3">
                                 <label>Email Address</label>
                                 <div class="input-group"><span class="input-group-text"><i
                                             class="icon-email"></i></span>
