@@ -65,14 +65,14 @@
                                 <label>Password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password"
-                                        required="" placeholder="*********">
+                                        required="" placeholder="*********" value="Aq111111">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Confirm password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" name="password_confirmation"
-                                        id="password_confirmation" required="" placeholder="*********">
+                                        id="password_confirmation" required="" placeholder="*********" value="Aq111111">
                                 </div>
                             </div>
                             <div class="form-group">

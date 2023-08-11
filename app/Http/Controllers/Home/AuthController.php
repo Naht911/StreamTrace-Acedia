@@ -23,21 +23,21 @@ class AuthController extends Controller
         try {
 
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-                return response()->json(['status' => 0, 'message' => 'Invalid email format']);
+                return response()->json(['status' => 1, 'message' => 'Invalid email format']);
             }
 
             $existingUser = User::where('email', $request->email)->first();
             if ($existingUser) {
-                return response()->json(['status' => 0, 'message' => 'Email already exists']);
+                return response()->json(['status' => 1, 'message' => 'Email already exists']);
             }
 
             if ($request->password !== $request->password_confirmation) {
-                return response()->json(['status' => 0, 'message' => 'Passwords do not match']);
+                return response()->json(['status' => 1, 'message' => 'Passwords do not match']);
             }
 
             $passwordPattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{6,}$/';
             if (!preg_match($passwordPattern, $request->password)) {
-                return response()->json(['status' => 0, 'message' => 'Password must be at least 6 characters long, contain at least one uppercase letter, and have at least one digit.']);
+                return response()->json(['status' => 1, 'message' => 'Password must be at least 6 characters long, contain at least one uppercase letter, and have at least one digit.']);
             }
 
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
             // return redirect()->route('login')->with('success', 'Register successfully');
             return response()->json(['status' => 0, 'message' => 'Register successfully']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 0, 'message' => 'An error occurred during registration']);
+            return response()->json(['status' => 1, 'message' => 'An error occurred during registration']);
         }
     }
 
@@ -74,7 +74,7 @@ class AuthController extends Controller
         }
 
         // return back()->with('error', 'Error Email or Password');
-        return response()->json(['status' => 0, 'message' => 'Error Email or Password']);
+        return response()->json(['status' => 1, 'message' => 'Error Email or Password']);
     }
 
     public function logout()
@@ -87,22 +87,22 @@ class AuthController extends Controller
     // here
     public function forgetpass()
     {
-        return view('home/Auth/forget_password');
+        return view('home.Auth.forget_password');
     }
 
     public function forgetpassPost(Request $request)
     {
 
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            return response()->json(['status' => 0, 'message' => 'Invalid email format']);
+            return response()->json(['status' => 1, 'message' => 'Invalid email format']);
         }
 
         $existingUser = User::where('email', $request->email)->first();
         if (!$existingUser) {
-            return response()->json(['status' => 0, 'message' => 'Email does not exist']);
+            return response()->json(['status' => 1, 'message' => 'Email does not exist']);
         }
 
-        $token = strtoupper(Str::random(10));
+        $token = strtoupper(Str::random(20));
         $user = User::where('email', $request->email)->first();
 
         $passwordResetToken = PasswordResetToken::where('email', $user->email)->first();
@@ -133,7 +133,18 @@ class AuthController extends Controller
             ->where('token', $token)
             ->first();
 
+
         if (!$passwordResetToken) {
+            return abort(404);
+        }
+
+        $currentTimestamp = now()->timestamp;
+        $tokenCreatedAtTimestamp = strtotime($passwordResetToken->created_at);
+
+        $timeDifferenceInMinutes = ($currentTimestamp - $tokenCreatedAtTimestamp) / 60;
+
+        // dd($timeDifferenceInMinutes);
+        if ($timeDifferenceInMinutes > 100.0) {
             return abort(404);
         }
 
@@ -144,7 +155,7 @@ class AuthController extends Controller
     {
 
         if (strlen($request->password) < 8 || $request->password !== $request->password_confirmation) {
-            return response()->json(['status' => 0, 'message' => 'Invalid password']);
+            return response()->json(['status' => 1, 'message' => 'Invalid password']);
         }
 
         $user = User::findOrFail($user->id);
@@ -156,7 +167,6 @@ class AuthController extends Controller
         if (!$passwordResetToken) {
             return abort(404);
         }
-
         $user->update([
             'password' => Hash::make($request->password),
         ]);
