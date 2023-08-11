@@ -41,8 +41,8 @@ Route::get('/forget-password', [AuthController::class, 'forgetpass'])->name('for
 Route::post('/forget-password', [AuthController::class, 'forgetpassPost'])->name('forgetpassPost');
 Route::get('/get-password/{user}/{token}', [AuthController::class, 'getpass'])->name('getpass');
 Route::post('/get-password/{user}/{token}', [AuthController::class, 'getpassPost'])->name('getpassPost');
-Route::get('/registration', [AuthController::class, 'Register'])->name('Registration');
-Route::post('/registration', [AuthController::class, 'RegisterPost'])->name('RegisterPost');
+Route::get('/registration', [AuthController::class, 'Register'])->name('registration');
+Route::post('/registration', [AuthController::class, 'RegisterPost'])->name('registerPost');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
