@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('password_reset_tokens', function (Blueprint $table) {
+            //add column updated_at
             $table->timestamp('updated_at')->nullable();
         });
     }
