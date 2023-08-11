@@ -21,4 +21,8 @@ class MovieProvider extends Pivot
     {
         return $this->belongsTo(TypePrice::class, 'type_price_id');
     }
+    public function provider()
+    {
+        return $this->belongsTo(StreamingServiceProvider::class, 'streaming_service_provider_id');
+    }
 }

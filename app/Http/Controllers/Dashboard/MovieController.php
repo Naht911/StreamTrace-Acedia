@@ -492,20 +492,12 @@ class MovieController extends Controller
 
     public function show_movie_provider(Request $request, $movie_id = null)
     {
-        $movie = Movie::find($movie_id);
+        $movie = Movie::with('providers')->find($movie_id);
         if (!$movie) {
             return abort(404);
         }
-        $providers = StreamingServiceProvider::all();
-        $type_price = TypePrice::all();
-        $movie_resolutions = MovieResolution::all();
-        $movie_providers = MovieProvider::where('movie_id', $movie_id)->get(); //just use for update
         $data = [
-            'movie' => $movie,
-            'providers' => $providers,
-            'type_price' => $type_price,
-            'movie_resolutions' => $movie_resolutions,
-            'movie_providers' => $movie_providers
+            'movie' => $movie
         ];
         return view('dashboard.movie.show_movie_provider', $data);
     }
@@ -517,15 +509,141 @@ class MovieController extends Controller
             return abort(404);
         }
         $providers = StreamingServiceProvider::all();
-        $type_price = TypePrice::all();
+        $type_prices = TypePrice::all();
         $movie_resolutions = MovieResolution::all();
-        $movie_providers = MovieProvider::where('movie_id', $movie_id)->get(); //just use for update
         $data = [
             'movie' => $movie,
             'providers' => $providers,
-            'type_price' => $type_price,
+            'type_prices' => $type_prices,
             'movie_resolutions' => $movie_resolutions
         ];
         return view('dashboard.movie.add_movie_provider', $data);
+    }
+
+    public function store_movie_provider(Request $request, $id = null)
+    {
+        if ($id == null) {
+            return response()->json(['status' => 0, 'message' => 'Movie not found']);
+        }
+        $movie = Movie::with('providers')->find($id);
+        if (!$movie) {
+            return response()->json(['status' => 0, 'message' => 'Movie not found']);
+        }
+        $streaming_service_provider_id  = $request->streaming_service_provider_id;
+        $type_price_id = $request->type_price_id;
+        $movie_resolution_id = $request->movie_resolution_id;
+        $price = $request->price;
+        $url = $request->url;
+        if ($streaming_service_provider_id == null || $type_price_id == null || $movie_resolution_id == null || $price == null || $url == null) {
+            return response()->json(['status' => 0, 'message' => 'Please fill all fields']);
+        }
+        //trùng provider giá và độ phân giải
+        $check_provider_price_resolution = MovieProvider::where('movie_id', $id)
+            ->where('streaming_service_provider_id', $streaming_service_provider_id)
+            ->where('type_price_id', $type_price_id)
+            ->where('movie_resolution_id', $movie_resolution_id)
+            ->first();
+        if ($check_provider_price_resolution) {
+            return response()->json(['status' => 0, 'message' => 'Provider, price and resolution already exists']);
+        }
+        //insert
+        $movie_provider = new MovieProvider();
+        $movie_provider->movie_id = $id;
+        $movie_provider->streaming_service_provider_id = $streaming_service_provider_id;
+        $movie_provider->type_price_id = $type_price_id;
+        $movie_provider->movie_resolution_id = $movie_resolution_id;
+        $movie_provider->price = $price;
+        $movie_provider->url = $url;
+        $movie_provider->save();
+        return response()->json(['status' => 1, 'message' => 'Add provider successfully']);
+    }
+
+    public function edit_movie_provider(Request $request, $movie_id = null, $id = null)
+    {
+        $movie = Movie::find($movie_id);
+        if (!$movie) {
+            return abort(404);
+        }
+        $movie_provider = MovieProvider::with('provider')->find($id);
+        if (!$movie_provider) {
+            return abort(404);
+        }
+        if($movie_provider->movie_id != $movie_id){
+            return abort(404);
+        }
+        $providers = StreamingServiceProvider::all();
+        $type_prices = TypePrice::all();
+        $movie_resolutions = MovieResolution::all();
+        $data = [
+            'movie' => $movie,
+            'movie_provider' => $movie_provider,
+            'providers' => $providers,
+            'type_prices' => $type_prices,
+            'movie_resolutions' => $movie_resolutions
+        ];
+        return view('dashboard.movie.edit_movie_provider', $data);
+    }
+
+    public function update_movie_provider(Request $request, $movie_id = null, $id = null)
+    {
+        $movie = Movie::find($movie_id);
+        if (!$movie) {
+            return response()->json(['status' => 0, 'message' => 'Movie not found']);
+        }
+        $movie_provider = MovieProvider::find($id);
+        if (!$movie_provider) {
+            return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
+        }
+        if($movie_provider->movie_id != $movie_id){
+            return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
+        }
+        $streaming_service_provider_id  = $request->streaming_service_provider_id;
+        $type_price_id = $request->type_price_id;
+        $movie_resolution_id = $request->movie_resolution_id;
+        $price = $request->price;
+        $url = $request->url;
+        if ($streaming_service_provider_id == null || $type_price_id == null || $movie_resolution_id == null || $price == null || $url == null) {
+            return response()->json(['status' => 0, 'message' => 'Please fill all fields']);
+        }
+        if($movie_provider->streaming_service_provider_id == $streaming_service_provider_id && $movie_provider->type_price_id == $type_price_id && $movie_provider->movie_resolution_id == $movie_resolution_id && $movie_provider->price == $price && $movie_provider->url == $url){
+            return response()->json(['status' => 1, 'message' => 'Nothing changes']);
+        }
+        //trùng provider giá và độ phân giải
+        $check_provider_price_resolution = MovieProvider::where('movie_id', $movie_id)
+            ->where('streaming_service_provider_id', $streaming_service_provider_id)
+            ->where('type_price_id', $type_price_id)
+            ->where('movie_resolution_id', $movie_resolution_id)
+            ->where('id', '!=', $id)
+            ->first();
+        if ($check_provider_price_resolution) {
+            return response()->json(['status' => 0, 'message' => 'Provider, price and resolution already exists']);
+        }
+        //update
+        $movie_provider->streaming_service_provider_id = $streaming_service_provider_id;
+        $movie_provider->type_price_id = $type_price_id;
+        $movie_provider->movie_resolution_id = $movie_resolution_id;
+        $movie_provider->price = $price;
+        $movie_provider->url = $url;
+        $movie_provider->save();
+        return response()->json(['status' => 1, 'message' => 'Update provider successfully']);
+    }
+
+    public function delete_movie_provider(Request $request)
+    {
+        $movie_id = $request->movie_id;
+        $provider_id = $request->provider_id;
+        $movie = Movie::find($movie_id);
+        if (!$movie) {
+            return response()->json(['status' => 0, 'message' => 'Movie not found']);
+        }
+        $movie_provider = MovieProvider::find($provider_id);
+        if (!$movie_provider) {
+            return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
+        }
+        if($movie_provider->movie_id != $movie_id){
+            return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
+        }
+        $movie_provider->delete();
+        return response()->json(['status' => 1, 'message' => 'Delete provider successfully']);
     }
 }
