@@ -68,21 +68,21 @@ class DashboardController extends Controller
     {
         $year = $request->year ?? null;
         $users = User::whereYear('created_at', $year)->get();
-
-        $logs = [];
+        $data_user = [];
         foreach ($users as $user) {
-            $date = $user->created_at;
-            $month = Carbon::parse($date)->format('F');
-            $logs[] = $month;
+            $month = $user->created_at->format('F');
+            if (isset($data_user[$month])) {
+                $data_user[$month]++;
+            } else {
+                $data_user[$month] = 1;
+            }
         }
-
-        $count = json_encode($logs);
+        $data_user = json_encode($data_user);
         $data = [
-            'count' => $count,
+            'count' => $data_user,
             'users' => $users,
         ];
-        if ($users->count() >= 0) {
-            return view('dashboard.performance.user_performance', $data  );
-        }
+
+        return view('dashboard.performance.user_performance', $data);
     }
 }
