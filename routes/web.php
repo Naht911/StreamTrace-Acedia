@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MovieController;
+use App\Http\Controllers\Dashboard\StreamingProviderController;
 use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
+use App\Models\StreamingServiceProvider;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,12 +54,17 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::get('/list_genre', [MovieController::class, 'list_genre'])->name('dashboard.movie.list_genre');
         Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
         Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
+        Route::get('/edit_genre/{id?}', [MovieController::class, 'edit_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.edit_genre');
+        Route::post('/edit_genre/{id?}', [MovieController::class, 'update_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.update_genre');
+        Route::post('/delete_genre', [MovieController::class, 'delete_genre'])->name('dashboard.movie.delete_genre');
     });
     Route::prefix('provider')->group(function () {
-        // Route::get('/add', [MovieController::class, 'create_movie'])->name('dashboard.movie.create_movie');
-        // Route::post('/add', [MovieController::class, 'store_movie'])->name('dashboard.movie.store_movie');
-        // Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
-        // Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
+        Route::get('/', [StreamingProviderController::class, 'list_provider'])->name('dashboard.provider.list_provider');
+        Route::get('/create_provider', [StreamingProviderController::class, 'create_provider'])->name('dashboard.provider.create_provider');
+        Route::post('/create_provider', [StreamingProviderController::class, 'store_provider'])->name('dashboard.provider.store_provider');
+        Route::get('/edit_provider/{id?}', [StreamingProviderController::class, 'edit_provider'])->where(['id' => '[0-9]+'])->name('dashboard.provider.edit_provider');
+        Route::post('/edit_provider/{id?}', [StreamingProviderController::class, 'update_provider'])->where(['id' => '[0-9]+'])->name('dashboard.provider.update_provider');
+        Route::post('/delete_provider', [StreamingProviderController::class, 'delete_provider'])->name('dashboard.provider.delete_provider');
     });
     Route::prefix('feedback')->group(function () {
 

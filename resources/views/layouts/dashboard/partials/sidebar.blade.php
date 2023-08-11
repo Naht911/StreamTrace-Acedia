@@ -19,13 +19,14 @@
                                    <h6>Streaming Services </h6>
                               </div>
                          </li>
-                         <li class="dropdown"><a class="nav-link menu-title my-2" href="javascript:void(0)">
+                         <li class="dropdown">
+                              <a class="nav-link menu-title my-2 {{ prefixActive('dashboard/provider') }}" href="javascript:void(0)">
                                    <i class="fa-solid fa-diagram-project"></i>
                                    <span>Providers</span>
                               </a>
-                              <ul class="nav-submenu menu-content">
+                              <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('dashboard/provider') }};">
                                    <li>
-                                        <a class="" href="#">
+                                        <a href="{{ route('dashboard.provider.create_provider') }}" class="{{ routeActive('dashboard.provider.create_provider') }}">
                                              <i class="fa-solid fa-plus"></i>
                                              <span>
                                                   Add New Provider
@@ -33,7 +34,7 @@
                                         </a>
                                    </li>
                                    <li>
-                                        <a class="" href="#">
+                                        <a href="{{ route('dashboard.provider.list_provider') }}" class="{{ routeActive('dashboard.provider.list_provider') }}">
                                              <i class="fa-solid fa-list"></i>
                                              <span>
                                                   List Provider
@@ -75,7 +76,7 @@
                                                   </a>
                                              </li>
                                              <li>
-                                                  <a href="#" class="">
+                                                  <a href="{{ route('dashboard.movie.list_genre') }}" class="{{ routeActive('dashboard.movie.list_genre') }}">
                                                        <i class="fa-solid fa-list"></i>
                                                        <span> List Genre </span>
                                                   </a>

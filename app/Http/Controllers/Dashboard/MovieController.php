@@ -179,6 +179,7 @@ class MovieController extends Controller
         if ($file_type != 'image/jpeg' && $file_type != 'image/png' && $file_type != 'image/jpg') {
             return response()->json(array('status' => 0, 'message' => "Poster is not a valid image file!"));
         }
+        checkAndCreateFolder('/uploads/images/poster/');
         $image_resize = Img::make($image->getRealPath());
         // $image_resize->resize(300, 450);
         $image_resize->save($image_path);
@@ -275,6 +276,7 @@ class MovieController extends Controller
             //image path
             $image_path = public_path('/uploads/images/poster/' . $image_name);
             $path = '/uploads/images/poster/' . $image_name;
+            checkAndCreateFolder('/uploads/images/poster/');
             //resize image
             $allowedfileExtension = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $extension = strtolower($image->getClientOriginalExtension());
@@ -329,7 +331,7 @@ class MovieController extends Controller
     public function list_genre()
     {
         $per_page = 10;
-        $genres = Genre::query()->paginate($per_page);
+        $genres = Genre::query()->with('movies')->paginate($per_page);
         $data = [
             'genres' => $genres
         ];
@@ -387,5 +389,101 @@ class MovieController extends Controller
             'status' => 1,
             'message' => 'Genre added successfully'
         ]);
+    }
+
+    public function edit_genre($id)
+    {
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return redirect()->route('list_genre');
+        }
+        $data = [
+            'genre' => $genre
+        ];
+        return view('dashboard.movie.edit_genre', $data);
+    }
+
+    public function update_genre(Request $request, $id = null)
+    {
+
+        $name = $request->name;
+        $slug = $request->slug;
+        if ($id == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre not found'
+            ]);
+        }
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre not found!'
+            ]);
+        }
+        if ($name == null || $slug == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre name or slug is empty'
+            ]);
+        }
+        //check name over 255 characters
+        if (strlen($name) > 255) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre name is too long'
+            ]);
+        }
+        //check slug over 255 characters
+        if (strlen($slug) > 255) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre slug is too long'
+            ]);
+        }
+        $check_name = Genre::where('name', $name)->first();
+        if ($check_name && $check_name->id != $id) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Genre name already exists!'
+            ]);
+        }
+        //check slug
+        $check_slug = Genre::where('slug', $slug)->first();
+        if ($check_slug && $check_slug->id != $id) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'Genre slug already exists'
+            ]);
+        }
+        if($genre->name == $name && $genre->slug == $slug){
+            return response()->json([
+                'status' => 1,
+                'message' => 'Nothing change'
+            ]);
+        }
+
+        $genre->name = $name;
+        $genre->slug = $slug;
+        $genre->save();
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Genre updated successfully'
+        ]);
+    }
+
+    public function delete_genre(Request $request)
+    {
+        $id = $request->id ?? null;
+        if (!$id) {
+            return response()->json(['status' => 0, 'message' => 'Genre not found']);
+        }
+        $genre = Genre::find($id);
+        if (!$genre) {
+            return response()->json(['status' => 2, 'message' => 'Genre not found or deleted!']);
+        }
+        $genre->delete();
+        return response()->json(['status' => 1, 'message' => 'Delete genre successfully']);
     }
 }

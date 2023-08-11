@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.dashboard_layout')
-@section('title', 'List Genre')
+@section('title', 'List Provider')
 
 
 
@@ -15,7 +15,7 @@
                     <div class="card">
                          <div class="card-header pb-0">
                               <div class="text-center">
-                                   <h4> List Genre </h4>
+                                   <h4> List Provider </h4>
                               </div>
                               <hr>
 
@@ -29,27 +29,30 @@
                                    <thead>
                                         <tr>
                                              <th scope="col">#</th>
+                                             <th scope="col">Logo</th>
                                              <th scope="col">Name</th>
                                              <th scope="col">Count movies</th>
                                              <th scope="col">Action</th>
                                         </tr>
                                    </thead>
                                    <tbody>
-                                        @if ($genres->isEmpty())
+                                        @if ($providers->isEmpty())
                                              <tr>
                                                   <td colspan="4" class="text-center">No Data</td>
                                              </tr>
                                         @else
-                                             @foreach ($genres as $genre)
+                                             @foreach ($providers as $provider)
                                                   <tr>
-                                                       <th scope="row">{{ $genre->id }}</th>
-                                                       <td>{{ $genre->name }}</td>
-                                                       <td>{{ number_format($genre->movies->count()) }}</td>
-
+                                                       <th scope="row">{{ $provider->id }}</th>
+                                                       <td>
+                                                            <img src="{{ asset($provider->logo) }}" alt="{{ $provider->name }}" width="50px" class="thumb">
+                                                       </td>
+                                                       <td>{{ $provider->name }}</td>
+                                                       <td>{{ number_format($provider->movies->count()) }}</td>
 
                                                        <td>
-                                                            <a href="{{ route('dashboard.movie.edit_genre', $genre->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                                            <button class="btn btn-sm btn-danger" onclick="del_genre({{ $genre->id }})">Delete</button>
+                                                            <a href="{{ route('dashboard.provider.edit_provider', $provider->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                                            <button class="btn btn-sm btn-danger" onclick="del_provider({{ $provider->id }})">Delete</button>
                                                        </td>
                                                   </tr>
                                              @endforeach
@@ -60,7 +63,7 @@
                          </div>
 
                          <div class="card-footer text-end">
-                              {{ $genres->links() }}
+                              {{ $providers->links() }}
                               <a href="{{ route('dashboard') }}" class="btn btn-danger">Back to Dashboard</a>
                          </div>
 
@@ -79,7 +82,7 @@
 <!-- Container-fluid Ends-->
 @push('scripts')
      <script>
-          function del_genre(id) {
+          function del_provider(id) {
                //sweet alert confirm
                Swal.fire({
                     title: 'Are you sure?',
@@ -94,7 +97,7 @@
                     if (result.isConfirmed) {
                          //ajax delete
                          $.ajax({
-                              url: "{{ route('dashboard.movie.delete_genre') }}",
+                              url: "{{ route('dashboard.provider.delete_provider') }}",
                               type: "POST",
                               data: {
                                    "_token": "{{ csrf_token() }}",
@@ -103,7 +106,7 @@
                               beforeSend: function() {
                                    Swal.fire({
                                         title: 'Please Wait !',
-                                        html: 'Deleting genre',
+                                        html: 'Deleting provider',
                                         allowOutsideClick: false,
                                         showCancelButton: false,
                                         showConfirmButton: false,
@@ -150,7 +153,7 @@
                     } else {
                          Swal.fire(
                               'Cancelled!',
-                              'Your genre is safe :)',
+                              'Your provider is safe :)',
                               'warning'
                          )
                     }
