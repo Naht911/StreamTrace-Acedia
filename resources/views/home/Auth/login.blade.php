@@ -111,7 +111,7 @@
                             type: "error",
                             confirmButtonClass: 'btn-danger',
                             confirmButtonText: 'OK'
-                        });
+                        })
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
