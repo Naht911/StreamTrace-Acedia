@@ -49,9 +49,8 @@
                                             class="icon-email"></i></span>
                                     <input class="form-control" type="email" name="email" id="email"
                                         required="" placeholder="Test@gmail.com">
-                                    </p>
-
                                 </div>
+                                <span id="emailError" class="error-message" style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
@@ -60,11 +59,12 @@
                                         <i class="icon-lock"></i>
                                     </span>
                                     <input class="form-control" type="password" name="password" id="password"
-                                        required="" placeholder="*********">
+                                        required="" placeholder="password">
                                     <span class="input-group-text" id="toggleIcon" onclick="togglePasswordVisibility()">
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
+                                <span id="passwordError" class="error-message" style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
@@ -97,6 +97,37 @@
                 passwordInput.type = "password";
                 toggleIcon.innerHTML = '<i class="fas fa-eye"></i>';
             }
+        }
+
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+
+        function validateEmail() {
+            const email = emailInput.value;
+            const emailError = document.getElementById('emailError');
+            emailError.textContent = '';
+
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Invalid email format.';
+            }
+        }
+
+        function validatePassword() {
+            const password = passwordInput.value;
+            const passwordError = document.getElementById('passwordError');
+            passwordError.textContent = '';
+
+            if (!password) {
+                passwordError.textContent = 'password required.';
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
 
         $(document).ready(function() {

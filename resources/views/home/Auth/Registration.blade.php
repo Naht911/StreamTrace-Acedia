@@ -52,6 +52,7 @@
                                             placeholder="Fist Name" name="name" id="name">
                                     </div>
                                 </div>
+                                <span id="nameError" class="error-message" style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
@@ -60,20 +61,26 @@
                                     <input class="form-control" type="email" required=""
                                         placeholder="Test@gmail.com" name="email" id="email">
                                 </div>
+                                <span id="emailError" class="error-message" style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password"
-                                        required="" placeholder="*********" value="Aq111111">
+                                        required="" placeholder="password" value="Aq111111">
                                 </div>
+                                <span id="passwordError" class="error-message"
+                                    style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <label>Confirm password</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" name="password_confirmation"
-                                        id="password_confirmation" required="" placeholder="*********" value="Aq111111">
+                                        id="password_confirmation" required="" placeholder="password confirmation"
+                                        value="Aq111111">
                                 </div>
+                                <span id="passwordConfirmation" class="error-message"
+                                    style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Create Account</button>
@@ -88,86 +95,117 @@
     @include('layouts.dashboard.partials.js')
 
     <script>
-        function check() {
-            var isCheckOK = true;
+        const nameInput = document.getElementById('name')
+        const emailInput = document.getElementById('email')
+        const passwordInput = document.getElementById('password')
+        const passwordConfirmationInput = document.getElementById('password_confirmation')
 
-            var email = document.getElementById("email").value;
-            var patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
 
-            if (!patternEmail.test(email)) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Invalid email!",
-                    type: "error"
-                });
-                isCheckOK = false;
+        nameInput.addEventListener('blur', validateName);
+        passwordInput.addEventListener('blur', validatePassword);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordConfirmationInput.addEventListener('blur', validatePasswordConfirmation);
+
+        function validateName() {
+            const name = nameInput.value;
+            const nameError = document.getElementById('nameError');
+            nameError.textContent = '';
+
+            if (name.trim() === "") {
+                document.getElementById("nameError").textContent = "Please enter your name.";
+                return false;
+            } else {
+                document.getElementById("nameError").textContent = "";
+                return true;
             }
-
-            var password = document.getElementById("password").value;
-            var uppercaseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-
-            if (!(password.length >= 8 && uppercaseRegex.test(password))) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Need 8 characters and 1 uppercase letter and number!",
-                    type: "error"
-                });
-                isCheckOK = false;
-            }
-
-            return isCheckOK;
         }
 
-        function check() {
-            var isCheckOK = true;
-            var name = document.getElementById("name").value;
-            var patternName = /^(?=[a-zA-Z]{3,}$)[a-zA-Z]+(null|\s*)$/;
+        function validateEmail() {
+            const email = emailInput.value;
+            const emailError = document.getElementById('emailError');
+            emailError.textContent = '';
 
-            if (!(name.length >= 3 && patternName.test(name))) {
-                Swal.fire({
-                    title: "Error",
-                    text: "at least 3 characters and no numbers, special characters!",
-                    type: "error"
-                });
-                isCheckOK = false;
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+            if (email.trim() === "") {
+                emailError.textContent = "Please enter an email address.";
+                return false;
             }
 
-            var email = document.getElementById("email").value;
-            var patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
-
-            if (!patternEmail.test(email)) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Invalid email!",
-                    type: "error"
-                });
-                isCheckOK = false;
+            if (!emailRegex.test(email)) {
+                emailError.textContent = "Please enter a valid email address.";
+                return false;
             }
 
-            var password = document.getElementById("password").value;
-            var uppercaseRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+            if (email.endsWith(".com")) {
+                const parts = email.split(".");
+                const domain = parts[parts.length - 2];
 
-            if (!(password.length >= 8 && uppercaseRegex.test(password))) {
-                Swal.fire({
-                    title: "Error",
-                    text: "need 8 characters and 1 uppercase letter and number!",
-                    type: "error"
-                });
-                isCheckOK = false;
+                if (domain === "com") {
+                    emailError.textContent = "Email address has an invalid .com domain.";
+                    return false;
+                }
+
+                if (/^\d+$/.test(domain)) {
+                    emailError.textContent = "Email address has an invalid .com domain.";
+                    return false;
+                }
             }
 
-            var retypePassword = document.getElementById("password_confirmation").value;
+            emailError.textContent = "";
+            return true;
+        }
 
-            if (password !== retypePassword) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Password incorrect!",
-                    type: "error"
-                });
-                isCheckOK = false;
+        function validatePassword() {
+            const password = passwordInput.value;
+            const passwordError = document.getElementById('passwordError');
+
+            passwordError.textContent = '';
+
+            var uppercaseRegex = /[A-Z]/;
+            var lowercaseRegex = /[a-z]/;
+            var digitRegex = /[0-9]/;
+
+            if (password.trim() === "") {
+                passwordError.textContent = "Please enter a password.";
+                return false;
+            } else if (!uppercaseRegex.test(password)) {
+                passwordError.textContent =
+                    "one uppercase letter.";
+                return false;
+            } else if (!digitRegex.test(password)) {
+                passwordError.textContent =
+                    "one digit.";
+                return false;
+            } else if (!lowercaseRegex.test(password)) {
+                passwordError.textContent =
+                    "one lowercase letter.";
+                return false;
+            } else if (password.length < 8) {
+                passwordError.textContent = "Password must be at least 8 characters long.";
+                return false;
+            } else {
+                passwordError.textContent = "";
+                return true;
+            }
+        }
+
+        function validatePasswordConfirmation() {
+            const password = document.getElementById("password").value;
+            const passwordConfirmation = document.getElementById("password_confirmation").value;
+            const passwordConfirmationError = document.getElementById("passwordConfirmation");
+            passwordConfirmationError.textContent = '';
+
+            if (passwordConfirmation.trim() === "") {
+                passwordConfirmationError.textContent = "Please enter the password confirmation.";
+                return false;
+            } else if (password !== passwordConfirmation) {
+                passwordConfirmationError.textContent = "Passwords do not match.";
+                return false;
             }
 
-            return isCheckOK;
+            passwordConfirmationError.textContent = "";
+            return true;
         }
         $(document).ready(function() {
             // Xử lý đăng nhập
@@ -175,10 +213,7 @@
                 dataType: 'json',
                 url: '{{ route('RegisterPost') }}',
                 beforeSend: function() {
-                    isCheckOK = check();
-                    if (isCheckOK == false) {
-                        return false;
-                    }
+                    Swal.showLoading()
                 },
                 success: function(data) {
                     if (data.status == 0) {
