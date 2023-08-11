@@ -51,6 +51,41 @@ class MovieController extends Controller
                 $movies = $movies->doesntHave('providers');
             }
         }
+        $soft = $request->soft ?? null;
+        if ($soft != null) {
+            if ($soft == 'asc') {
+                $soft_data = (object)[
+                    'name' => 'Oldest first',
+                    'reverse_name' => 'Newest first',
+                    'slug' => 'asc',
+                    'reverse_slug' => 'desc'
+                ];
+            } else {
+                $soft_data = (object)[
+                    'name' => 'Newest first',
+                    'reverse_name' => 'Oldest first',
+                    'slug' => 'desc',
+                    'reverse_slug' => 'asc'
+                ];
+            }
+            session()->put('soft_data', $soft_data);
+        } else {
+            //check session
+            if (session()->has('soft_data')) {
+                $soft_data = session()->get('soft_data');
+            } else {
+                //create session
+                $soft_data = (object)[
+                    'name' => 'Newest first',
+                    'reverse_name' => 'Oldest first',
+                    'slug' => 'desc',
+                    'reverse_slug' => 'asc'
+                ];
+                session()->put('soft_data', $soft_data);
+            }
+        }
+        $movies = $movies->orderBy('id', $soft_data->slug);
+
 
         $movies = $movies->paginate($per_page);
         //handle provider filter
@@ -67,6 +102,7 @@ class MovieController extends Controller
             'genres' => $genres,
             'movies' => $movies,
             'providers' => $providers,
+            'soft_data' => $soft_data
 
         ];
         return view('dashboard.movie.list_movie', $data);
@@ -255,7 +291,7 @@ class MovieController extends Controller
             // $image_resize->resize(300, 450);
             $image_resize->save($image_path);
             #end upload image
-        }else{
+        } else {
             $path = $movie->poster_url;
         }
 
@@ -275,9 +311,34 @@ class MovieController extends Controller
         return response()->json(['status' => 1, 'message' => 'Update movie successfully']);
     }
 
-    public function create_genre()
+    public function delete_movie(Request $request)
     {
 
+        $id = $request->id ?? null;
+        if (!$id) {
+            return response()->json(['status' => 0, 'message' => 'Movie not found']);
+        }
+        $movie = Movie::find($id);
+        if (!$movie) {
+            return response()->json(['status' => 2, 'message' => 'Movie not found or deleted!']);
+        }
+        $movie->delete();
+        return response()->json(['status' => 1, 'message' => 'Delete movie successfully']);
+    }
+
+    public function list_genre()
+    {
+        $per_page = 10;
+        $genres = Genre::query()->paginate($per_page);
+        $data = [
+            'genres' => $genres
+        ];
+
+        return view('dashboard.movie.list_genre', $data);
+    }
+
+    public function create_genre()
+    {
         return view('dashboard.movie.create_genre');
     }
     public function store_genre(Request $request)

@@ -57,7 +57,7 @@ if (!function_exists('checkParam')) {
         //Nếu chỉ có 1 và param đó là page thì trả về false
         //Nếu không có param nào thì trả về false
         for($i = 0; $i < count($query); $i++){
-            if(array_values($query)[$i] != null && array_keys($query)[$i] != 'page'){
+            if(array_values($query)[$i] != null && array_keys($query)[$i] != 'page' && array_keys($query)[$i] != 'soft'){
                 return true;
             }
         }
