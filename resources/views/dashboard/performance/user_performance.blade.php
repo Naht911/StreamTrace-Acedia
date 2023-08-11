@@ -133,11 +133,19 @@
 
     const myChart = new Chart(
         document.getElementById('myChart'),
-        config
+        // config
     );
+    //doc
 
-    $( document ).ready(function() {
-       form.submit();
-});
+          $(document).ready(function() {
+            //get query string value
+            var url_string = window.location.href;
+            //if query string do not contain year then set default year and send submit form
+            if (url_string.indexOf("year") == -1) {
+                $('#datepicker').val(2023);
+                $('#formId').submit();
+            }
+          });
+
 </script>
 @endpush
