@@ -10,6 +10,9 @@ use App\Models\Genre;
 use Intervention\Image\Facades\Image as Img;
 use App\Models\Movie;
 use App\Models\StreamingServiceProvider;
+use App\Models\MovieProvider;
+use App\Models\TypePrice;
+use App\Models\MovieResolution;
 
 class MovieController extends Controller
 {
@@ -456,7 +459,7 @@ class MovieController extends Controller
                 'message' => 'Genre slug already exists'
             ]);
         }
-        if($genre->name == $name && $genre->slug == $slug){
+        if ($genre->name == $name && $genre->slug == $slug) {
             return response()->json([
                 'status' => 1,
                 'message' => 'Nothing change'
@@ -485,5 +488,44 @@ class MovieController extends Controller
         }
         $genre->delete();
         return response()->json(['status' => 1, 'message' => 'Delete genre successfully']);
+    }
+
+    public function show_movie_provider(Request $request, $movie_id = null)
+    {
+        $movie = Movie::find($movie_id);
+        if (!$movie) {
+            return abort(404);
+        }
+        $providers = StreamingServiceProvider::all();
+        $type_price = TypePrice::all();
+        $movie_resolutions = MovieResolution::all();
+        $movie_providers = MovieProvider::where('movie_id', $movie_id)->get(); //just use for update
+        $data = [
+            'movie' => $movie,
+            'providers' => $providers,
+            'type_price' => $type_price,
+            'movie_resolutions' => $movie_resolutions,
+            'movie_providers' => $movie_providers
+        ];
+        return view('dashboard.movie.show_movie_provider', $data);
+    }
+
+    public function add_movie_provider(Request $request, $movie_id = null)
+    {
+        $movie = Movie::find($movie_id);
+        if (!$movie) {
+            return abort(404);
+        }
+        $providers = StreamingServiceProvider::all();
+        $type_price = TypePrice::all();
+        $movie_resolutions = MovieResolution::all();
+        $movie_providers = MovieProvider::where('movie_id', $movie_id)->get(); //just use for update
+        $data = [
+            'movie' => $movie,
+            'providers' => $providers,
+            'type_price' => $type_price,
+            'movie_resolutions' => $movie_resolutions
+        ];
+        return view('dashboard.movie.add_movie_provider', $data);
     }
 }

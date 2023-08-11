@@ -170,9 +170,10 @@
                                                             @endif
                                                        </td>
 
-                                                       <td>
+                                                       <td class="text-center">
                                                             <a href="{{ route('dashboard.movie.edit_movie', $movie->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                                             <button class="btn btn-sm btn-danger" onclick="del_movie({{ $movie->id }})">Delete</button>
+                                                            <a href="{{ route('dashboard.movie.edit_movie', $movie->id) }}" class="btn btn-sm btn-warning mt-1">Add provider</a>
                                                        </td>
                                                   </tr>
                                              @endforeach

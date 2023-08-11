@@ -57,6 +57,10 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::get('/edit_genre/{id?}', [MovieController::class, 'edit_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.edit_genre');
         Route::post('/edit_genre/{id?}', [MovieController::class, 'update_genre'])->where(['id' => '[0-9]+'])->name('dashboard.movie.update_genre');
         Route::post('/delete_genre', [MovieController::class, 'delete_genre'])->name('dashboard.movie.delete_genre');
+
+        Route::get('/show_movie_provider/{id}', [MovieController::class, 'show_movie_provider'])->where(['id' => '[0-9]+'])->name('dashboard.movie.show_movie_provider');
+        Route::get('/add_movie_provider/{id}', [MovieController::class, 'add_movie_provider'])->where(['id' => '[0-9]+'])->name('dashboard.movie.add_movie_provider');
+        Route::post('/add_movie_provider/{id}', [MovieController::class, 'store_movie_provider'])->where(['id' => '[0-9]+'])->name('dashboard.movie.store_movie_provider');
     });
     Route::prefix('provider')->group(function () {
         Route::get('/', [StreamingProviderController::class, 'list_provider'])->name('dashboard.provider.list_provider');
