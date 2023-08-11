@@ -87,6 +87,7 @@
                          <li><a class="nav-link menu-title link-nav my-2" href="#"><i data-feather="user"></i><span>USer</span></a></li>
                          <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i data-feather="airplay"></i><span>Performance</span></a>
                               <ul class="nav-submenu menu-content">
+                                   <li><a href="{{ route('dashboard.performance.user_performance') }}" class="{{ routeActive('dashboard.performance.user_performance') }}"><i data-feather="bookmark"></i><span>User Performance</span></a></li>
                                    <li><a class="" href="#"><i data-feather="bookmark"></i><span>Top Bookmark</span></a></li>
                                    <li><a class="" href="#"><i data-feather="globe"></i><span>Top Streaming Service</span></a></li>
                               </ul>

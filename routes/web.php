@@ -78,4 +78,10 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::get('/vieweditFAQ/{id}', [FAQController::class, 'viewUpdate']);
         Route::post('/editFAQ', [FAQController::class, 'update']);
     });
+
+
+    Route::prefix('performance')->group(function () {
+
+        Route::get('/user_performance', [DashboardController::class, 'user_performance'])->name('dashboard.performance.user_performance');
+    });
 });

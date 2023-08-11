@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\MovieProvider;
+use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -44,5 +48,41 @@ class DashboardController extends Controller
 
 
         return view('dashboard.index');
+    }
+
+
+    // public function user_performance()
+    // {
+    //     $users = User::all();
+
+    //     if ($users) {
+    //         return view('dashboard.performance.user_performance')->with(
+    //             [
+    //                 'data' =>$users,
+    //             ]
+    //         );
+    //     }
+    // }
+
+    public function user_performance(Request $request)
+    {
+        $year = $request->year ?? null;
+        $users = User::whereYear('created_at', $year)->get();
+
+        $logs = [];
+        foreach ($users as $user) {
+            $date = $user->created_at;
+            $month = Carbon::parse($date)->format('F');
+            $logs[] = $month;
+        }
+
+        $count = json_encode($logs);
+        $data = [
+            'count' => $count,
+            'users' => $users,
+        ];
+        if ($users->count() >= 0) {
+            return view('dashboard.performance.user_performance', $data  );
+        }
     }
 }
