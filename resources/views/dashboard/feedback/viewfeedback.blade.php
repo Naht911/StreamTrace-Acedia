@@ -67,9 +67,9 @@
                             <td>{{ $item->dateHandle }}</td> --}}
                                 <td>
                                     <button><a
-                                            href="{{ asset('dashboard/feedback/viewEditFeedback/' . $item->id) }}">Processing</a></button>
+                                            href="{{ asset('dashboard/feedback/edit/' . $item->id) }}">Processing</a></button>
                                     <button> <a
-                                            href="{{ asset('dashboard/feedback/destroyFeedback/' . $item->id) }}">Delete</a></button>
+                                            href="{{ asset('dashboard/feedback/delete/' . $item->id) }}">Delete</a></button>
                                 </td>
                             </tr>
                         @endif
@@ -106,9 +106,9 @@
                                 <td>{{ $data->date_handle }}</td>
                                 <td>
                                     <button><a
-                                            href="{{ asset('dashboard/feedback/viewEditFeedback/' . $data->id) }}">Processing</a></button>
+                                            href="{{ asset('dashboard/feedback/edit/' . $data->id) }}">Processing</a></button>
                                     <button> <a
-                                            href="{{ asset('dashboard/feedback/destroyFeedback/' . $data->id) }}">Delete</a></button>
+                                            href="{{ asset('dashboard/feedback/delete/' . $data->id) }}">Delete</a></button>
                                 </td>
                                 </td>
                             </tr>

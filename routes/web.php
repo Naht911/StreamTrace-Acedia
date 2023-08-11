@@ -21,7 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/feedback', [FeedbackController::class, 'feedback']);
+Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
 
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -52,8 +52,6 @@ Route::prefix('dashboard')->middleware([])->group(function () {
 
         Route::get('/create_genre', [MovieController::class, 'create_genre'])->name('dashboard.movie.create_genre');
         Route::post('/create_genre', [MovieController::class, 'store_genre'])->name('dashboard.movie.store_genre');
-
-
     });
     Route::prefix('provider')->group(function () {
         // Route::get('/add', [MovieController::class, 'create_movie'])->name('dashboard.movie.create_movie');
@@ -63,11 +61,11 @@ Route::prefix('dashboard')->middleware([])->group(function () {
     });
     Route::prefix('feedback')->group(function () {
 
-        Route::POST('/postFeedback', [FeedbackController::class, 'store']); //admin
-        Route::get('/viewFeedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.viewFeedback');
-        Route::get('/destroyFeedback/{id}', [FeedbackController::class, 'destroy']);
-        Route::get('/viewEditFeedback/{id?}', [FeedbackController::class, 'viewUpdate']);
-        Route::post('/editFeedback', [FeedbackController::class, 'update']);
+        Route::POST('/add', [FeedbackController::class, 'add'])->name('dashboard.feedback.add'); //user add feedback
+        Route::get('/feedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.feedback');
+        Route::get('/delete/{id?}', [FeedbackController::class, 'delete'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete');
+        Route::get('/edit/{id?}', [FeedbackController::class, 'editView'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.editView');
+        Route::post('/edit', [FeedbackController::class, 'edit'])->name('dashboard.feedback.edit');
     });
     Route::prefix('FAQ')->group(function () {
 

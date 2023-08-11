@@ -20,8 +20,8 @@
                     {{ Session::get('alert') }}
                 </div>
             @endif
-            <form action="{{ url('dashboard/feedback/editFeedback') }}" method="POST" enctype="multipart/form-data"
-                id="myForm">
+            <form action="{{ url('dashboard/feedback/edit') }}" method="POST" enctype="multipart/form-data" id="myForm">
+                T
                 @csrf
                 @foreach ($data as $item)
                     <div style="border:1px solid; padding: 30px; margin-left: 20px">
