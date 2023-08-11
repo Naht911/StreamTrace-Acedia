@@ -77,23 +77,24 @@
                     if (data.status == 0) {
                         $("#forget_password").resetForm();
                         Swal.fire({
+                                title: "finished!",
+                                text: data.message,
+                                type: "success",
+                                confirmButtonClass: 'btn-success',
+                                confirmButtonText: 'OK'
+                            })
+                            .then((result) => {
+                                if (result.value) {
+                                    window.location.assign('/login');
+                                }
+                            });
+                    } else {
+                        Swal.fire({
                             title: "Error!",
                             text: data.message,
                             type: "error",
                             confirmButtonClass: 'btn-danger',
                             confirmButtonText: 'OK'
-                        })
-                    } else {
-                        Swal.fire({
-                            title: "finished!",
-                            text: data.message,
-                            type: "success",
-                            confirmButtonClass: 'btn-success',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.assign('/login');
-                            }
                         });
                     }
                 },
