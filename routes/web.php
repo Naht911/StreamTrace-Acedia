@@ -21,12 +21,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/feedback', [FeedbackController::class, 'feedback']);
+Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
 
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
-
+Route::get('/forget-password', [AuthController::class, 'forgetpass'])->name('forgetpass');
+Route::post('/forget-password', [AuthController::class, 'forgetpassPost'])->name('forgetpassPost');
+Route::get('/get-password/{user}/{token}', [AuthController::class, 'getpass'])->name('getpass');
+Route::post('/get-password/{user}/{token}', [AuthController::class, 'getpassPost'])->name('getpassPost');
 Route::get('/Registration', [AuthController::class, 'Register'])->name('Registration');
 Route::post('/Registration', [AuthController::class, 'RegisterPost'])->name('RegisterPost');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -57,11 +60,11 @@ Route::prefix('dashboard')->middleware([])->group(function () {
     });
     Route::prefix('feedback')->group(function () {
 
-        Route::POST('/postFeedback', [FeedbackController::class, 'store']); //admin
-        Route::get('/viewFeedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.viewFeedback');
-        Route::get('/destroyFeedback/{id}', [FeedbackController::class, 'destroy']);
-        Route::get('/viewEditFeedback/{id?}', [FeedbackController::class, 'viewUpdate']);
-        Route::post('/editFeedback', [FeedbackController::class, 'update']);
+        Route::POST('/add', [FeedbackController::class, 'add'])->name('dashboard.feedback.add'); //user add feedback
+        Route::get('/feedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.feedback');
+        Route::get('/delete/{id?}', [FeedbackController::class, 'delete'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete');
+        Route::get('/edit/{id?}', [FeedbackController::class, 'editView'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.editView');
+        Route::post('/edit', [FeedbackController::class, 'edit'])->name('dashboard.feedback.edit');
     });
     Route::prefix('FAQ')->group(function () {
 

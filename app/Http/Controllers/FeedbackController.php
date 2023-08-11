@@ -33,7 +33,7 @@ class FeedbackController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function add(Request $request)
     {
         if ($request) {
             $check =  feedback::create([
@@ -70,13 +70,13 @@ class FeedbackController extends Controller
     //         ], 404);
     //     }
     // }
-    function viewUpdate($id)
+    function editView($id)
     {
         $data = feedback::where('id', $id)->get();
         return view('dashboard.feedback.edit_feedback')->with('data', $data);
     }
 
-    public function update(Request $request)
+    public function edit(Request $request)
     {
         if ($request) {
             $check =  feedback::where('id', $request->id)->update([
@@ -97,7 +97,7 @@ class FeedbackController extends Controller
                 $feedback = feedback::all();
 
                 if ($feedback) {
-                    return redirect()->route('dashboard.feedback.viewFeedback',  ['data' => $feedback,]);
+                    return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
                     // return view('admin.viewfeedback')->with(
                     //     [
                     //         'data' =>
@@ -114,16 +114,16 @@ class FeedbackController extends Controller
     }
 
 
-    public function destroy($id)
+    public function delete($id)
     {
         $feedback = feedback::where('id', $id)->first();
         if ($feedback) {
             $feedback->delete();
             $feedback = feedback::all();
-            return redirect()->route('dashboard.feedback.viewFeedback',  ['data' => $feedback,]);
+            return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
         } else {
             $feedback = feedback::all();
-            return redirect()->route('dashboard.feedback.viewFeedback',  ['data' => $feedback,]);
+            return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
         }
     }
 }

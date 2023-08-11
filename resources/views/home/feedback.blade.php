@@ -41,8 +41,7 @@
                 {{ Session::get('alert') }}
             </div>
         @endif
-        <form action="{{ url('dashboard/feedback/postFeedback') }}" method="POST" enctype="multipart/form-data"
-            id="myForm">
+        <form action="{{ url('dashboard/feedback/add') }}" method="POST" enctype="multipart/form-data" id="myForm">
             @csrf
 
             <div class="mb-3">
