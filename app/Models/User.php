@@ -33,6 +33,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function passwordResetToken()
+    {
+        return $this->hasOne(PasswordResetToken::class, 'email', 'email');
+    }
+
     /**
      * The attributes that should be cast.
      *

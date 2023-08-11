@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <title>forget password</title>
+    <title>Login</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
@@ -38,24 +38,27 @@
             <div class="row">
                 <div class="col-xl-12 p-0">
                     <div class="login-card">
-                        <form id="forget_password" class="theme-form login-form" method="POST"
-                            action="{{ route('forgetpassPost') }}">
+                        <form id="reset_Password" class="theme-form login-form" method="POST"
+                            action="{{ route('getpassPost', ['user' => $user->id, 'token' => $token]) }}">
                             @csrf
-                            <h4>forget password</h4>
+                            <h4>reset Password</h4>
                             <div class="form-group">
-                                <label>Email Address</label>
-                                <div class="input-group"><span class="input-group-text"><i
-                                            class="icon-email"></i></span>
-                                    <input class="form-control" type="email" required=""
-                                        placeholder="tlee22100@gmail.com" value="tlee22100@gmail.com" name="email"
-                                        id="email">
+                                <label>New Password:</label>
+                                <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
+                                    <input class="form-control" type="password" id="password" name="password"
+                                        required="" placeholder="*********">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                                <label>Confirm New Password:</label>
+                                <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
+                                    <input class="form-control" type="password" name="password_confirmation"
+                                        id="password_confirmation" required="" placeholder="*********">
+                                </div>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('Registration') }}">Create
-                                    Account</a></p>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="submit">Reset Password</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -67,33 +70,34 @@
     <script>
         $(document).ready(function() {
             // Xử lý đăng nhập
-            $("#forget_password").ajaxForm({
+            $("#reset_Password").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('forgetpassPost') }}',
+                url: '{{ route('getpassPost', ['user' => $user->id, 'token' => $token]) }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },
                 success: function(data) {
                     if (data.status == 0) {
-                        $("#forget_password").resetForm();
+                        $("#reset_Password").resetForm();
+                        Swal.fire({
+                                title: "finished!",
+                                text: data.message,
+                                type: "success",
+                                confirmButtonClass: 'btn-success',
+                                confirmButtonText: 'OK'
+                            })
+                            .then((result) => {
+                                if (result.value) {
+                                    window.location.assign('/login');
+                                }
+                            });
+                    } else {
                         Swal.fire({
                             title: "Error!",
                             text: data.message,
                             type: "error",
                             confirmButtonClass: 'btn-danger',
                             confirmButtonText: 'OK'
-                        })
-                    } else {
-                        Swal.fire({
-                            title: "finished!",
-                            text: data.message,
-                            type: "success",
-                            confirmButtonClass: 'btn-success',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.assign('/login');
-                            }
                         });
                     }
                 },

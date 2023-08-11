@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use App\Models\PasswordResetToken;
 
 class AuthController extends Controller
 {
@@ -78,5 +81,87 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+
+    // here
+    public function forgetpass()
+    {
+        return view('home/Auth/forget_password');
+    }
+
+    public function forgetpassPost(Request $request)
+    {
+
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json(['status' => 0, 'message' => 'Invalid email format']);
+        }
+
+        $existingUser = User::where('email', $request->email)->first();
+        if (!$existingUser) {
+            return response()->json(['status' => 0, 'message' => 'Email does not exist']);
+        }
+
+        $token = strtoupper(Str::random(10));
+        $user = User::where('email', $request->email)->first();
+
+        $passwordResetToken = PasswordResetToken::where('email', $user->email)->first();
+
+        if ($passwordResetToken) {
+            $passwordResetToken->update(['token' => $token]);
+        } else {
+            $passwordResetToken = PasswordResetToken::create([
+                'email' => $user->email,
+                'token' => $token,
+            ]);
+        }
+
+        Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
+            $email->subject('acedia - password retrieval');
+            $email->to($user->email, $user->name);
+        });
+
+        return response()->json(['status' => 0, 'message' => 'Please check your email to complete the password reset process.']);
+    }
+
+
+    public function getpass(user $user, $token)
+    {
+        $user = User::findOrFail($user->id);
+
+        $passwordResetToken = PasswordResetToken::where('email', $user->email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$passwordResetToken) {
+            return abort(404);
+        }
+
+        return view('home/Auth/getpass', compact('user', 'token'));
+    }
+
+    public function getpassPost(Request $request, User $user, $token)
+    {
+
+        if (strlen($request->password) < 8 || $request->password !== $request->password_confirmation) {
+            return response()->json(['status' => 0, 'message' => 'Invalid password']);
+        }
+
+        $user = User::findOrFail($user->id);
+
+        $passwordResetToken = PasswordResetToken::where('email', $user->email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$passwordResetToken) {
+            return abort(404);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        $passwordResetToken->delete();
+        return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
     }
 }

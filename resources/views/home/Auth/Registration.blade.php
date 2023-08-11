@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Create Account</button>
                             </div>
-                            <p>Already have an account?<a class="ms-2" href="">Sign in</a></p>
+                            <p>Already have an account?<a class="ms-2" href="{{ route('login') }}">Sign in</a></p>
                         </form>
                     </div>
                 </div>
