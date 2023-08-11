@@ -115,6 +115,8 @@ class AuthController extends Controller
                     'token' => $token,
                 ]);
             }
+            
+            Auth::login($user);
 
             Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
                 $email->subject('acedia - password retrieval');
