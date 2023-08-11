@@ -86,7 +86,6 @@ class AuthController extends Controller
     }
 
 
-    // here
     public function forgetpass()
     {
         return view('home.Auth.forget_password');
@@ -145,8 +144,7 @@ class AuthController extends Controller
 
             return view('home/Auth/getpass', compact('user', 'token'));
         } catch (\Exception $e) {
-            // Handle the exception and return an error view
-            return view('home/Auth/error')->with('message', 'An error occurred while processing your request.');
+            return view('home/Auth/login');
         }
     }
 
