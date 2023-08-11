@@ -29,8 +29,11 @@ Route::prefix('movie')->group(function () {
 
 
 
-Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
 
+
+
+Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
+Route::post('/create_feedback', [FeedbackController::class, 'create_feedback'])->name('create_feedback'); //user add feedback
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
@@ -38,8 +41,8 @@ Route::get('/forget-password', [AuthController::class, 'forgetpass'])->name('for
 Route::post('/forget-password', [AuthController::class, 'forgetpassPost'])->name('forgetpassPost');
 Route::get('/get-password/{user}/{token}', [AuthController::class, 'getpass'])->name('getpass');
 Route::post('/get-password/{user}/{token}', [AuthController::class, 'getpassPost'])->name('getpassPost');
-Route::get('/registration', [AuthController::class, 'Register'])->name('Registration');
-Route::post('/registration', [AuthController::class, 'RegisterPost'])->name('RegisterPost');
+Route::get('/Registration', [AuthController::class, 'Register'])->name('Registration');
+Route::post('/Registration', [AuthController::class, 'RegisterPost'])->name('RegisterPost');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
@@ -80,12 +83,11 @@ Route::prefix('dashboard')->middleware([])->group(function () {
         Route::post('/delete_provider', [StreamingProviderController::class, 'delete_provider'])->name('dashboard.provider.delete_provider');
     });
     Route::prefix('feedback')->group(function () {
-
-        Route::POST('/add', [FeedbackController::class, 'add'])->name('dashboard.feedback.add'); //user add feedback
-        Route::get('/feedback', [FeedbackController::class, 'showAll'])->name('dashboard.feedback.feedback');
-        Route::get('/delete/{id?}', [FeedbackController::class, 'delete'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete');
-        Route::get('/edit/{id?}', [FeedbackController::class, 'editView'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.editView');
-        Route::post('/edit', [FeedbackController::class, 'edit'])->name('dashboard.feedback.edit');
+        Route::get('/{status?}', [FeedbackController::class, 'list_feedback'])->name('dashboard.feedback');
+        Route::get('/delete_feedback/{id?}', [FeedbackController::class, 'delete_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete_feedback');
+        Route::get('/edit_feedback/{id?}', [FeedbackController::class, 'edit_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.edit_feedback');
+        Route::post('/edit_feedback/{id?}', [FeedbackController::class, 'update_feedback'])->name('dashboard.feedback.update_feedback');
+        Route::get('/complete_processing/{id?}', [FeedbackController::class, 'complete_processing'])->name('dashboard.feedback.complete_processing');
     });
     Route::prefix('FAQ')->group(function () {
 
