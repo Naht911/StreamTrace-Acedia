@@ -21,7 +21,7 @@ class Movie extends Model
     {
         return $this->belongsToMany(StreamingServiceProvider::class, 'movie_provider', 'movie_id', 'streaming_service_provider_id')
             ->using(MovieProvider::class)
-            ->withPivot('price', 'type_price_id', 'movie_resolution_id', 'url');
+            ->withPivot('id', 'price', 'type_price_id', 'movie_resolution_id', 'url');
     }
 
     public function providers_distinct()

@@ -152,7 +152,7 @@
                                                        <td>
 
                                                             @if ($movie->providers != null)
-                                                                 @if ($movie->providers_distinct->count() > 1)
+                                                                 @if ($movie->providers_distinct->count() > 0)
                                                                       @foreach ($movie->providers_distinct as $provider)
                                                                            <a href="{{ route('dashboard.movie.list_movie', addParam('provider', $provider->name)) }}">
                                                                                 <span class="badge badge-sm badge-warning">
@@ -161,11 +161,11 @@
                                                                            </a>
                                                                       @endforeach
                                                                  @else
-                                                                 <a href="{{ route('dashboard.movie.list_movie', addParam('provider', 'none')) }}">
-                                                                    <span class="badge badge-sm badge-warning">
-                                                                         No Provider
-                                                                    </span>
-                                                               </a>
+                                                                      <a href="{{ route('dashboard.movie.list_movie', addParam('provider', 'none')) }}">
+                                                                           <span class="badge badge-sm badge-warning">
+                                                                                No Provider
+                                                                           </span>
+                                                                      </a>
                                                                  @endif
                                                             @endif
                                                        </td>
@@ -173,7 +173,7 @@
                                                        <td class="text-center">
                                                             <a href="{{ route('dashboard.movie.edit_movie', $movie->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                                             <button class="btn btn-sm btn-danger" onclick="del_movie({{ $movie->id }})">Delete</button>
-                                                            <a href="{{ route('dashboard.movie.edit_movie', $movie->id) }}" class="btn btn-sm btn-warning mt-1">Add provider</a>
+                                                            <a href="{{ route('dashboard.movie.show_movie_provider', $movie->id) }}" class="btn btn-sm btn-warning mt-1">Providers</a>
                                                        </td>
                                                   </tr>
                                              @endforeach
