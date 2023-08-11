@@ -21,7 +21,6 @@ class AuthController extends Controller
     public function RegisterPost(Request $request)
     {
         try {
-
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
                 return response()->json(['status' => 1, 'message' => 'Invalid email format']);
             }
@@ -40,7 +39,6 @@ class AuthController extends Controller
                 return response()->json(['status' => 1, 'message' => 'Password must be at least 6 characters long, contain at least one uppercase letter, and have at least one digit.']);
             }
 
-
             $user = new User();
 
             $user->name = $request->name;
@@ -48,8 +46,9 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
 
             $user->save();
+            
+            Auth::login($user);
 
-            // return redirect()->route('login')->with('success', 'Register successfully');
             return response()->json(['status' => 0, 'message' => 'Register successfully']);
         } catch (\Exception $e) {
             return response()->json(['status' => 1, 'message' => 'An error occurred during registration']);
@@ -60,7 +59,6 @@ class AuthController extends Controller
     {
         return view('home/Auth/login');
     }
-
     public function loginPost(Request $request)
     {
         try {
@@ -69,7 +67,8 @@ class AuthController extends Controller
                 'password' => $request->password,
             ];
 
-            if (Auth::attempt($credetials)) {
+            $remember = $request->has('remember');
+            if (Auth::attempt($credetials, $remember)) {
                 return response()->json(['status' => 0, 'message' => 'Login Success']);
             }
 

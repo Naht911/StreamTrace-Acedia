@@ -24,6 +24,13 @@
         href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
         rel="stylesheet">
     @include('layouts.dashboard.partials.css')
+    <style>
+        body {
+            background-image: url('img/netflix.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 
 </head>
 
@@ -46,14 +53,14 @@
                                 <label>New Password:</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password"
-                                        required="" placeholder="*********">
+                                        required="" placeholder="your Email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Confirm New Password:</label>
                                 <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" name="password_confirmation"
-                                        id="password_confirmation" required="" placeholder="*********">
+                                        id="password_confirmation" required="" placeholder="Re-enter email">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -80,7 +87,7 @@
                     if (data.status == 0) {
                         $("#reset_Password").resetForm();
                         Swal.fire({
-                                title: "finished!",
+                                title: "Finished!",
                                 text: data.message,
                                 type: "success",
                                 confirmButtonClass: 'btn-success',

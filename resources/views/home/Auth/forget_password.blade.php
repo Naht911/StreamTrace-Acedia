@@ -24,6 +24,13 @@
         href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
         rel="stylesheet">
     @include('layouts.dashboard.partials.css')
+    <style>
+        body {
+            background-image: url('img/netflix.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 
 </head>
 
@@ -46,15 +53,15 @@
                                 <label>Email Address</label>
                                 <div class="input-group"><span class="input-group-text"><i
                                             class="icon-email"></i></span>
-                                    <input class="form-control" type="email" required=""
-                                        placeholder="tlee22100@gmail.com" value="tlee22100@gmail.com" name="email"
+                                    <input class="form-control" type="email" required
+                                        placeholder="your Email" value="" name="email"
                                         id="email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('Registration') }}">Create
+                            <p>Don't have account?<a class="ms-2" href="{{ route('registration') }}">Create
                                     Account</a></p>
                         </form>
                     </div>
@@ -77,7 +84,7 @@
                     if (data.status == 0) {
                         $("#forget_password").resetForm();
                         Swal.fire({
-                                title: "finished!",
+                                title: "Finished!",
                                 text: data.message,
                                 type: "success",
                                 confirmButtonClass: 'btn-success',
@@ -85,7 +92,7 @@
                             })
                             .then((result) => {
                                 if (result.value) {
-                                    window.location.assign('/login');
+                                    window.location.assign('/');
                                 }
                             });
                     } else {

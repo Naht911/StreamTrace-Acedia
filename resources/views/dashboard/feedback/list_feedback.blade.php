@@ -24,21 +24,21 @@
 
 
 
-                                    {{-- {{ $status ? '' : '' }} --}}
+                                    {{ $status ? '' : '' }}
                                     </form>
                                 </div>
                                 <div class="card-body">
-                                    <h2>Feedback {{ $status }}</h2>
+                                    <h2>Feedback {{ $status ? $status :'all'}}</h2>
                                     <div class="row">
                                         <div class="col-3">
 
                                             <form action="" method="get">
                                                 <select class="form-select" value='{{ $status }}'
                                                     name="status"onchange="submit()" aria-label="Default select">
-                                                    <option value="">All</option>
-                                                    <option value="received">Received</option>
-                                                    <option value="pending">Pending</option>
-                                                    <option value="completed">Completed</option>
+                                                    <option value=""{{ $status == '' ? 'selected' : null }} >All</option>
+                                                    <option value="received"{{ $status == 'received' ? 'selected' : null }}>New</option>
+                                                    <option value="pending" {{ $status == 'pending' ? 'selected' : null }}>Pending</option>
+                                                    <option value="completed"{{ $status == 'completed' ? 'selected' : null }}>Completed</option>
                                                 </select>
                                             </form>
                                         </div>
