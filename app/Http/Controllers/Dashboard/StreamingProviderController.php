@@ -116,12 +116,18 @@ class StreamingProviderController extends Controller
     function update_provider(Request $request, $id = null)
     {
         if ($id == null) {
-            return abort(404);
+            return response()->json([
+                'status' => 0,
+                'message' => 'Provider not found'
+            ]);
         }
 
         $provider = StreamingServiceProvider::find($id);
         if ($provider == null) {
-            return abort(404);
+            return response()->json([
+                'status' => 0,
+                'message' => 'Provider not found'
+            ]);
         }
         $name = $request->name ?? null;
         $description = $request->description ?? null;
@@ -132,12 +138,12 @@ class StreamingProviderController extends Controller
         if ($name == null || $description == null  || $url == null) {
             return response()->json([
                 'status' => 0,
-                'message' => 'Please fill all fields'
+                'message' => 'Please fill all fields!'
             ]);
         }
         //check duplicate name
-        $provider = StreamingServiceProvider::where('name', $name)->where('id', '!=', $id)->first();
-        if ($provider != null) {
+        $check_provider = StreamingServiceProvider::where('name', $name)->where('id', '!=', $id)->first();
+        if ($check_provider != null) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Provider name already exists'
@@ -151,8 +157,8 @@ class StreamingProviderController extends Controller
             $slug = to_slug($name);
             //name format: slug-logo-time().extension
             $logo_name = $slug . '-logo-' . time() . '.' . $logo->getClientOriginalExtension();
-            $logo_path = '/uploads/images/provider/' . $logo_name;
-            checkAndCreateFolder('uploads/images/provider');
+            $logo_path = 'uploads/images/providers/' . $logo_name;
+            checkAndCreateFolder('uploads/images/providers');
             $image_resize = Img::make($logo->getRealPath());
             $image_resize->save($logo_path);
             $provider->logo = $logo_path;
@@ -161,8 +167,8 @@ class StreamingProviderController extends Controller
         if ($request->hasFile('background')) {
             //upload background
             $background_name = $slug . '-background-' . time() . '.' . $background->getClientOriginalExtension();
-            $background_path = '/uploads/images/provider/' . $background_name;
-            checkAndCreateFolder('uploads/images/provider');
+            $background_path = 'uploads/images/providers/' . $background_name;
+            checkAndCreateFolder('uploads/images/providers');
             $image_resize = Img::make($background->getRealPath());
             $image_resize->save($background_path);
             $provider->background = $background_path;
@@ -174,8 +180,9 @@ class StreamingProviderController extends Controller
         ]);
     }
 
-    function delete_provider($id)
+    function delete_provider(Request $request)
     {
+        $id = $request->id ?? null;
         if ($id == null) {
             return response()->json([
                 'status' => 0,
