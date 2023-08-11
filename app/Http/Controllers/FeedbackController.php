@@ -22,7 +22,7 @@ class FeedbackController extends Controller
         } else {
             $feedback =  new feedback;
         }
-        $data = $feedback->paginate(4);
+        $data = $feedback->paginate(6);
         // $data3 = feedback::all()->where('status', 1);
         if ($data) {
             return view('dashboard.feedback.list_feedback', ['status' => $request->status])->with(
@@ -83,12 +83,10 @@ class FeedbackController extends Controller
     function edit_feedback($id)
     {
         $data = feedback::find($id)->first();
-        $date = \Carbon\Carbon::now(); // Lấy ngày hiện tại
-        $formattedDate = $date->format('Y-m-d');
-        // dd($formattedDate);
+
         return view('dashboard.feedback.edit_feedback', [
             'data' => $data,
-            'date' => $formattedDate
+
         ]);
     }
 

@@ -29,11 +29,11 @@ Route::prefix('movie')->group(function () {
 
 
 
-
-
-
 Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback
 Route::post('/create_feedback', [FeedbackController::class, 'create_feedback'])->name('create_feedback'); //user add feedback
+
+Route::get('/FAQ', [FAQController::class, 'FAQ'])->name('FAQ');
+
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
@@ -84,22 +84,18 @@ Route::prefix('dashboard')->middleware([])->group(function () {
     });
     Route::prefix('feedback')->group(function () {
         Route::get('/{status?}', [FeedbackController::class, 'list_feedback'])->name('dashboard.feedback');
-        Route::get('/delete_feedback/{id?}', [FeedbackController::class, 'delete_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete_feedback');
         Route::get('/edit_feedback/{id?}', [FeedbackController::class, 'edit_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.edit_feedback');
         Route::post('/edit_feedback/{id?}', [FeedbackController::class, 'update_feedback'])->name('dashboard.feedback.update_feedback');
+        Route::get('/delete_feedback/{id?}', [FeedbackController::class, 'delete_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.delete_feedback');
         Route::get('/complete_processing/{id?}', [FeedbackController::class, 'complete_processing'])->name('dashboard.feedback.complete_processing');
     });
     Route::prefix('FAQ')->group(function () {
-
-        Route::get('/viewUserFAQ', [FAQController::class, 'showAllUser']);
-        Route::get('/viewAdminFAQ', [FAQController::class, 'showAllAdmin'])->name('dashboard.FAQ.viewAdminFAQ');
-        Route::get('/createNewFAQ', function () {
-            return view('dashboard.FAQ.add_frequently_asked_questions'); //view user
-        });
-        Route::post('/postFAQ', [FAQController::class, 'create_new']);
-        Route::get('/destroyFAQ/{id}', [FAQController::class, 'destroy']);
-        Route::get('/vieweditFAQ/{id}', [FAQController::class, 'viewUpdate']);
-        Route::post('/editFAQ', [FAQController::class, 'update']);
+        Route::get('/', [FAQController::class, 'control_FAQ'])->name('dashboard.FAQ');
+        Route::get('/create_FAQ', [FAQController::class, 'create'])->name('dashboard.FAQ.create_FAQ');
+        Route::post('/create_FAQ', [FAQController::class, 'create_FAQ'])->name('dashboard.FAQ.create_FAQ');
+        Route::get('/edit_FAQ/{id?}', [FAQController::class, 'edit_FAQ'])->name('dashboard.FAQ.edit_FAQ');
+        Route::post('/edit_FAQ/{id?}', [FAQController::class, 'update_FAQ'])->name('dashboard.FAQ.update_FAQ');
+        Route::get('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');
     });
 
 

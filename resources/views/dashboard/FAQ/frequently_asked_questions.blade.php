@@ -69,11 +69,11 @@
 
                                     {{-- <td>{{ $item->contentHandle }}</td>
                             <td>{{ $item->dateHandle }}</td> --}}
-                                    <td style="">
+                                    <td>
                                         <button><a
-                                                href="{{ asset('dashboard/FAQ/vieweditFAQ/' . $item->id) }}">edit</a></button>
+                                                href="{{ asset('dashboard/FAQ/edit_FAQ/' . $item->id) }}">edit</a></button>
                                         <button> <a
-                                                href="{{ asset('dashboard/FAQ/destroyFAQ/' . $item->id) }}">Delete</a></button>
+                                                href="{{ asset('dashboard/FAQ/delete_FAQ/' . $item->id) }}">Delete</a></button>
                                     </td>
                                 </tr>
                             @endif
