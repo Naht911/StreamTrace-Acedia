@@ -1,9 +1,6 @@
 @extends('layouts.home.home_layout')
 @section('title', 'Home')
 @push('css')
-    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
-
-    <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
 @endpush
 
 
@@ -29,7 +26,7 @@
         }
 
         .star-rating label:has(~ :checked) i {
-            color: #faec1b;
+            color: #faec1b !important;
             text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
         }
 
@@ -409,14 +406,13 @@
     <script>
         $(document).ready(function() {
             var id = $(".star-rating").data("id");
-            var rating = $('input[name="rating"]:checked').val();
+            // var rating = $('input[name="rating"]:checked').val();
 
             console.log('ok', id);
-            console.log('rating', rating);
-
 
             $(".star-rating input").click(function() {
-                 rating = $('input[name="rating"]:checked').val();
+                 var rating = $('input[name="rating"]:checked').val();
+                 console.log('rating', rating);
                 $.ajax({
                     url: "{{ route('home.movie.handle_rating') }}",
                     method: 'POST',
