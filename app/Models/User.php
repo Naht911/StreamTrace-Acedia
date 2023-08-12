@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,6 +42,11 @@ class User extends Authenticatable
     public function watchlist()
     {
         return $this->belongsTo(Watchlist::class, 'watchlist_user', 'user_id', 'watchlist_id');
+    }
+
+    public function subscriptions()
+    {
+        return $this->belongsTo(Subscription::class, 'user_id', 'id');
     }
 
     /**

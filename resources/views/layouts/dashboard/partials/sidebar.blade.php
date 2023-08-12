@@ -82,10 +82,24 @@
 
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a class="nav-link menu-title link-nav my-2" href="#">
                             <p class="mt-1"><i class="fa-solid fa-user mb-1"></i>Users</p>
                         </a>
+                    </li> --}}
+                    <li class="dropdown">
+                        <a class="nav-link menu-title my-2 " href="javascript:void(0)">
+                            <p class="mt-1"><i class="fa-solid fa-video mb-1"></i>Users</p>
+                        </a>
+                        <ul class="nav-submenu menu-content" style="display: block;">
+                            <li>
+                                <a href="{{ route('dashboard.user.list_user') }}"
+                                    class="{{ routeActive('dashboard.user.list_user') }}">
+                                    <i class="fa-solid fa-list mb-1"></i><span> List User </span>
+                                </a>
+                            </li>
+                        </ul>
+
                     </li>
 
 

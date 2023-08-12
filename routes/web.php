@@ -8,6 +8,7 @@ use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\PopularController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
 
@@ -24,9 +25,15 @@ use App\Http\Controllers\Home\ReactionController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/new', [HomeController::class, 'new'])->name('new');
+Route::get('/popular', [HomeController::class, 'popular'])->name('popular');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
     // ->middleware(['auth'])
     ->name('home.wathchlist');
+Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
+
+Route::get('/list_popular', [PopularController::class, 'list_popular'])->name('home.movie.list_popular');
+Route::post('/filter_popular', [PopularController::class, 'filter_popular'])->name('home.movie.filter_popular');
 Route::prefix('movie')->group(function () {
 
     Route::get('/{id}', [HomeController::class, 'movie_detail'])->name('home.movie.movie_detail');
@@ -34,6 +41,8 @@ Route::prefix('movie')->group(function () {
     Route::post('/get_reaction', [ReactionController::class, 'get_reaction'])->name('home.movie.get_reaction');
     Route::post('/handle_reaction', [ReactionController::class, 'handle_reaction'])->name('home.movie.handle_reaction');
     Route::post('/handle_rating', [RatingController::class, 'handle_rating'])->name('home.movie.handle_rating');
+
+
 });
 
 Route::get('/go/{movie_id}', [HomeController::class, 'outsite'])->where(['movie_id' => '[0-9]+'])->name('home.outsite');
@@ -101,6 +110,13 @@ Route::prefix('dashboard')
             Route::post('/edit_provider/{id?}', [StreamingProviderController::class, 'update_provider'])->where(['id' => '[0-9]+'])->name('dashboard.provider.update_provider');
             Route::post('/delete_provider', [StreamingProviderController::class, 'delete_provider'])->name('dashboard.provider.delete_provider');
         });
+
+        Route::prefix('user')->group(function () {
+            Route::get('/', [DashboardController::class, 'list_user'])->name('dashboard.user.list_user');
+            Route::get('/edit_user/{id?}', [DashboardController::class, 'edit_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.edit_user');
+            Route::post('/edit_user/{id?}', [DashboardController::class, 'update_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.update_user');
+        });
+
         Route::prefix('feedback')->group(function () {
             Route::get('/{status?}', [FeedbackController::class, 'list_feedback'])->name('dashboard.feedback');
             Route::get('/edit_feedback/{id?}', [FeedbackController::class, 'edit_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.edit_feedback');
@@ -114,7 +130,7 @@ Route::prefix('dashboard')
             Route::post('/create_FAQ', [FAQController::class, 'create_FAQ'])->name('dashboard.FAQ.create_FAQ');
             Route::get('/edit_FAQ/{id?}', [FAQController::class, 'edit_FAQ'])->name('dashboard.FAQ.edit_FAQ');
             Route::post('/edit_FAQ/{id?}', [FAQController::class, 'update_FAQ'])->name('dashboard.FAQ.update_FAQ');
-            Route::get('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');
+            Route::post('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');
         });
 
 

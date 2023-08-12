@@ -119,6 +119,25 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('click', (e) => {
+    const sortBtn = document.querySelector('.providerBtn');
+    const sortBox = document.querySelector('.providerBtn .list-provider');
+
+    if (sortBtn && sortBox) {
+        if (!sortBtn.contains(e.target) && !sortBox.contains(e.target)) {
+            sortBox.classList.remove('active');
+            sortBtn.classList.remove('active');
+        } else {
+            if (sortBox.classList.contains('active')) {
+                sortBox.classList.remove('active');
+            } else {
+                sortBox.classList.add('active');
+                sortBtn.classList.add('active');
+            }
+        }
+    }
+});
+
+document.addEventListener('click', (e) => {
     const sortBtn = document.querySelector('.genreBtn');
     const sortBox = document.querySelector('.genreBtn .list-genre');
 
