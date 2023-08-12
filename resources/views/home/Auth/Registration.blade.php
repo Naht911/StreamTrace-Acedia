@@ -25,6 +25,13 @@
         rel="stylesheet">
     @include('layouts.dashboard.partials.css')
 
+    <style>
+        body {
+            background-image: url('img/netflix.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,7 +45,7 @@
             <div class="row m-0">
                 <div class="col-12 p-0">
                     <div class="login-card">
-                        <form id="Registration" class="theme-form login-form" action="{{ route('RegisterPost') }}"
+                        <form id="Registration" class="theme-form login-form" action="{{ route('registerPost') }}"
                             method="POST">
                             @csrf
                             <h4>Create your account</h4>
@@ -65,19 +72,29 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password"
                                         required="" placeholder="password" value="Aq111111">
+                                    <span class="input-group-text" id="toggleIconPassword"
+                                        onclick="togglePasswordVisibility('password')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
                                 </div>
                                 <span id="passwordError" class="error-message"
                                     style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <label>Confirm password</label>
-                                <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" name="password_confirmation"
                                         id="password_confirmation" required="" placeholder="password confirmation"
-                                        value="Aq111111">
+                                        value="">
+                                    <span class="input-group-text" id="toggleIconConfirmation"
+                                        onclick="togglePasswordVisibility('password_confirmation')">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
                                 </div>
                                 <span id="passwordConfirmation" class="error-message"
                                     style="color: red; font-size: 10px"></span>
@@ -95,6 +112,15 @@
     @include('layouts.dashboard.partials.js')
 
     <script>
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
         const nameInput = document.getElementById('name')
         const emailInput = document.getElementById('email')
         const passwordInput = document.getElementById('password')
@@ -211,7 +237,7 @@
             // Xử lý đăng nhập
             $("#Registration").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('RegisterPost') }}',
+                url: '{{ route('registerPost') }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },
@@ -219,14 +245,14 @@
                     if (data.status == 0) {
                         $("#Registration").resetForm();
                         Swal.fire({
-                            title: "finished!",
+                            title: "Finished!",
                             text: data.message,
                             type: "success",
                             confirmButtonClass: 'btn-success',
                             confirmButtonText: 'OK'
                         }).then((result) => {
                             if (result.value) {
-                                window.location.assign('/login');
+                                window.location.assign('/');
                             }
                         });
                     } else {

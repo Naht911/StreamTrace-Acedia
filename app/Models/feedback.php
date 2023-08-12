@@ -15,6 +15,7 @@ class feedback extends Model
         'email',
         'title',
         'content',
+        'status',
         'contentHandle',
         'dateHandle'
     ];
