@@ -1,114 +1,268 @@
 @extends('layouts.home.home_layout')
 @section('title', 'My Wtachlist')
 @push('css')
+     <style>
+          .card-custom {
+               height: 240px;
+               width: 210px;
+          }
+
+          .card {
+               border: none;
+               background: none;
+          }
+
+          .card-header-custom {
+               border: none;
+               border-bottom: none;
+          }
+
+          .card-footer-custom {
+               border: none;
+               border-top: none;
+          }
+
+          .btn-warning-custom {
+               background-color: #ddad00;
+               border-color: #ddad00;
+               color: white;
+          }
+
+          .btn-gray {
+               background-color: #4c5a67;
+               border-color: #4c5a67;
+               color: white;
+          }
+
+          .card-body-custom {
+               padding-top: 5px !important;
+          }
+
+          .release_year {
+               font-size: 1.2rem;
+               color: #ddad00;
+               font-style: initial;
+          }
+
+          .sort .top a.active {
+               border: 1px solid #1c252f;
+               border-radius: 5px;
+               background: #1c252f;
+          }
+
+          .sort .top a {
+               height: 100%;
+               display: inline-flex;
+               align-items: center;
+               gap: 0.4rem;
+               color: #fff;
+               border: 1px solid transparent;
+               padding: 10px 10px;
+               font-size: 14px;
+               font-weight: 400;
+          }
+
+          .btn-warning-custom:hover {
+               background-color: #ddad00be;
+               color: #ffffff;
+          }
+
+          .btn-gray:hover {
+               background-color: #4c5a67be;
+               color: #ffffff;
+          }
+
+          .btn-warning-custom:focus {
+               outline: none;
+               border: :none;
+               box-shadow: none;
+               background-color: #ddad00be;
+               color: #ffffff;
+
+          }
+
+          .btn-gray:focus {
+               outline: none;
+               border: :none;
+               box-shadow: none;
+               background-color: #4c5a67be;
+               color: #ffffff;
+
+          }
+     </style>
 @endpush
 
 
 @section('content')
 
 
-
-
-     @auth
-          <div class="discovery-recs">
-               <div class="container">
-                    <div class="discovery-recs-left">
-                         <div class="title">
-                              <h1>
-                                   A place to save your wahchlist
-                              </h1>
-                         </div>
+     <div class="discovery-recs mt-5">
+          <div class="container">
+               <div class="discovery-recs-left">
+                    <div class="title">
+                         <h1>
+                              A place to save your watchlist
+                         </h1>
                     </div>
                </div>
           </div>
+     </div>
+
+     @auth
+
           <div class="sort sort-watchlist">
                <div class="container">
                     <div class="top">
-                         <button class="active">
+                         <a class="active" href="{{ route('home.wathchlist', ['reaction' => 'tracked']) }}">
                               <i class="fa-solid fa-bookmark"></i>
-                              Watch next
-                         </button>
-                         {{-- <button>
-                  <i class="fa-solid fa-check"></i>
-                  Caught up
-              </button> --}}
+                              Watch next ({{ $count_tracked }})
+                         </a>
+                         <a href="{{ route('home.wathchlist', ['reaction' => 'watched']) }}">
+                              <i class="fa-solid fa-check"></i>
+                              Watched ({{ $count_watched }})
+                         </a>
+                         <a href="{{ route('home.wathchlist', ['reaction' => 'thunbs_up']) }}">
+                              <i class="fa-solid fa-thumbs-up"></i>
+                              Liked ({{ $count_thumbs_up }})
+                         </a>
+                         <a href="{{ route('home.wathchlist', ['reaction' => 'thunbs_down']) }}">
+                              <i class="fa-solid fa-thumbs-down"></i>
+                              Disliked ({{ $count_thumbs_down }})
+                         </a>
                     </div>
-                    <div class="bottom">1 title</div>
+                    <div class="bottom">{{ $wathchlist->count() }} title</div>
                </div>
           </div>
 
           <div class="titles">
                <div class="container">
-                    <div class="popular-2">
-                         @foreach ($wathchlist as $i)
-                              <div class="card-slider-2">
-                                   <div class="card">
-                                        <div class="image">
-                                             <img src="{{ $i->movie->poster_url }}" alt="" height="240" width="210" />
-                                        </div>
-                                        <div class="content">
-                                             <div class="hover">
-                                                  <ul>
-                                                       <li>
-                                                            <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                                       </li>
-                                                       <li>
-                                                            <a class="book"><i class="fa-solid fa-check"></i></a>
-                                                       </li>
-                                                  </ul>
+                    <div class="row gx-5">
+                         @if ($wathchlist->isEmpty())
+                              <div class="col-md-12 col-12 mt-3 rounded">
+                                   <div class="row bg-dark">
+                                        <div class="col-12 ">
+                                             <div class="card text-white-50">
+                                                  <div class="card-header card-header-custom">
+                                                       <h3>The list is empty</h3>
+
+                                                  </div>
+                                                  <div class="card-body">
+                                                       <p>There are no movies in this list. Add some!</p>
+                                                  </div>
+                                                  <div class="card-footer card-footer-custom d-flex justify-content-between gx-3">
+
+                                                       <div class="btn-group w-100" role="group" aria-label="Basic mixed styles form-control">
+                                                            <a href="" class="btn btn-warning-custom form-control">Discover</a>
+                                                       </div>
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>
-                                   <div class="card-detail">
-                                        <div class="title">
-                                             <h2></h2>
-                                             <span> {{ $i->movie->title }} ({{ $i->movie->release_year }}) </span>
+
+                              </div>
+                         @endif
+                         @foreach ($wathchlist as $i)
+                              <div class="col-md-6 col-12 mt-3 rounded">
+                                   <div class="row bg-dark">
+                                        <div class="col-4 ">
+                                             <img src="{{ asset($i->movie->poster_url) }}"class="h-100 p-0" width="190">
                                         </div>
-                                        <div class="card-detail-content text-white mt-1 mb-1">
-                                             {!! $i->movie->duration !!}
+                                        <div class="col-8 ">
+                                             <div class="card text-white-50">
+                                                  <div class="card-header card-header-custom">
+                                                       <h3>{{ $i->movie->title }} <span class="release_year">({{ $i->movie->release_year }})</span></h3>
+
+                                                  </div>
+                                                  <div class="card-body">
+                                                       <p>{{ limitWord($i->movie->synopsis, 100) }}</p>
+                                                  </div>
+                                                  <div class="card-footer card-footer-custom">
+                                                       <div class=" d-flex justify-content-between gx-3"></div>
+                                                       <div class="btn-group w-100" role="group" aria-label="Basic mixed styles form-control">
+                                                            <button name="thumbs_up" data-id="{{ $i->movie->id }}" class="btn btn-warning-custom form-control" title="Likes">
+                                                                 <i class="fa-solid fa-thumbs-up"></i>
+
+                                                            </button>
+                                                            <button name="untrack" data-id="{{ $i->movie->id }}" class="btn btn-gray form-control" title="Untrack">
+                                                                 <i class="fa-solid fa-xmark"></i>
+                                                            </button>
+                                                            <button name="untrack" data-id="{{ $i->movie->id }}" class="btn btn-warning-custom form-control" title="Watched">
+                                                                <i class="fa-solid fa-check-double"></i>
+                                                           </button>
+                                                            <button name="thumbs_down" data-id="{{ $i->movie->id }}" class="btn btn-gray form-control" title="Dislike">
+                                                                 <i class="fa-solid fa-thumbs-down"></i>
+
+                                                            </button>
+                                                       </div>
+                                                  </div>
+                                                  <hr>
+
+                                                  <a href="{{ route('home.movie.movie_detail', $i->movie->slug) }}" class="btn btn-warning-custom form-control">
+                                                       <i class="fa-solid fa-play"></i>
+
+                                                  </a>
+                                             </div>
                                         </div>
-                                        <div class="card-detail-rating mt-lg-2">
-                                             <span>
-                                                  <img src="/assets/home/img/jw-icon.png" alt="" srcset="" />
-                                                  84%
-                                             </span>
-                                             <span>
-                                                  <img src="/assets/home/img/imdb-logo.png" alt="" srcset="" />
-                                                  7.6(10K)
-                                             </span>
-                                        </div>
-                                        <a href="{{ route('home.movie.movie_detail', $i->movie->id) }}" class="card-detail-button">
-                                             {{-- <img src="/assets/home/img/icon (1).webp" alt="" /> --}}
-                                             Detail
-                                        </a>
                                    </div>
+
+
                               </div>
                          @endforeach
 
+                         <div class="row mt-5">
+                              {{ $wathchlist->links('home.components.watchlist_pagination') }}
+                         </div>
 
                     </div>
                </div>
           </div>
-
      @endauth
      @guest
-          <div class="discovery-recs">
+          <div class="titles mt-5">
                <div class="container">
-                    <div class="discovery-recs-left">
-                         <div class="title">
-                              <h1 class="text-center">
-                                   Please Login to see your watchlist
-                              </h1>
+                    <div class="row gx-5">
+                         <div class="col-md-12 col-12 mt-3 rounded">
+                              <div class="row bg-dark">
+                                   <div class="col-12 ">
+                                        <div class="card text-white-50">
+                                             <div class="card-header card-header-custom">
+                                                  <h3 class="text-center">
+                                                       Authentication required
+                                                  </h3>
+
+                                             </div>
+                                             <div class="card-body">
+                                                  <p class="text-center">
+                                                       You need to be logged in to access this page.
+                                                  </p>
+                                             </div>
+                                             <div class="card-footer card-footer-custom d-flex justify-content-between gx-3 text-center">
+
+                                                  <div class="btn-group w-100" role="group" aria-label="Basic mixed styles form-control">
+                                                       <a href="{{ route('login') }}" class="btn btn-warning-custom form-control">
+                                                            <i class="fa-solid fa-user"></i>
+                                                            Login
+                                                       </a>
+
+                                                       <a href="{{ route('register') }}" class="btn btn-gray form-control">
+                                                            <i class="fa-solid fa-user-plus"></i>
+                                                            Register
+                                                       </a>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+
                          </div>
                     </div>
                </div>
-          </div>
-     @endguest
+          @endguest
 
 
 
-@endsection
+     @endsection
 
-<!-- Container-fluid Ends-->
-@push('scripts')
-@endpush
+     <!-- Container-fluid Ends-->
+     @push('scripts')
+     @endpush

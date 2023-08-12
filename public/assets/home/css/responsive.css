@@ -459,12 +459,28 @@
         width: 100%;
     }
 
-    footer .container {
-        display: block;
+    footer {
+        padding: 1rem 0;
     }
 
-    footer .container .footer-left {
-        margin: 1rem 0;
+    footer .container .center p {
+        margin-left: 1rem;
+    }
+
+    footer .container .center,
+    footer .container .bottom {
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+
+    footer form input[type='text'],
+    footer form input[type='submit'] {
+        font-weight: normal;
+    }
+
+    footer .footer-right {
+        margin-top: 0.5rem;
     }
 
     .header .container .header-right .buttons {
@@ -773,5 +789,9 @@
 
     .sort.sort-popular .container .list-top {
         top: -500%;
+    }
+
+    footer .media-icons {
+        white-space: nowrap;
     }
 }

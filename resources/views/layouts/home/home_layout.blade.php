@@ -18,7 +18,7 @@
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/style.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/responsive.css') }}">
-
+     @stack('css')
 
 </head>
 

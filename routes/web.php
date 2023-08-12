@@ -25,7 +25,7 @@ use App\Http\Controllers\Home\ReactionController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
-    ->middleware(['auth'])
+    // ->middleware(['auth'])
     ->name('home.wathchlist');
 Route::prefix('movie')->group(function () {
 

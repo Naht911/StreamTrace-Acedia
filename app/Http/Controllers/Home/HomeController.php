@@ -31,14 +31,45 @@ class HomeController extends Controller
     public function wathchlist()
     {
         //get all movie in watchlist
+        $reaction = request()->reaction;
+
         $relations = ['movie'];
-        $wathchlist = Reaction::where('user_id', Auth::id())
-            ->where('is_tracked', 1)
-            ->with($relations)
-        ->get();
+        $wathchlist = Reaction::query()->with($relations);
+        $wathchlist = $wathchlist->where('user_id', Auth::id());
+        $list_copy = $wathchlist->get();
+        $count_tracked = $list_copy->where('is_tracked', 1)->count();
+        $count_watched = $list_copy->where('is_watched', 1)->count();
+        $count_thumbs_up = $list_copy->where('is_thumbs_up', 1)->count();
+        $count_thumbs_down =  $list_copy->where('is_thumbs_down', 1)->count();
+        if ($reaction != null) {
+            switch ($reaction) {
+                case 'tracked':
+                    $wathchlist = $wathchlist->where('is_tracked', 1);
+                    break;
+                case 'watched':
+                    $wathchlist = $wathchlist->where('is_watched', 1);
+                    break;
+                case 'thunbs_up':
+                    $wathchlist = $wathchlist->where('is_thumbs_up', 1);
+                    break;
+                case 'thunbs_down':
+                    $wathchlist = $wathchlist->where('is_thumbs_down', 1);
+                    break;
+            }
+        }
+
+
+        // $wathchlist = $wathchlist->orderBy('id', 'desc');
+        $wathchlist = $wathchlist->paginate(20);
+
         // dd($wathchlist);
         $data = [
             'wathchlist' => $wathchlist,
+            'count_tracked' => $count_tracked,
+            'count_watched' => $count_watched,
+            'count_thumbs_up' => $count_thumbs_up,
+            'count_thumbs_down' => $count_thumbs_down,
+
         ];
 
         return view('home.wathchlist', $data);
