@@ -101,6 +101,13 @@ Route::prefix('dashboard')
             Route::post('/edit_provider/{id?}', [StreamingProviderController::class, 'update_provider'])->where(['id' => '[0-9]+'])->name('dashboard.provider.update_provider');
             Route::post('/delete_provider', [StreamingProviderController::class, 'delete_provider'])->name('dashboard.provider.delete_provider');
         });
+
+        Route::prefix('user')->group(function () {
+            Route::get('/', [DashboardController::class, 'list_user'])->name('dashboard.user.list_user');
+            Route::get('/edit_user/{id?}', [DashboardController::class, 'edit_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.edit_user');
+            Route::post('/edit_user/{id?}', [DashboardController::class, 'update_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.update_user');
+        });
+
         Route::prefix('feedback')->group(function () {
             Route::get('/{status?}', [FeedbackController::class, 'list_feedback'])->name('dashboard.feedback');
             Route::get('/edit_feedback/{id?}', [FeedbackController::class, 'edit_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.edit_feedback');
