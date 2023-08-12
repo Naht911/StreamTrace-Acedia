@@ -45,17 +45,19 @@ Route::post('/create_feedback', [FeedbackController::class, 'create_feedback'])-
 Route::get('/FAQ', [FAQController::class, 'FAQ'])->name('FAQ');
 
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
-Route::get('/forget-password', [AuthController::class, 'forgetpass'])->name('forgetpass');
-Route::post('/forget-password', [AuthController::class, 'forgetpassPost'])->name('forgetpassPost');
-Route::get('/get-password/{user}/{token}', [AuthController::class, 'getpass'])->name('getpass');
-Route::post('/get-password/{user}/{token}', [AuthController::class, 'getpassPost'])->name('getpassPost');
-Route::get('/registration', [AuthController::class, 'Register'])->name('registration');
-Route::post('/registration', [AuthController::class, 'RegisterPost'])->name('registerPost');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
+
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
+Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('forgotPassword.process');
+
+Route::get('/reset-password/{user}/{token}', [AuthController::class, 'showResetPasswordForm'])->name('resetPassword');
+Route::post('/reset-password/{user}/{token}', [AuthController::class, 'processResetPassword'])->name('resetPassword.process');
+
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
 
 Route::prefix('dashboard')
     ->middleware([

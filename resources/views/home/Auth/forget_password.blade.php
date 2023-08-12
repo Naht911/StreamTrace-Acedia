@@ -46,7 +46,7 @@
                 <div class="col-xl-12 p-0">
                     <div class="login-card">
                         <form id="forget_password" class="theme-form login-form" method="POST"
-                            action="{{ route('forgetpassPost') }}">
+                            action="{{ route('forgotPassword.process') }}">
                             @csrf
                             <h4>forget password</h4>
                             <div class="form-group mt-2 mb-3">
@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block" type="submit">Sign in</button>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('registration') }}">Create
+                            <p>Don't have account?<a class="ms-2" href="{{ route('register') }}">Create
                                     Account</a></p>
                         </form>
                     </div>
@@ -76,7 +76,7 @@
             // Xử lý đăng nhập
             $("#forget_password").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('forgetpassPost') }}',
+                url: '{{ route('forgotPassword.process') }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },

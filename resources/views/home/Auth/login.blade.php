@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-xl-12 p-0">
                     <div class="login-card">
-                        <form id="Login" class="theme-form login-form" action="{{ route('loginPost') }}"
+                        <form id="Login" class="theme-form login-form" action="{{ route('login.process') }}"
                             method="POST">
                             @csrf
                             <h4>Login</h4>
@@ -77,17 +77,15 @@
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        Remember password
-                                    </label>
-                                </div>
-                                <a class="link" href="{{ route('forgetpass') }}">Forgot password?</a>
+                                    <input id="checkbox1" name="remember" type="checkbox"
+                                        {{ old('remember') ? 'checked' : '' }}>
+                                    <label class="text-muted" for="checkbox1">Remember password</label>
+                                </div><a class="link" href="{{ route('forgotPassword') }}">Forgot password?</a>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block inline-block" type="submit">Sign in</button>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('registration') }}">Create
+                            <p>Don't have account?<a class="ms-2" href="{{ route('register') }}">Create
                                     Account</a></p>
                         </form>
                     </div>
@@ -146,7 +144,7 @@
             // Xử lý đăng nhập
             $("#Login").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('loginPost') }}',
+                url: '{{ route('login.process') }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },
