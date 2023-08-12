@@ -10,7 +10,7 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
-
+use App\Http\Controllers\Home\profileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,17 +47,18 @@ Route::get('/FAQ', [FAQController::class, 'FAQ'])->name('FAQ');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
-
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
 Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('forgotPassword.process');
-
 Route::get('/reset-password/{user}/{token}', [AuthController::class, 'showResetPasswordForm'])->name('resetPassword');
 Route::post('/reset-password/{user}/{token}', [AuthController::class, 'processResetPassword'])->name('resetPassword.process');
-
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profile', [profileController::class, 'show'])->name('Profile');
+Route::post('/change-name', [profileController::class, 'changeName'])->name('change-name');
+Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+
 
 Route::prefix('dashboard')
     ->middleware([
