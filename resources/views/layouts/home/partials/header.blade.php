@@ -39,7 +39,7 @@
                               </div>
                          @endif
                          <div class="row text-white">
-                              <a href="faq.html"> FAQ </a>
+                              <a href="{{route('faq')}}"> FAQ </a>
                          </div>
                     </div>
                </li>

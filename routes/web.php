@@ -30,6 +30,7 @@ Route::get('/popular', [HomeController::class, 'popular'])->name('popular');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
     ->middleware(['auth'])
     ->name('home.wathchlist');
+Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::get('/list_popular', [PopularController::class, 'list_popular'])->name('home.movie.list_popular');
 Route::post('/filter_popular', [PopularController::class, 'filter_popular'])->name('home.movie.filter_popular');

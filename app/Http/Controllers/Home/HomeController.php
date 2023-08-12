@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\faq;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Reaction;
@@ -30,6 +31,14 @@ class HomeController extends Controller
 
         return view('home.index', $data);
     }
+    public function faq()
+    {
+        $faq = faq::orderBy('id', 'DESC')->get();
+        $data = [
+            'faq' => $faq,
+        ];
+        return view('home.faq', $data);
+    }
     public function new()
     {
         $relations = ['genres', 'providers', 'providers_distinct'];
@@ -44,15 +53,15 @@ class HomeController extends Controller
         foreach ($movie_primeVideo as $movie) {
             $movies_1[] = $movie->movie_id;
         }
-        $newest_primeVideo = Movie::whereIn('id', $movies_1)->orderBy('created_at', 'DESC')->take(20)->get();
+        $newest_primeVideo = Movie::whereIn('id', $movies_1)->orderBy('created_at', 'DESC')->take(6)->get();
         foreach ($movie_netflix as $movie) {
             $movies_2[] = $movie->movie_id;
         }
-        $newest_netflix = Movie::whereIn('id', $movies_2)->orderBy('created_at', 'DESC')->take(20)->get();
+        $newest_netflix = Movie::whereIn('id', $movies_2)->orderBy('created_at', 'DESC')->take(6)->get();
         foreach ($movie_appleTV as $movie) {
             $movies_3[] = $movie->movie_id;
         }
-        $newest_appleTV = Movie::whereIn('id', $movies_3)->orderBy('created_at', 'DESC')->take(20)->get();
+        $newest_appleTV = Movie::whereIn('id', $movies_3)->orderBy('created_at', 'DESC')->take(6)->get();
 
         // return response()->json($newest);
 
@@ -66,7 +75,7 @@ class HomeController extends Controller
 
         return view('home.new', $data);
     }
-    public function wathchlist()
+    public function watchlist()
     {
         //get all movie in watchlist
         $relations = ['movie'];
