@@ -83,3 +83,14 @@ function checkAndCreateFolder($path)
         mkdir($path, 0777, true);
     }
 }
+
+//limit word
+function limitWord($str, $limit = 50)
+{
+    $str = strip_tags($str);
+    if (strlen($str) > $limit) {
+        $strCut = substr($str, 0, $limit);
+        $str = substr($strCut, 0, strrpos($strCut, ' ')) . '...';
+    }
+    return $str;
+}

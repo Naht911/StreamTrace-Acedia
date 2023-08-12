@@ -3,7 +3,7 @@
             <div class="main-header-left">
                 <div class="logo-wrapper">
                     <a href="{{ route('dashboard') }}">
-                        <img class="img-fluid" src="/assets/images/logo/logo.png" alt=""></a>
+                        <img class="img-fluid" src="{{asset('img/acedia.png')}}" alt=""></a>
                 </div>
                 <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i></div>
             </div>

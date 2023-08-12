@@ -21,6 +21,7 @@
 
      <script src="/assets/home/js/javascript_profile.js"></script>
      <script src="/assets/home/js/js-popular.js"></script>
+     @stack('css')
 
 </head>
 

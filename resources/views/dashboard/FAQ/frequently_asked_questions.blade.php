@@ -43,6 +43,11 @@
 
                                                     <tr role="row">
                                                         <th class="sorting_asc text-sm-start" tabindex="0"
+                                                        aria-controls="basic-1" rowspan="1" colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        style="width: 10px;"><i class="fa-solid fa-caret-down"></i></th>
+                                                        <th class="sorting_asc text-sm-start" tabindex="0"
                                                             aria-controls="basic-1" rowspan="1" colspan="1"
                                                             aria-sort="ascending"
                                                             aria-label="Name: activate to sort column descending"
@@ -65,19 +70,21 @@
                                                 </thead>
                                                 <tr role="row" class="odd">
 
-                                                    @foreach ($data as $item)
+                                                    @foreach ($data as $key => $item)
                                                 <tr>
+                                                    <td>{{$key+1}}</td>
                                                     <td class="sorting_1">{{ $item->question }}</td>
                                                     <td>{{ $item->answer }}</td>
                                                     <td>
                                                         <a
-                                                            href="{{ route('dashboard.FAQ.edit_FAQ', $item->id) }}"><button>Edit</button></a>
-                                                        <a href="{{ route('dashboard.FAQ.delete_FAQ', $item->id) }}">
-                                                            <button class="btn-danger">Delete</button></a>
+                                                            href="{{ route('dashboard.FAQ.edit_FAQ', $item->id) }}"><button class="btn btn-sm btn-success">Edit</button></a>
+                                                        {{-- <a 
+                                                            href="{{ route('dashboard.FAQ.delete_FAQ', $item->id) }}">
+                                                            <button class="btn-danger">Delete</button></a> --}}
+                                                        <button onclick="del_faq({{ $item->id }})" class="btn btn-sm btn-danger">
+                                                                Delete
+                                                           </button>
                                                     </td>
-
-
-
 
                                                 </tr>
                                                 @endforeach
@@ -109,4 +116,83 @@
 
 <!-- Container-fluid Ends-->
 @push('scripts')
+<script>
+    function del_faq(id) {
+         //sweet alert confirm
+         Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes Delete it!'
+         }).then((result) => {
+              if (result.isConfirmed) {
+                   //ajax delete
+                   $.ajax({
+                        url: "{{ route('dashboard.FAQ.delete_FAQ') }}",
+                        type: "POST",
+                        data: {
+                             "_token": "{{ csrf_token() }}",
+                             "id": id,
+                        },
+                        beforeSend: function() {
+                             Swal.fire({
+                                  title: 'Please Wait !',
+                                  html: 'Deleting FAQ',
+                                  allowOutsideClick: false,
+                                  showCancelButton: false,
+                                  showConfirmButton: false,
+                                  willOpen: () => {
+                                       Swal.showLoading();
+                                  },
+                             });
+                        },
+                        success: function(response) {
+                             if (response.status == 1) {
+                                  Swal.fire(
+                                       'Deleted!',
+                                       response.message,
+                                       'success'
+                                  )
+                                  location.reload();
+                             } else if (response.status == 2) {
+                                  Swal.fire(
+                                       'Error!',
+                                       response.message,
+                                       'error'
+                                  )
+                                  //wait 3 sec
+                                  setTimeout(function() {
+                                       window.location.reload();
+                                  }, 4000);
+
+                             } else {
+                                  Swal.fire(
+                                       'Failed!',
+                                       response.message,
+                                       'error'
+                                  )
+                             }
+                        },
+                        error: function(response) {
+                             Swal.fire(
+                                  'Failed!',
+                                  'Something went wrong',
+                                  'error'
+                             )
+                        }
+                   });
+              } else {
+                   Swal.fire(
+                        'Cancelled!',
+                        'Your FAQ has not been deleted.',
+                        'warning'
+                   )
+              }
+         });
+    }
+</script>
 @endpush

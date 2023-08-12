@@ -85,4 +85,75 @@ class DashboardController extends Controller
 
         return view('dashboard.performance.user_performance', $data);
     }
+
+    public function list_user(Request $request)
+    {
+        //search filter
+        $relations = [];
+        $name = trim($request->name ?? null);
+        // dd($name);
+        $users = User::query()->with($relations);
+        $per_page = $request->per_page ?? 10;
+        if ($name && $name != null && $name != '' && !empty($name)) {
+
+            $users = $users->where('name', 'like', '%' . $name . '%');
+        }
+        $users = $users->orderBy('id', 'DESC');
+
+
+        $users = $users->paginate($per_page);
+        //add query string to pagination links
+        $users->appends(request()->query());
+        $data = [
+            'users' => $users,
+
+        ];
+        return view('dashboard.user.list_user', $data);
+    }
+
+    public function edit_user($id)
+    {
+        if (!$id) {
+            return redirect()->route('dashboard.user.list_user');
+        }
+        $user = User::find($id);
+        if (!$user) {
+            return redirect()->route('dashboard.user.list_user');
+        }
+        $data = [
+            'user' => $user,
+        ];
+        return view('dashboard.user.edit_user', $data);
+    }
+
+    function update_user(Request $request, $id)
+    {
+        if ($id == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'User not found'
+            ]);
+        }
+
+        $user = User::find($id);
+        if ($user == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'User not found'
+            ]);
+        }
+        $role = $request->role ?? null;
+        if ($role == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Please fill all fields!'
+            ]);
+        }
+        $user->role = $role;
+        $user->save();
+        return response()->json([
+            'status' => 1,
+            'message' => 'Update user successfully'
+        ]);
+    }
 }

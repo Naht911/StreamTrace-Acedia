@@ -86,6 +86,42 @@ button:hover {
 
 .titles {
     overflow: hidden;
+    position: relative;
+}
+
+.titles .container {
+    overflow: hidden;
+}
+
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+    opacity: 0;
+    pointer-events: auto;
+}
+
+.swiper-button-prev,
+.swiper-rtl .swiper-button-prev,
+.swiper-rtl .swiper-button-next,
+.swiper-button-next {
+    top: 60% !important;
+    color: #fff;
+    width: 5px;
+    font-weight: 600;
+}
+
+.swiper-rtl .swiper-button-prev,
+.swiper-rtl .swiper-button-next,
+.swiper-button-next {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.titles:hover .swiper-rtl .swiper-button-prev,
+.titles:hover .swiper-rtl .swiper-button-next,
+.titles:hover .swiper-button-next {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .header .container .toggleBtn {
@@ -380,6 +416,7 @@ button:hover {
 }
 
 .banner-watch-5 .card-sliders {
+    position: relative;
     width: 100%;
     display: flex;
     align-items: center;
@@ -1082,12 +1119,92 @@ button:hover {
 footer {
     padding: 2rem 0;
     margin-top: 2rem;
+    background-color: rgb(8, 18, 32);
+    width: 100%;
+    height: 100%;
 }
 
 footer .container {
+    display: block;
+}
+
+footer .container .center {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+footer .container .bottom {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: baseline;
+}
+
+footer .container .center h3 {
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+footer form input[type='text'] {
+    height: 40px;
+    width: 80%;
+    outline: none;
+    color: #d9d9d9;
+    background: #000;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 17px;
+    border: 2px solid #222222;
+}
+
+footer form input[type='submit'] {
+    height: 36px;
+    width: 80%;
+    font-weight: 600;
+    font-size: 18px;
+    color: #d9d9d9;
+    background: #ddad00;
+    outline: none;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 12px;
+    border: 2px solid #ddad00;
+    transition: all 0.3s ease-in-out;
+}
+
+footer .media-icons a {
+    font-size: 16px;
+    height: 45px;
+    width: 45px;
+    display: inline-block;
+    text-align: center;
+    line-height: 43px;
+    border-radius: 5px;
+    border: 2px solid #222222;
+    margin: 20px 5px 0 0;
+    transition: all 0.3s ease;
+    color: #fff;
+    margin-bottom: 2rem;
+}
+
+footer .media-icons a:hover {
+    border-color: #ddad00;
+}
+
+footer .container .center p {
+    font-size: 16px;
+    line-height: 1.428571429;
+    color: #333;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
 }
 
 footer .footer-left {
@@ -1391,6 +1508,7 @@ footer .footer-right {
 }
 
 .sort .top .genreBtn.active .list-genre,
+.sort .top .providerBtn.active .list-provider,
 .sort .top .yearBtn.active .list-year,
 .sort .top .priceBtn.active .list-price,
 .sort .top .countryBtn.active .list-country {
@@ -1399,6 +1517,7 @@ footer .footer-right {
     pointer-events: auto;
 }
 
+.sort .top .providerBtn,
 .sort .top .genreBtn,
 .sort .top .yearBtn,
 .sort .top .countryBtn,
@@ -1406,6 +1525,7 @@ footer .footer-right {
     transition: all 0.4s ease-in-out;
 }
 
+.sort .top .providerBtn i,
 .sort .top .genreBtn i,
 .sort .top .yearBtn i,
 .sort .top .priceBtn i,
@@ -1413,6 +1533,7 @@ footer .footer-right {
     transition: all 0.4s ease-in-out;
 }
 
+.sort .top .providerBtn:hover,
 .sort .top .genreBtn:hover,
 .sort .top .countryBtn:hover,
 .sort .top .priceBtn:hover,
@@ -1420,6 +1541,7 @@ footer .footer-right {
     color: #fff;
 }
 
+.sort .top .providerBtn.active,
 .sort .top .genreBtn.active,
 .sort .top .countryBtn.active,
 .sort .top .priceBtn.active,
@@ -1427,6 +1549,7 @@ footer .footer-right {
     color: #fff;
 }
 
+.sort .top .providerBtn.active .fa-sort-down,
 .sort .top .genreBtn.active .fa-sort-down,
 .sort .top .countryBtn.active .fa-sort-down,
 .sort .top .priceBtn.active .fa-sort-down,
@@ -1610,7 +1733,6 @@ body::-webkit-scrollbar-thumb {
     background-image: linear-gradient(-45deg, #f9d45a, #ddad00);
     border-radius: 50px;
 }
-
 /*  */
 
 .header-user img {
@@ -1727,11 +1849,11 @@ body::-webkit-scrollbar-thumb {
     border-bottom: 3px solid #ddad00;
 }
 
-#setting-1:checked~nav label.setting-1,
-#setting-2:checked~nav label.setting-2,
-#setting-3:checked~nav label.setting-3,
-#setting-4:checked~nav label.setting-4,
-#setting-5:checked~nav label.setting-5 {
+#setting-1:checked ~ nav label.setting-1,
+#setting-2:checked ~ nav label.setting-2,
+#setting-3:checked ~ nav label.setting-3,
+#setting-4:checked ~ nav label.setting-4,
+#setting-5:checked ~ nav label.setting-5 {
     color: #fff;
     border-bottom: 3px solid #ddad00;
     transition: all 0.3s ease-in-out;
@@ -1746,11 +1868,11 @@ input[type='radio'] {
     line-height: 2.5;
 }
 
-#setting-1:checked~.setting .content-1,
-#setting-2:checked~.setting .content-2,
-#setting-3:checked~.setting .content-3,
-#setting-4:checked~.setting .content-4,
-#setting-5:checked~.setting .content-5 {
+#setting-1:checked ~ .setting .content-1,
+#setting-2:checked ~ .setting .content-2,
+#setting-3:checked ~ .setting .content-3,
+#setting-4:checked ~ .setting .content-4,
+#setting-5:checked ~ .setting .content-5 {
     display: block;
 }
 
@@ -1923,12 +2045,12 @@ td {
     outline: none;
 }
 
-#popup-setting-name .form-group input:focus~label,
-#popup-setting-name .form-group input:valid~label,
-#popup-setting-email .form-group input:focus~label,
-#popup-setting-email .form-group input:valid~label,
-#popup-setting-password .form-group input:focus~label,
-#popup-setting-password .form-group input:valid~label {
+#popup-setting-name .form-group input:focus ~ label,
+#popup-setting-name .form-group input:valid ~ label,
+#popup-setting-email .form-group input:focus ~ label,
+#popup-setting-email .form-group input:valid ~ label,
+#popup-setting-password .form-group input:focus ~ label,
+#popup-setting-password .form-group input:valid ~ label {
     top: 0;
     left: 1rem;
     font-size: 1.3rem;
@@ -1960,8 +2082,8 @@ td {
     margin-top: 4rem;
 }
 
-#women:checked~label.first .circle,
-#men:checked~label.second .circle {
+#women:checked ~ label.first .circle,
+#men:checked ~ label.second .circle {
     border-color: #ddad00;
     background: #fff;
 }
@@ -2224,16 +2346,31 @@ td {
     object-fit: cover;
 }
 
-.footer {
-    padding: 20px;
-    text-align: center;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+.sort .list-all .reset {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
 }
 
-.wrapper {
+.fa-thumbs-up.active {
+    color: #ddad00;
+    cursor: pointer;
+}
+
+.setting .content .content-setting {
     display: flex;
-    flex-direction: column;
-    min-height: 80vh;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.setting .content .setting-acc {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ddad00;
+}
+
+.filterBtn {
+    color: #b9bdcc;
+    display: none;
 }

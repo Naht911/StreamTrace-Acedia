@@ -10,7 +10,7 @@ class FAQController extends Controller
 {
     function control_FAQ()
     {
-        $faq = faq::paginate(5);
+        $faq = faq::paginate(8);
 
         if ($faq) {
             return view(
@@ -41,7 +41,7 @@ class FAQController extends Controller
 
         // them 
         if ($request->all()) {
-            $data =  faq::create([
+            $data = faq::create([
                 'question' => $request->question,
                 'answer' => $request->answer,
             ]);
@@ -55,28 +55,37 @@ class FAQController extends Controller
     function edit_FAQ($id)
     {
 
-        $faq = faq::find($id)->first();
-        return view('dashboard.FAQ.edit_frequently_asked_questions',  ['data' => $faq]);
+        $faq = faq::find($id);
+        return view('dashboard.FAQ.edit_frequently_asked_questions', ['data' => $faq]);
     }
     function update_FAQ(Request $request, $id)
     {
         // them 
         if ($request) {
-            $check =  faq::where('id', $id)->update([
+            $check = faq::where('id', $id)->update([
                 'question' => $request->question,
                 'answer' => $request->answer,
             ]);
             if ($check) {
                 $data = faq::all();
             }
-            return redirect()->route('dashboard.FAQ',  ['data' => $data,]);
+            return redirect()->route('dashboard.FAQ', ['data' => $data,]);
         }
     }
-    function delete_FAQ($id)
+    function delete_FAQ(Request $request)
     {
-        $faq = faq::where('id', $id)->delete();
-        if ($faq) {
-            return redirect()->route('dashboard.FAQ');
+        // $faq = faq::where('id', $id)->delete();
+        // if ($faq) {
+        //     return redirect()->route('dashboard.FAQ');
+        // }
+        $id = $request->id;
+
+        $faq = faq::find($id);
+        if (!$faq) {
+            return response()->json(['status' => 0, 'message' => 'FAQ not found']);
         }
+        $faq->delete();
+        return response()->json(['status' => 1, 'message' => 'Delete FAQ successfully']);
+
     }
 }
