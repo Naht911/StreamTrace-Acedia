@@ -167,7 +167,7 @@
                                   //wait 3 sec
                                   setTimeout(function() {
                                        window.location.reload();
-                                  }, 3000);
+                                  }, 4000);
 
                              } else {
                                   Swal.fire(
