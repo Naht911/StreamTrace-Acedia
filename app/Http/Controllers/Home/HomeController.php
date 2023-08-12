@@ -9,6 +9,8 @@ use App\Models\Reaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MovieProvider;
 use App\Models\MovieTracking;
+use App\Models\StreamingServiceProvider;
+use NunoMaduro\Collision\Provider;
 
 class HomeController extends Controller
 {
@@ -28,6 +30,42 @@ class HomeController extends Controller
 
         return view('home.index', $data);
     }
+    public function new()
+    {
+        $relations = ['genres', 'providers', 'providers_distinct'];
+        $movies = Movie::query()->with($relations);
+        $providers = StreamingServiceProvider::all();
+        $movie_primeVideo = MovieProvider::where('streaming_service_provider_id', 8)->get();
+        $movie_netflix = MovieProvider::where('streaming_service_provider_id', 9)->get();
+        $movie_appleTV = MovieProvider::where('streaming_service_provider_id', 10)->get();
+        $movies_1 = [];
+        $movies_2 = [];
+        $movies_3 = [];
+        foreach ($movie_primeVideo as $movie) {
+            $movies_1[] = $movie->movie_id;
+        }
+        $newest_primeVideo = Movie::whereIn('id', $movies_1)->orderBy('created_at', 'DESC')->take(20)->get();
+        foreach ($movie_netflix as $movie) {
+            $movies_2[] = $movie->movie_id;
+        }
+        $newest_netflix = Movie::whereIn('id', $movies_2)->orderBy('created_at', 'DESC')->take(20)->get();
+        foreach ($movie_appleTV as $movie) {
+            $movies_3[] = $movie->movie_id;
+        }
+        $newest_appleTV = Movie::whereIn('id', $movies_3)->orderBy('created_at', 'DESC')->take(20)->get();
+
+        // return response()->json($newest);
+
+        $data = [
+            'movies' => $movies,
+            'newest_primeVideo' => $newest_primeVideo,
+            'newest_netflix' => $newest_netflix,
+            'newest_appleTV' => $newest_appleTV,
+            'providers' => $providers,
+        ];
+
+        return view('home.new', $data);
+    }
     public function wathchlist()
     {
         //get all movie in watchlist
@@ -35,7 +73,7 @@ class HomeController extends Controller
         $wathchlist = Reaction::where('user_id', Auth::id())
             ->where('is_tracked', 1)
             ->with($relations)
-        ->get();
+            ->get();
         // dd($wathchlist);
         $data = [
             'wathchlist' => $wathchlist,

@@ -25,6 +25,8 @@ use App\Http\Controllers\Home\ReactionController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/new', [HomeController::class, 'new'])->name('new');
+Route::get('/popular', [HomeController::class, 'popular'])->name('popular');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
     ->middleware(['auth'])
     ->name('home.wathchlist');
