@@ -1356,6 +1356,7 @@ footer .footer-right {
 }
 
 .sort .top .genreBtn.active .list-genre,
+.sort .top .providerBtn.active .list-provider,
 .sort .top .yearBtn.active .list-year,
 .sort .top .priceBtn.active .list-price,
 .sort .top .countryBtn.active .list-country
@@ -1365,6 +1366,7 @@ footer .footer-right {
     pointer-events: auto;
 }
 
+.sort .top .providerBtn,
 .sort .top .genreBtn,
 .sort .top .yearBtn,
 .sort .top .countryBtn,
@@ -1373,6 +1375,7 @@ footer .footer-right {
     transition: all 0.4s ease-in-out;
 }
 
+.sort .top .providerBtn i,
 .sort .top .genreBtn i,
 .sort .top .yearBtn i,
 .sort .top .priceBtn i,
@@ -1381,6 +1384,7 @@ footer .footer-right {
     transition: all 0.4s ease-in-out;
 }
 
+.sort .top .providerBtn:hover,
 .sort .top .genreBtn:hover,
 .sort .top .countryBtn:hover,
 .sort .top .priceBtn:hover,
@@ -1390,6 +1394,7 @@ footer .footer-right {
     color: #fff;
 }
 
+.sort .top .providerBtn.active,
 .sort .top .genreBtn.active,
 .sort .top .countryBtn.active,
 .sort .top .priceBtn.active,
@@ -1398,6 +1403,7 @@ footer .footer-right {
     color: #fff;
 }
 
+.sort .top .providerBtn.active .fa-sort-down,
 .sort .top .genreBtn.active .fa-sort-down,
 .sort .top .countryBtn.active .fa-sort-down,
 .sort .top .priceBtn.active .fa-sort-down,

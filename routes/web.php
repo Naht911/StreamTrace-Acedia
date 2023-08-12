@@ -8,6 +8,7 @@ use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\PopularController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
 use App\Models\StreamingServiceProvider;
@@ -27,6 +28,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
     ->middleware(['auth'])
     ->name('home.wathchlist');
+
+Route::get('/list_popular', [PopularController::class, 'list_popular'])->name('home.movie.list_popular');
+Route::post('/filter_popular', [PopularController::class, 'filter_popular'])->name('home.movie.filter_popular');
 Route::prefix('movie')->group(function () {
 
     Route::get('/{id}', [HomeController::class, 'movie_detail'])->name('home.movie.movie_detail');
@@ -34,6 +38,8 @@ Route::prefix('movie')->group(function () {
     Route::post('/get_reaction', [ReactionController::class, 'get_reaction'])->name('home.movie.get_reaction');
     Route::post('/handle_reaction', [ReactionController::class, 'handle_reaction'])->name('home.movie.handle_reaction');
     Route::post('/handle_rating', [RatingController::class, 'handle_rating'])->name('home.movie.handle_rating');
+
+
 });
 
 Route::get('/go/{movie_id}', [HomeController::class, 'outsite'])->where(['movie_id' => '[0-9]+'])->name('home.outsite');
