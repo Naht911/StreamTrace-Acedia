@@ -117,7 +117,7 @@
                     </li>
                     <li>
                         <a class="nav-link menu-title link-nav my-2" href="{{ route('dashboard.feedback') }}">
-                            <p class="mt-1"><i class="fa-solid fa-circle-question mb-1"></i>Feedback</p>
+                            <p class="mt-1"><i class="far fa-flag mb-1"></i>Feedback</p>
                         </a>
                     </li>
 

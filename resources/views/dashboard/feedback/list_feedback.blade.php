@@ -22,7 +22,9 @@
                                     </form>
                                 </div>
                                 <div class="card-body">
-                                    <h3 class="display-3 ">Feedback </h3>
+                                    <div class="card-head pb-0">
+                                        <h3 class="display-3 mb-4 text-center">Feedback </h3>
+                                    </div>
                                     <br>
                                     <div class="row">
                                         <div class="col-3">
@@ -105,20 +107,20 @@
                                                                 href="{{ route('dashboard.feedback.edit_feedback', $item->id) }}"><button>Processing</button></a>
                                                             <a
                                                                 href="{{ asset('dashboard/feedback/delete/' . $item->id) }}">
-                                                                <button>Delete</button></a>
+                                                                <button class="btn-danger">Delete</button></a>
                                                         @endif
 
                                                         @if ($item->status == 'pending')
                                                             <a
                                                                 href="{{ route('dashboard.feedback.complete_processing', $item->id) }}"><button>Completed</button></a>
-                                                            <a
+                                                            {{-- <a
                                                                 href="{{ asset('dashboard/feedback/delete/' . $item->id) }}">
-                                                                <button>Delete</button></a>
+                                                                <button class="btn-danger">Delete</button></a> --}}
                                                         @endif
                                                         @if ($item->status == 'completed')
                                                             <a
                                                                 href="{{ asset('dashboard/feedback/delete/' . $item->id) }}">
-                                                                <button>Delete</button></a>
+                                                                <button class="btn-danger">Delete</button></a>
                                                         @endif
 
                                                     </td>
@@ -127,8 +129,24 @@
 
 
                                             </table>
-                                            <div> {{ $data2->links() }}</div>
 
+                                            <div class="pagination justify-content-center pagination-primary mt-3 ">
+                                                {{ $data2->links('pagination::bootstrap-4') }}</div>
+                                            {{-- <div>
+                                                <ul class="pagination justify-content-center pagination-primary">
+                                                    {{ $data2->links() }}
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0)">Previous</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0)">1</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0)">2</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0)">3</a></li>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="javascript:void(0)">Next</a></li>
+                                                </ul>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>

@@ -15,7 +15,7 @@
         <div class="row">
             <div style="" class="card">
 
-                <div style="width: 90%">
+                <div>
                     @if (Session::has('alert'))
                         <div class="alert alert-success">
                             {{ Session::get('alert') }}
@@ -27,7 +27,7 @@
                     @csrf
                     {{-- @foreach ($data as $item) --}}
                     <div class="card-body">
-                        <h4 class="display-3 ">Create Frequently Asked Questions</h4> <br>
+                        <h4 class="display-3 text-center">Create Frequently Asked Questions</h4> <br>
                         <form class="needs-validation" method="POST" {{-- action="{{ route('dashboard.feedback.update_feedback') }}"  --}} enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
@@ -45,7 +45,10 @@
                                         type="text" value="{{ $item->content }}" required="">
                                 </div> --}}
                             </div>
-                            <button class="btn btn-primary" type="submit">Submit form</button>
+                            <div class=" mt-5 text-center">
+                                <button class="btn btn-primary  " type="submit">Submit
+                                    form</button>
+                            </div>
                         </form>
                     </div>
                     {{-- @endforeach --}}

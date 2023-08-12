@@ -10,7 +10,7 @@ class FAQController extends Controller
 {
     function control_FAQ()
     {
-        $faq = faq::all();
+        $faq = faq::paginate(5);
 
         if ($faq) {
             return view(

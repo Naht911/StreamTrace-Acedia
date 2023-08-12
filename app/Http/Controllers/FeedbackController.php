@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 
@@ -129,14 +130,21 @@ class FeedbackController extends Controller
     }
     public function complete_processing(Request $request)
     {
-        if ($request) {
-            $check =  feedback::where('id', $request->id)->update([
-                'status' => 'completed',
-            ]);
-        }
+
+        $check =  feedback::where('id', $request->id)->update([
+            'status' => 'completed',
+        ]);
+
+
         if ($check) {
-            // Lưu thông báo vào session
-            Session::flash('alert', 'Đây là thông báo alert!');
+            $data = feedback::find($check)->first();
+
+
+            Mail::send('emails.completed_feedback', ['data' => $data], function ($email) use ($data) {
+                $email->subject('acedia - password retrieval');
+                $email->to($data->email);
+            });
+
             $feedback = feedback::paginate(10);
             if ($feedback) {
                 $feedback = feedback::all();
