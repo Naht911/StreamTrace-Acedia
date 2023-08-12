@@ -10,7 +10,7 @@ class FAQController extends Controller
 {
     function control_FAQ()
     {
-        $faq = faq::paginate(5);
+        $faq = faq::paginate(8);
 
         if ($faq) {
             return view(
@@ -72,11 +72,20 @@ class FAQController extends Controller
             return redirect()->route('dashboard.FAQ', ['data' => $data,]);
         }
     }
-    function delete_FAQ($id)
+    function delete_FAQ(Request $request)
     {
-        $faq = faq::where('id', $id)->delete();
-        if ($faq) {
-            return redirect()->route('dashboard.FAQ');
+        // $faq = faq::where('id', $id)->delete();
+        // if ($faq) {
+        //     return redirect()->route('dashboard.FAQ');
+        // }
+        $id = $request->id;
+
+        $faq = faq::find($id);
+        if (!$faq) {
+            return response()->json(['status' => 0, 'message' => 'FAQ not found']);
         }
+        $faq->delete();
+        return response()->json(['status' => 1, 'message' => 'Delete FAQ successfully']);
+
     }
 }
