@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\Reaction;
 use App\Models\Watchlist;
+use App\Models\StarRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

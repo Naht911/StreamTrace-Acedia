@@ -121,7 +121,18 @@
                               <table class="table table-bordered">
                                    <thead>
                                         <tr>
-                                             <th scope="col">#</th>
+                                             <th scope="col">
+
+                                                  @if ($soft_data != null)
+                                                       <a href="{{ route('dashboard.movie.list_movie', addParam('soft', $soft_data->reverse_slug)) }}">
+                                                            {!! $soft_data->reverse_slug == 'asc' ? '#<i class="fa-solid fa-sort-down"></i>' : '<i class="fa-solid fa-sort-up"></i>#' !!}
+                                                       </a>
+                                                  @else
+                                                       <a href="{{ route('dashboard.movie.list_movie', addParam('soft', 'asc')) }}">
+                                                            <i class="fa-solid fa-sort"></i>
+                                                       </a>
+                                                  @endif
+                                             </th>
                                              <th scope="col">Title</th>
                                              <th scope="col">Genres</th>
                                              <th scope="col">Providers</th>
