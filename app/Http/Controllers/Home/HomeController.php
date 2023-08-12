@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\MovieProvider;
+use App\Models\MovieTracking;
 
 class HomeController extends Controller
 {
@@ -32,5 +34,32 @@ class HomeController extends Controller
             'movie' => $movie,
         ];
         return view('home.movie.movie_detail', $data);
+    }
+
+    public function outsite(Request $request, $movie_id)
+    {
+        $url = $request->url;
+        $movie = Movie::find($movie_id);
+        if ($movie == null) {
+            return abort(404);
+        }
+        $movie_provider = MovieProvider::where('movie_id', $movie_id)
+        ->where('url', $url)
+        ->first();
+        $tracking = MovieTracking::where('movie_id', $movie_id)->first();
+        if ($tracking == null) {
+            $tracking = new MovieTracking();
+            $tracking->movie_id = $movie_id;
+            if($movie_provider != null){
+                $tracking->streaming_service_provider_id = $movie_provider->streaming_service_provider_id;
+            }
+            $tracking->count = 1;
+            $tracking->save();
+        }else{
+            $tracking->count = $tracking->count + 1;
+            $tracking->save();
+        }
+        return redirect()->away($url);
+        // return view('home.outsite');
     }
 }

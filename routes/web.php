@@ -27,6 +27,7 @@ Route::prefix('movie')->group(function () {
     Route::get('/{id}', [HomeController::class, 'movie_detail'])->name('home.movie.movie_detail');
 });
 
+Route::get('/go/{movie_id}', [HomeController::class, 'outsite'])->where(['movie_id' => '[0-9]+'])->name('home.outsite');
 
 
 Route::get('/feedback', [FeedbackController::class, 'feedback'])->name('feedback'); //user view feedback

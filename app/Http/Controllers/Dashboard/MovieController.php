@@ -608,6 +608,14 @@ class MovieController extends Controller
         if($movie_provider->streaming_service_provider_id == $streaming_service_provider_id && $movie_provider->type_price_id == $type_price_id && $movie_provider->movie_resolution_id == $movie_resolution_id && $movie_provider->price == $price && $movie_provider->url == $url){
             return response()->json(['status' => 1, 'message' => 'Nothing changes']);
         }
+        //check if price is number
+        if(!is_numeric($price)){
+            return response()->json(['status' => 0, 'message' => 'Price must be a number']);
+        }
+        //check if price is greater than 0
+        if($price < 0){
+            return response()->json(['status' => 0, 'message' => 'Price cannot be less than 0']);
+        }
         //trùng provider giá và độ phân giải
         $check_provider_price_resolution = MovieProvider::where('movie_id', $movie_id)
             ->where('streaming_service_provider_id', $streaming_service_provider_id)

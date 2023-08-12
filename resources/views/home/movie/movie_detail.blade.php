@@ -1,5 +1,5 @@
 @extends('layouts.home.home_layout')
-@section('title', 'Home')
+@section('title', $movie->title)
 @push('css')
 @endpush
 
@@ -10,7 +10,7 @@
           <div class="banner-content">
                <div class="poster">
                     <div class="img">
-                         <img src="/assets/home/img/dark-winds (1).webp" alt="" srcset="" />
+                         <img src="{{ $movie->poster_url }}" alt="" srcset="" />
                          <div class="content">
                               <li>
                                    <a><i class="fa-solid fa-bookmark"></i> Track Show</a>
@@ -46,16 +46,15 @@
                          <div class="title">
                               <h3>GENRE</h3>
                               <div class="detail">
-                                   <p>Drama</p>
-                                   <p>Drama</p>
-                                   <p>Drama</p>
-                                   <p>Drama</p>
+                                   @foreach ($movie->genres as $genre)
+                                        <p>{{ $genre->name }}</p>
+                                   @endforeach
                               </div>
                          </div>
                          <div class="title">
                               <h3>RUN TIME</h3>
                               <div class="detail">
-                                   <p>46 min</p>
+                                   <p>{{ $movie->duration }}</p>
                               </div>
                          </div>
                          <div class="title">
@@ -81,20 +80,20 @@
                     <div class="banner-watch">
                          <h2>WATCH NOW</h2>
                          <div class="banner-watch-image">
-                              <div class="title">
-                                   <label for=""> Stream</label>
-                                   <img src="/assets/home/img/icon (1).webp" alt="" />
-                                   <p>2 Seasons <span>HD</span></p>
-                              </div>
-                              <div class="title">
-                                   <label for=""> BUY</label>
-                                   <img src="/assets/home/img/icon (1).webp" alt="" />
-                                   <p>2 Seasons</p>
-                              </div>
+                              @foreach ($movie->providers as $provider)
+                                   <div class="title">
+                                        <label for=""> {{ $provider->pivot->typePrice->name }}</label>
+                                        <img src="{{ asset($provider->logo) }}" alt="{{ $provider->name }}" height="50" width="50" />
+                                        <p>${{ $provider->pivot->price }} <span class="offer__label"> {{ $provider->pivot->resolution->name }} </span></p>
+                                   </div>
+
+                              @endforeach
+
                          </div>
                     </div>
 
                     <div class="banner-watch-2">
+
                          <h2>WATCH NOW</h2>
                          <div class="filter">
                               <i class="fa-solid fa-filter"></i> <span>FILTERS</span>
@@ -126,12 +125,12 @@
                                    </div>
                                    <div class="title">
                                         <img src="/assets/home/img/icon (1).webp" alt="" />
-                                        <p>2 Seasons</p>
+                                        <p>2 Seasonsa</p>
                                    </div>
                               </div>
                          </div>
                     </div>
-
+                    {{--
                     <div class="banner-watch-3">
                          <h2>2 SEASONS</h2>
                          <div class="season2 swiper-wrapper">
@@ -156,25 +155,20 @@
                                    <div class="title">Season 2</div>
                               </a>
                          </div>
+                    </div> --}}
+                    <div class="banner-watch-4">
+                         <h2 class="mb-3">Trailer:</h2>
+                         <iframe class="mt-3" width="100%" height="315" src="https://www.youtube.com/embed/{{ $movie->trailer_url }}" title="YouTube video player" frameborder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
-
                     <div class="banner-watch-4">
                          <h2>Synopsis</h2>
                          {!! $movie->synopsis !!}
                     </div>
 
-                    <div class="banner-watch-4">
-                         <h2>Dark Winds - watch online: streaming, buy or rent</h2>
-                         <p>
-                              Currently you are able to watch "Dark Winds" streaming on AMC Plus Apple TV Channel , AMC+
-                              Amazon Channel, AMC+, AMC, Spectrum On Demand, AMC+ Roku Premium Channel, Acorn TV or for
-                              free with ads on The Roku Channel. It is also possible to buy "Dark Winds" as download on
-                              Amazon Video, Vudu, Apple TV, Google Play Movies, Microsoft Store.
-                         </p>
-                    </div>
 
                     <div class="banner-watch-5">
-                         <h2>People who liked Dark Winds also liked</h2>
+                         <h2>People who liked {{ $movie->title }} also liked</h2>
                          <div class="card-sliders">
                               <div class="card-slider swiper-wrapper">
                                    <div class="card swiper-slide">

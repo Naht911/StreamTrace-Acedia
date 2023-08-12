@@ -19,7 +19,7 @@
                                         Add provider for {{ $movie->title }} movie
                                    </h4>
                               </div>
-                              <hr>
+                              <hr class="mb-3 mt-3">
 
 
                          </div>
@@ -63,12 +63,12 @@
                                         </div>
                                         <div class="col-md-6 col-12">
                                              <label class="form-label" for="price">Price</label>
-                                             <input type="number" class="form-control" id="price" name="price" placeholder="Price" required>
+                                             <input type="number" class="form-control" id="price" name="price" placeholder="Price" step="0.01" min="0" required>
                                         </div>
 
                                    </div>
                                    <hr>
-                                   <div class="d-flex justify-content-between">
+                                   <div class="d-flex justify-content-between mt-3">
                                         <a href="{{ route('dashboard.movie.show_movie_provider', $movie->id) }}" class="btn btn-danger">
                                             <i class="fa fa-arrow-left"></i>
                                             Back
