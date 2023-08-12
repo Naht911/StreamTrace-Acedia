@@ -885,8 +885,8 @@ body {
 
 .banner-watch-2 .filter button.active {
     border: 1px solid #fff;
-    
-} 
+
+}
 
 .banner-watch-2 .banner-watch-content {
     display: flex;
@@ -1349,7 +1349,7 @@ footer .footer-right {
     z-index: 50;
     background: #10161d;
     padding: 0.5rem 1rem;
-    border-radius: 10px;   
+    border-radius: 10px;
     opacity: 0;
     pointer-events: none;
     transition: all 0.4s ease-in-out;
@@ -1414,8 +1414,8 @@ footer .footer-right {
     margin: 1rem 0;
 }
 
-.sort .list-all .top .title, 
-.sort .list-year .year-top .title 
+.sort .list-all .top .title,
+.sort .list-year .year-top .title
 {
     font-size: 1.4rem;
     color: #fff;
@@ -1424,7 +1424,7 @@ footer .footer-right {
 .sort .list-all .top .reset,
 .sort .list-year .year-top .reset{
     opacity: .2;
-} 
+}
 
 
 .sort .list-all .center .range {
@@ -1432,7 +1432,7 @@ footer .footer-right {
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
-} 
+}
 
 
 .sort .list-all .center .range #demo {
@@ -1440,7 +1440,7 @@ footer .footer-right {
    position: absolute;
    top: 60px;
    left: 50%;
-   transform: translateX(-50%); 
+   transform: translateX(-50%);
 }
 
 .sort .list-all .center .range label {
@@ -1463,21 +1463,21 @@ footer .footer-right {
     -webkit-transition: .2s;
     transition: opacity .2s;
 }
-  
+
 .slider:hover {
     opacity: 1;
 }
-  
+
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 15px;
     height: 15px;
-    border-radius: 50%; 
+    border-radius: 50%;
     background: #5e6b76;
     cursor: pointer;
 }
-  
+
 .slider::-moz-range-thumb {
     width: 10px;
     height: 10px;
@@ -1485,7 +1485,7 @@ footer .footer-right {
     background: #5e6b76;
     cursor: pointer;
 }
-  
+
 .sort .list-all .center .list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1539,6 +1539,14 @@ footer .footer-right {
 }
 
 .fa-bookmark.active {
+    color: #ddad00;
+}
+
+.fa-thumbs-up.active {
+    color: #ddad00;
+}
+
+.fa-thumbs-down.active {
     color: #ddad00;
 }
 

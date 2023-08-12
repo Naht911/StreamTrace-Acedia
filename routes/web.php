@@ -8,6 +8,7 @@ use App\Http\Controllers\Home\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\ReactionController;
 use App\Models\StreamingServiceProvider;
 
 /*
@@ -25,6 +26,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::prefix('movie')->group(function () {
 
     Route::get('/{id}', [HomeController::class, 'movie_detail'])->name('home.movie.movie_detail');
+    Route::get('/c/{id}', [HomeController::class, 'movie_detail_copy'])->name('home.movie.movie_detail_copy');
+    Route::post('/get_reaction', [ReactionController::class, 'get_reaction'])->name('home.movie.get_reaction');
+    Route::post('/handle_reaction', [ReactionController::class, 'handle_reaction'])->name('home.movie.handle_reaction');
 });
 
 

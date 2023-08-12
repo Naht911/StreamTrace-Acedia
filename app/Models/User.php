@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasOne(PasswordResetToken::class, 'email', 'email');
     }
 
+    public function watchlist()
+    {
+        return $this->belongsTo(Watchlist::class, 'watchlist_user', 'user_id', 'watchlist_id');
+    }
+
     /**
      * The attributes that should be cast.
      *
