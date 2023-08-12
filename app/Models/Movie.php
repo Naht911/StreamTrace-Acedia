@@ -33,4 +33,25 @@ class Movie extends Model
             ->using(MovieProvider::class)
             ->distinct('streaming_service_provider_id');
     }
+
+    public function popular($num = 10){
+        //lấy những movie có movie.count_view cao nhất
+        return $this->orderBy('count_view', 'desc')->take($num)->get();
+    }
+
+    //10 phim mới nhất
+    public function new_movies($num){
+        return $this->orderBy('created_at', 'desc')->take($num)->get();
+    }
+    //10 phim có lượt thumbs up cao nhất. lấy ra những movie có reaction.is_thumbs_up = 1
+    public function top_thumbs_up(){
+        return $this->belongsToMany(Reaction::class, 'reaction', 'movie_id', 'user_id')
+            ->using(MovieProvider::class)
+            ->where('is_thumbs_up', 1)
+            ->orderBy('count', 'desc')
+            ->take(10)
+            ->get();
+    }
+
+
 }

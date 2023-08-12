@@ -6,14 +6,18 @@
 
 @section('content')
      <div class="banner">
-          <video src="https://youtu.be/KU9X4Xyb8JE" poster="/assets/home/img/dark-winds.webp"></video>
+          <video src="https://youtu.be/KU9X4Xyb8JE" poster="{{ $movie->poster_url }}"></video>
           <div class="banner-content">
                <div class="poster">
                     <div class="img">
                          <img src="{{ $movie->poster_url }}" alt="" srcset="" />
                          <div class="content">
                               <li>
-                                   <a><i class="fa-solid fa-bookmark"></i> Track Show</a>
+
+                                   <a id="check" data-id="{{ $movie->id }}">
+                                        <i class="fa-solid fa-bookmark {{ isset($reaction) && $reaction->is_tracked == 1 ? 'active' : null }}"></i>
+                                        Track Show
+                                   </a>
                               </li>
                               <li>
                                    <a>
@@ -22,10 +26,16 @@
                                    </a>
                               </li>
                               <li>
-                                   <a><i class="fa-regular fa-thumbs-up"></i> Like</a>
+                                   <a id="thumbs_up" data-id="{{ $movie->id }}">
+                                        <i class="fa-solid fa-thumbs-up {{ isset($reaction) && $reaction->is_thumbs_up == 1 ? 'active' : null }}"></i>
+                                        Like
+                                   </a>
                               </li>
                               <li>
-                                   <a><i class="fa-regular fa-thumbs-down"></i> Dislike</a>
+                                   <a id="thumbs_down" data-id="{{ $movie->id }}">
+                                        <i class="fa-solid fa-thumbs-down {{ isset($reaction) && $reaction->is_thumbs_down == 1 ? 'active' : null }}"></i>
+                                        Dislike
+                                   </a>
                               </li>
                          </div>
                     </div>
@@ -66,7 +76,7 @@
                          <div class="title">
                               <h3>Production country</h3>
                               <div class="detail">
-                                   <p>United States</p>
+                                   <p>{{ $movie->country }}</p>
                               </div>
                          </div>
                     </div>
@@ -81,18 +91,20 @@
                          <h2>WATCH NOW</h2>
                          <div class="banner-watch-image">
                               @foreach ($movie->providers as $provider)
-                                   <div class="title">
-                                        <label for=""> {{ $provider->pivot->typePrice->name }}</label>
-                                        <img src="{{ asset($provider->logo) }}" alt="{{ $provider->name }}" height="50" width="50" />
-                                        <p>${{ $provider->pivot->price }} <span class="offer__label"> {{ $provider->pivot->resolution->name }} </span></p>
-                                   </div>
+                                   <div class="title text-sm-center">
+                                        <a href="{{ route('home.outsite', ['movie_id' => $movie->id, 'url' => $provider->pivot->url]) }}" class="text-sm-center" target="_blank">
+                                             <label for="" class="text-sm-center"> {{ $provider->pivot->typePrice->name }}</label>
+                                             <img src="{{ asset($provider->logo) }}" alt="{{ $provider->name }}" height="50" width="50" />
+                                             <p>${{ $provider->pivot->price }} <span class="offer__label"> {{ $provider->pivot->resolution->name }} </span></p>
+                                        </a>
 
+                                   </div>
                               @endforeach
 
                          </div>
                     </div>
 
-                    <div class="banner-watch-2">
+                    {{-- <div class="banner-watch-2">
 
                          <h2>WATCH NOW</h2>
                          <div class="filter">
@@ -129,7 +141,7 @@
                                    </div>
                               </div>
                          </div>
-                    </div>
+                    </div> --}}
                     {{--
                     <div class="banner-watch-3">
                          <h2>2 SEASONS</h2>
@@ -167,7 +179,7 @@
                     </div>
 
 
-                    <div class="banner-watch-5">
+                    {{-- <div class="banner-watch-5">
                          <h2>People who liked {{ $movie->title }} also liked</h2>
                          <div class="card-sliders">
                               <div class="card-slider swiper-wrapper">
@@ -233,7 +245,7 @@
                                    </div>
                               </div>
                          </div>
-                    </div>
+                    </div> --}}
                </div>
           </div>
      </div>
@@ -243,4 +255,100 @@
 
 <!-- Container-fluid Ends-->
 @push('scripts')
+     <script>
+          $(document).ready(function() {
+               $.ajaxSetup({
+                    headers: {
+                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+               });
+               var id = $("#check").data("id");
+               console.log('ok', id);
+
+               $("#check").click(function() {
+                    $.ajax({
+                         url: "{{ route('home.movie.handle_reaction') }}",
+                         method: 'POST',
+                         dataType: "json",
+                         data: {
+                              id: id,
+                              act: 'tracked',
+                              _token: '{{ csrf_token() }}'
+                         },
+                         success: function(result) {
+                              console.log(result);
+                              if (result.is_tracked) {
+                                   $('.fa-bookmark').addClass("active");
+                              } else {
+                                   $('.fa-bookmark').removeClass("active");
+                              }
+
+                         },
+                         error: function(e) {
+                              console.log(e)
+                         }
+                    });
+               });
+
+               $("#thumbs_up").click(function() {
+                    $.ajax({
+                         url: "{{ route('home.movie.handle_reaction') }}",
+                         method: 'POST',
+                         dataType: "json",
+                         data: {
+                              id: id,
+                              act: 'thumbs_up',
+                              _token: '{{ csrf_token() }}'
+                         },
+                         success: function(result) {
+                              console.log(result);
+
+                              if (result.is_thumbs_up) {
+                                   $('.fa-thumbs-up').addClass("active");
+                              } else {
+                                   $('.fa-thumbs-up').removeClass("active");
+                              }
+                              if (result.is_thumbs_down) {
+                                   $('.fa-thumbs-down').addClass("active");
+                              } else {
+                                   $('.fa-thumbs-down').removeClass("active");
+                              }
+                         },
+                         error: function(e) {
+                              console.log(e)
+                         }
+                    });
+               });
+               $("#thumbs_down").click(function() {
+                    $.ajax({
+                         url: "{{ route('home.movie.handle_reaction') }}",
+                         method: 'POST',
+                         dataType: "json",
+                         data: {
+                              id: id,
+                              act: 'thumbs_down',
+                              _token: '{{ csrf_token() }}'
+                         },
+                         success: function(result) {
+                              console.log(result);
+
+                              if (result.is_thumbs_down) {
+                                   $('.fa-thumbs-down').addClass("active");
+                              } else {
+                                   $('.fa-thumbs-down').removeClass("active");
+                              }
+                              if (result.is_thumbs_up) {
+                                   $('.fa-thumbs-up').addClass("active");
+                              } else {
+                                   $('.fa-thumbs-up').removeClass("active");
+                              }
+                         },
+                         error: function(e) {
+                              console.log(e)
+                         }
+                    });
+               });
+
+          });
+     </script>
 @endpush

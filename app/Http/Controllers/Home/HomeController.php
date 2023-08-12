@@ -6,14 +6,42 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Reaction;
-use Illuminate\Support\Facades\Auth;use App\Models\MovieProvider;
+use Illuminate\Support\Facades\Auth;
+use App\Models\MovieProvider;
 use App\Models\MovieTracking;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home.index');
+        $relations = ['genres', 'providers', 'providers_distinct'];
+        $movies = Movie::query()->with($relations);
+        $top_ten = $movies->orderBy('count_view', 'desc')->take(10)->get();
+        $new_ten = Movie::orderBy('created_at', 'desc')->take(20)->get();
+        $movies = $movies->get();
+
+        $data = [
+            'movies' => $movies,
+            'top_ten' => $top_ten,
+            'new_ten' => $new_ten,
+        ];
+
+        return view('home.index', $data);
+    }
+    public function wathchlist()
+    {
+        //get all movie in watchlist
+        $relations = ['movie'];
+        $wathchlist = Reaction::where('user_id', Auth::id())
+            ->where('is_tracked', 1)
+            ->with($relations)
+        ->get();
+        // dd($wathchlist);
+        $data = [
+            'wathchlist' => $wathchlist,
+        ];
+
+        return view('home.wathchlist', $data);
     }
 
     public function search(Request $request)
@@ -27,13 +55,18 @@ class HomeController extends Controller
     {
 
         $movie = Movie::with('providers')->find($id);
+        $reaction = Reaction::where('movie_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
         if ($movie == null) {
             return abort(404);
         }
-        // dd($movie);
         $data = [
             'movie' => $movie,
+            'reaction' => $reaction,
         ];
+        $movie->count_view = $movie->count_view + 1;
+        $movie->save();
         return view('home.movie.movie_detail', $data);
     }
     public function movie_detail_copy($id)
@@ -49,7 +82,7 @@ class HomeController extends Controller
         // dd($movie);
         $data = [
             'movie' => $movie,
-            'reaction' =>$reaction,
+            'reaction' => $reaction,
         ];
         return view('home.movie.movie_detail_copy', $data);
     }
@@ -62,18 +95,18 @@ class HomeController extends Controller
             return abort(404);
         }
         $movie_provider = MovieProvider::where('movie_id', $movie_id)
-        ->where('url', $url)
-        ->first();
+            ->where('url', $url)
+            ->first();
         $tracking = MovieTracking::where('movie_id', $movie_id)->first();
         if ($tracking == null) {
             $tracking = new MovieTracking();
             $tracking->movie_id = $movie_id;
-            if($movie_provider != null){
+            if ($movie_provider != null) {
                 $tracking->streaming_service_provider_id = $movie_provider->streaming_service_provider_id;
             }
             $tracking->count = 1;
             $tracking->save();
-        }else{
+        } else {
             $tracking->count = $tracking->count + 1;
             $tracking->save();
         }
