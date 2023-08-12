@@ -113,19 +113,19 @@
           <div class="sort sort-watchlist">
                <div class="container">
                     <div class="top">
-                         <a class="active" href="{{ route('home.wathchlist', ['reaction' => 'tracked']) }}">
+                         <a class="{{ request()->query('reaction') == 'tracked' || request()->query('reaction') == null ? 'active' : null }}" href="{{ route('home.wathchlist', ['reaction' => 'tracked']) }}">
                               <i class="fa-solid fa-bookmark"></i>
                               Watch next ({{ $count_tracked }})
                          </a>
-                         <a href="{{ route('home.wathchlist', ['reaction' => 'watched']) }}">
+                         <a class="{{ request()->query('reaction') == 'watched' ? 'active' : null }}" href="{{ route('home.wathchlist', ['reaction' => 'watched']) }}">
                               <i class="fa-solid fa-check"></i>
                               Watched ({{ $count_watched }})
                          </a>
-                         <a href="{{ route('home.wathchlist', ['reaction' => 'thunbs_up']) }}">
+                         <a class="{{ request()->query('reaction') == 'thunbs_up' ? 'active' : null }}" href="{{ route('home.wathchlist', ['reaction' => 'thunbs_up']) }}">
                               <i class="fa-solid fa-thumbs-up"></i>
                               Liked ({{ $count_thumbs_up }})
                          </a>
-                         <a href="{{ route('home.wathchlist', ['reaction' => 'thunbs_down']) }}">
+                         <a class="{{ request()->query('reaction') == 'thunbs_down' ? 'active' : null }}" href="{{ route('home.wathchlist', ['reaction' => 'thunbs_down']) }}">
                               <i class="fa-solid fa-thumbs-down"></i>
                               Disliked ({{ $count_thumbs_down }})
                          </a>
@@ -179,25 +179,49 @@
                                                   <div class="card-footer card-footer-custom">
                                                        <div class=" d-flex justify-content-between gx-3"></div>
                                                        <div class="btn-group w-100" role="group" aria-label="Basic mixed styles form-control">
-                                                            <button name="thumbs_up" data-id="{{ $i->movie->id }}" class="btn btn-warning-custom form-control" title="Likes">
-                                                                 <i class="fa-solid fa-thumbs-up"></i>
+                                                            @if ($i->is_tracked == 1)
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-gray form-control" title="Untrack">
+                                                                      <i class="fa-solid fa-bookmark"></i>
+                                                                 </button>
+                                                            @else
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-warning-custom form-control" title="Track">
+                                                                      <i class="fa-solid fa-bookmark"></i>
+                                                                 </button>
+                                                            @endif
+                                                            @if ($i->is_watched == 0)
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-warning-custom form-control" title="Watched">
+                                                                      <i class="fa-solid fa-check-double"></i>
+                                                                 </button>
+                                                            @else
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-gray form-control" title="Unwatched">
+                                                                      <i class="fa-solid fa-check-double"></i>
+                                                                 </button>
+                                                            @endif
 
-                                                            </button>
-                                                            <button name="untrack" data-id="{{ $i->movie->id }}" class="btn btn-gray form-control" title="Untrack">
-                                                                 <i class="fa-solid fa-xmark"></i>
-                                                            </button>
-                                                            <button name="untrack" data-id="{{ $i->movie->id }}" class="btn btn-warning-custom form-control" title="Watched">
-                                                                <i class="fa-solid fa-check-double"></i>
-                                                           </button>
-                                                            <button name="thumbs_down" data-id="{{ $i->movie->id }}" class="btn btn-gray form-control" title="Dislike">
-                                                                 <i class="fa-solid fa-thumbs-down"></i>
+                                                            @if ($i->is_thumbs_up == 1)
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-gray form-control" title="Dislike">
+                                                                      <i class="fa-solid fa-thumbs-up"></i>
+                                                                 </button>
+                                                            @else
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-warning-custom form-control" title="Like">
+                                                                      <i class="fa-solid fa-thumbs-up"></i>
+                                                                 </button>
+                                                            @endif
 
-                                                            </button>
+                                                            @if ($i->is_thumbs_down == 1)
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-gray form-control" title="Undislike">
+                                                                      <i class="fa-solid fa-thumbs-down"></i>
+                                                                 </button>
+                                                            @else
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-warning-custom form-control" title="Dislike">
+                                                                      <i class="fa-solid fa-thumbs-down"></i>
+                                                                 </button>
+                                                            @endif
                                                        </div>
                                                   </div>
                                                   <hr>
 
-                                                  <a href="{{ route('home.movie.movie_detail', $i->movie->slug) }}" class="btn btn-warning-custom form-control">
+                                                  <a href="{{ route('home.movie.movie_detail', $i->movie->id) }}" class="btn btn-warning-custom form-control">
                                                        <i class="fa-solid fa-play"></i>
 
                                                   </a>
@@ -265,4 +289,40 @@
 
      <!-- Container-fluid Ends-->
      @push('scripts')
+          <script>
+               $(document).ready(function() {
+                    $.ajaxSetup({
+                         headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                         }
+                    });
+
+                    var id = $("#track").data("id");
+                    console.log('id');
+                    $("button[name='reaction']").click(function() {
+
+                         id = $(this).data("id");
+                         act = $(this).data("act");
+                         console.log(`id: ${id} act: ${act}`);
+
+                         $.ajax({
+                              url: "{{ route('home.movie.handle_reaction') }}",
+                              method: 'POST',
+                              dataType: "json",
+                              data: {
+                                   id: id,
+                                   act: act,
+                                   _token: '{{ csrf_token() }}'
+                              },
+                              success: function(result) {
+                                   //reload the page
+                                   location.reload();
+                              },
+                              error: function(e) {
+                                   console.log(e)
+                              }
+                         });
+                    });
+               });
+          </script>
      @endpush

@@ -14,15 +14,15 @@
                          <div class="content">
                               <li>
 
-                                   <a id="check" data-id="{{ $movie->id }}">
+                                   <a id="track" data-id="{{ $movie->id }}">
                                         <i class="fa-solid fa-bookmark {{ isset($reaction) && $reaction->is_tracked == 1 ? 'active' : null }}"></i>
                                         Track Show
                                    </a>
                               </li>
                               <li>
-                                   <a>
-                                        <i class="fa-solid fa-check"></i>
-                                        See All
+                                   <a id="watched" data-id="{{ $movie->id }}">
+                                        <i class="fa-solid fa-check-double {{ isset($reaction) && $reaction->is_watched == 1 ? 'active' : null }}"></i>
+                                        Watched
                                    </a>
                               </li>
                               <li>
@@ -262,10 +262,9 @@
                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                });
-               var id = $("#check").data("id");
-               console.log('ok', id);
 
-               $("#check").click(function() {
+               var id = $("#track").data("id");
+               $("#track").click(function() {
                     $.ajax({
                          url: "{{ route('home.movie.handle_reaction') }}",
                          method: 'POST',
@@ -276,7 +275,6 @@
                               _token: '{{ csrf_token() }}'
                          },
                          success: function(result) {
-                              console.log(result);
                               if (result.is_tracked) {
                                    $('.fa-bookmark').addClass("active");
                               } else {
@@ -301,7 +299,7 @@
                               _token: '{{ csrf_token() }}'
                          },
                          success: function(result) {
-                              console.log(result);
+
 
                               if (result.is_thumbs_up) {
                                    $('.fa-thumbs-up').addClass("active");
@@ -341,6 +339,29 @@
                                    $('.fa-thumbs-up').addClass("active");
                               } else {
                                    $('.fa-thumbs-up').removeClass("active");
+                              }
+                         },
+                         error: function(e) {
+                              console.log(e)
+                         }
+                    });
+               });
+               $("#watched").click(function() {
+                    $.ajax({
+                         url: "{{ route('home.movie.handle_reaction') }}",
+                         method: 'POST',
+                         dataType: "json",
+                         data: {
+                              id: id,
+                              act: 'watched',
+                              _token: '{{ csrf_token() }}'
+                         },
+                         success: function(result) {
+                                console.log(result);
+                              if (result.is_watched) {
+                                   $('.fa-check-double').addClass("active");
+                              } else {
+                                   $('.fa-check-double').removeClass("active");
                               }
                          },
                          error: function(e) {
