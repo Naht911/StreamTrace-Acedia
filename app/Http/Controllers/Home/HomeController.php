@@ -22,11 +22,12 @@ class HomeController extends Controller
         $top_ten = $movies->orderBy('count_view', 'desc')->take(10)->get();
         $new_ten = Movie::orderBy('created_at', 'desc')->take(20)->get();
         $movies = $movies->get();
-
+        $providers = StreamingServiceProvider::all();
         $data = [
             'movies' => $movies,
             'top_ten' => $top_ten,
             'new_ten' => $new_ten,
+            'providers' => $providers,
         ];
 
         return view('home.index', $data);
@@ -87,7 +88,7 @@ class HomeController extends Controller
         $count_tracked = $list_copy->where('is_tracked', 1)->count();
         $count_watched = $list_copy->where('is_watched', 1)->count();
         $count_thumbs_up = $list_copy->where('is_thumbs_up', 1)->count();
-        $count_thumbs_down =  $list_copy->where('is_thumbs_down', 1)->count();
+        $count_thumbs_down = $list_copy->where('is_thumbs_down', 1)->count();
         if ($reaction != null) {
             switch ($reaction) {
                 case 'tracked':

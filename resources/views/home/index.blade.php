@@ -31,15 +31,11 @@
                          <div class="brand-item">
                               <i class="fa-solid fa-plus"></i>
                          </div>
+                         @foreach($providers->take(3) as $item)
                          <div class="brand-item">
-                              <img src="/assets/home/img/icon.webp" alt="" />
+                              <img src="{{$item->logo}}" alt="" />
                          </div>
-                         <div class="brand-item">
-                              <img src="/assets/home/img/icon.webp" alt="" />
-                         </div>
-                         <div class="brand-item">
-                              <img src="/assets/home/img/icon.webp" alt="" />
-                         </div>
+                         @endforeach
                     </div>
                </div>
           </div>
