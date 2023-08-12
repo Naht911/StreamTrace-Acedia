@@ -41,9 +41,9 @@ document.querySelectorAll('.sort-watchlist .top button').forEach((link) => {
 document.querySelectorAll('.list-year .item').forEach((link) => {
     link.addEventListener('click', function () {
         if (this.classList.contains('active')) {
-            this.classList.remove('active'); 
+            this.classList.remove('active');
         } else {
-            this.classList.add('active'); 
+            this.classList.add('active');
         }
         const siblings = this.parentElement.querySelectorAll('.item');
         siblings.forEach((sibling) => {
@@ -58,9 +58,9 @@ document.querySelectorAll('.list-year .item').forEach((link) => {
 document.querySelectorAll('.list-genre .item').forEach((link) => {
     link.addEventListener('click', function () {
         if (this.classList.contains('active')) {
-            this.classList.remove('active'); 
+            this.classList.remove('active');
         } else {
-            this.classList.add('active'); 
+            this.classList.add('active');
         }
     });
 });
@@ -69,9 +69,9 @@ document.querySelectorAll('.list-genre .item').forEach((link) => {
 document.querySelectorAll('.list-price .item').forEach((link) => {
     link.addEventListener('click', function () {
         if (this.classList.contains('active')) {
-            this.classList.remove('active'); 
+            this.classList.remove('active');
         } else {
-            this.classList.add('active'); 
+            this.classList.add('active');
         }
     });
 });
@@ -80,23 +80,23 @@ document.querySelectorAll('.list-price .item').forEach((link) => {
 document.querySelectorAll('.list-country .item').forEach((link) => {
     link.addEventListener('click', function () {
         if (this.classList.contains('active')) {
-            this.classList.remove('active'); 
+            this.classList.remove('active');
         } else {
-            this.classList.add('active'); 
+            this.classList.add('active');
         }
     });
 });
 
 // Active
-document.querySelectorAll('.fa-bookmark').forEach((link) => {
-    link.addEventListener('click', function () {
-        if (this.classList.contains('active')) {
-            this.classList.remove('active'); 
-        } else {
-            this.classList.add('active'); 
-        }
-    });
-});
+// document.querySelectorAll('.fa-bookmark').forEach((link) => {
+//     link.addEventListener('click', function () {
+//         if (this.classList.contains('active')) {
+//             this.classList.remove('active');
+//         } else {
+//             this.classList.add('active');
+//         }
+//     });
+// });
 
 document.addEventListener('click', (e) => {
     const toggleBtn = document.querySelector('.toggleBtn');

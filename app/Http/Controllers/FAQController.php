@@ -8,26 +8,22 @@ use Illuminate\Console\View\Components\Alert;
 
 class FAQController extends Controller
 {
-    function create_new(Request $request)
+    function control_FAQ()
     {
-
-        // them 
-        if ($request) {
-            $check =  faq::create([
-                'question' => $request->question,
-                'answer' => $request->reply,
-            ]);
-        }
-        if ($check) {
-            return  back();
-        }
-    }
-    function showAllUser()
-    {
-        $faq = faq::all();
+        $faq = faq::paginate(5);
 
         if ($faq) {
-            return view('dashboard.FAQ.frequently_asked_questions')->with(
+            return view(
+                'dashboard.FAQ.frequently_asked_questions',
+                ['data' => $faq]
+            );
+        }
+    }
+    function FAQ()
+    {
+        $faq = faq::all();
+        if ($faq) {
+            return view('home.frequently_asked_questions')->with(
                 [
                     'data' =>
                     $faq,
@@ -35,55 +31,52 @@ class FAQController extends Controller
             );
         }
     }
-    function showAllAdmin()
+    function create()
     {
-        $faq = faq::all();
+        return view('dashboard.FAQ.add_frequently_asked_questions');
+    }
 
-        if ($faq) {
-            return view('dashboard.FAQ.frequently_asked_questions')->with(
-                [
-                    'data' =>
-                    $faq,
-                ]
-            );
+    function create_FAQ(Request $request)
+    {
+
+        // them 
+        if ($request->all()) {
+            $data =  faq::create([
+                'question' => $request->question,
+                'answer' => $request->answer,
+            ]);
+        }
+        if ($data) {
+            return redirect()->route('dashboard.FAQ');
         }
     }
-    function viewUpdate($id)
+
+
+    function edit_FAQ($id)
     {
 
-        $faq = faq::all()->where('id', $id);
-        return view('dashboard.FAQ.edit_frequently_asked_questions',  ['data' => $faq,]);
-        // return view('admin.frequently_asked_questions.frequently_asked_questions')->with(
-        //     [
-        //         'data' =>
-        //         $faq,
-        //     ]
-        // );
-
+        $faq = faq::find($id)->first();
+        return view('dashboard.FAQ.edit_frequently_asked_questions',  ['data' => $faq]);
     }
-    function update(Request $request)
+    function update_FAQ(Request $request, $id)
     {
         // them 
         if ($request) {
-            $check =  faq::where('id', $request->id)->update([
+            $check =  faq::where('id', $id)->update([
                 'question' => $request->question,
-                'answer' => $request->reply,
+                'answer' => $request->answer,
             ]);
-            return redirect()->route('dashboard.FAQ.viewAdminFAQ',  ['data' => $check,]);
+            if ($check) {
+                $data = faq::all();
+            }
+            return redirect()->route('dashboard.FAQ',  ['data' => $data,]);
         }
     }
-    function destroy($id)
+    function delete_FAQ($id)
     {
         $faq = faq::where('id', $id)->delete();
         if ($faq) {
-            $faq = faq::all();
-            return redirect()->route('dashboard.FAQ.viewAdminFAQ',  ['data' => $faq,]);
-            // return view('admin.frequently_asked_questions.frequently_asked_questions')->with(
-            //     [
-            //         'data' =>
-            //         $faq,
-            //     ]
-            // );
+            return redirect()->route('dashboard.FAQ');
         }
     }
 }

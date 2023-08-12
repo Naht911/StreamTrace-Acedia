@@ -568,7 +568,7 @@ class MovieController extends Controller
         if (!$movie_provider) {
             return abort(404);
         }
-        if($movie_provider->movie_id != $movie_id){
+        if ($movie_provider->movie_id != $movie_id) {
             return abort(404);
         }
         $providers = StreamingServiceProvider::all();
@@ -594,7 +594,7 @@ class MovieController extends Controller
         if (!$movie_provider) {
             return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
         }
-        if($movie_provider->movie_id != $movie_id){
+        if ($movie_provider->movie_id != $movie_id) {
             return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
         }
         $streaming_service_provider_id  = $request->streaming_service_provider_id;
@@ -605,7 +605,7 @@ class MovieController extends Controller
         if ($streaming_service_provider_id == null || $type_price_id == null || $movie_resolution_id == null || $price == null || $url == null) {
             return response()->json(['status' => 0, 'message' => 'Please fill all fields']);
         }
-        if($movie_provider->streaming_service_provider_id == $streaming_service_provider_id && $movie_provider->type_price_id == $type_price_id && $movie_provider->movie_resolution_id == $movie_resolution_id && $movie_provider->price == $price && $movie_provider->url == $url){
+        if ($movie_provider->streaming_service_provider_id == $streaming_service_provider_id && $movie_provider->type_price_id == $type_price_id && $movie_provider->movie_resolution_id == $movie_resolution_id && $movie_provider->price == $price && $movie_provider->url == $url) {
             return response()->json(['status' => 1, 'message' => 'Nothing changes']);
         }
         //check if price is number
@@ -648,7 +648,7 @@ class MovieController extends Controller
         if (!$movie_provider) {
             return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
         }
-        if($movie_provider->movie_id != $movie_id){
+        if ($movie_provider->movie_id != $movie_id) {
             return response()->json(['status' => 0, 'message' => 'Movie provider not found']);
         }
         $movie_provider->delete();

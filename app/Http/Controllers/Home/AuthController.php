@@ -21,7 +21,6 @@ class AuthController extends Controller
     public function RegisterPost(Request $request)
     {
         try {
-
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
                 return response()->json(['status' => 1, 'message' => 'Invalid email format']);
             }
@@ -40,7 +39,6 @@ class AuthController extends Controller
                 return response()->json(['status' => 1, 'message' => 'Password must be at least 6 characters long, contain at least one uppercase letter, and have at least one digit.']);
             }
 
-
             $user = new User();
 
             $user->name = $request->name;
@@ -49,7 +47,8 @@ class AuthController extends Controller
 
             $user->save();
 
-            // return redirect()->route('login')->with('success', 'Register successfully');
+            Auth::login($user);
+
             return response()->json(['status' => 0, 'message' => 'Register successfully']);
         } catch (\Exception $e) {
             return response()->json(['status' => 1, 'message' => 'An error occurred during registration']);
@@ -60,7 +59,6 @@ class AuthController extends Controller
     {
         return view('home/Auth/login');
     }
-
     public function loginPost(Request $request)
     {
         try {
@@ -69,7 +67,8 @@ class AuthController extends Controller
                 'password' => $request->password,
             ];
 
-            if (Auth::attempt($credetials)) {
+            $remember = $request->has('remember');
+            if (Auth::attempt($credetials, $remember)) {
                 return response()->json(['status' => 0, 'message' => 'Login Success']);
             }
 
@@ -82,11 +81,10 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
 
-    // here
     public function forgetpass()
     {
         return view('home.Auth.forget_password');
@@ -118,6 +116,8 @@ class AuthController extends Controller
                 ]);
             }
 
+            Auth::login($user);
+
             Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
                 $email->subject('acedia - password retrieval');
                 $email->to($user->email, $user->name);
@@ -145,8 +145,7 @@ class AuthController extends Controller
 
             return view('home/Auth/getpass', compact('user', 'token'));
         } catch (\Exception $e) {
-            // Handle the exception and return an error view
-            return view('home/Auth/error')->with('message', 'An error occurred while processing your request.');
+            return view('home/Auth/login');
         }
     }
 
@@ -174,7 +173,11 @@ class AuthController extends Controller
 
             $passwordResetToken->delete();
 
-            return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
+            if (Auth::attempt(['email' => $user->email, 'password' => $request->password])) {
+                return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
+            } else {
+                return response()->json(['status' => 1, 'message' => 'An error occurred while logging in with the new password.']);
+            }
         } catch (\Exception $e) {
             return response()->json(['status' => 1, 'message' => 'An error occurred while resetting the password.']);
         }

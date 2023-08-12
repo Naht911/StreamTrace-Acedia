@@ -6,10 +6,10 @@
 @push('css')
 @endpush
 @section('content')
-     @yield('breadcrumb-list')
+    @yield('breadcrumb-list')
 
-     <div class="container-fluid dashboard-default-sec">
-          <div class="row">
+    <div class="container-fluid dashboard-default-sec">
+        <div class="row">
 
                <div class="col-xl-12 box-col-12 des-xl-100 top-dealer-sec">
                     <div class="card">
@@ -22,10 +22,10 @@
                               <hr class="mb-3 mt-3">
 
 
-                         </div>
+                    </div>
 
 
-                         <div class="card-body">
+                    <div class="card-body">
 
                               <form id="create_pin">
                                 @csrf
@@ -76,24 +76,24 @@
 
 
 
-                                        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-                                   </div>
-                              </form>
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
 
 
-                         </div>
+                    </div>
 
-                         {{-- <div class="card-footer text-end">
+                    {{-- <div class="card-footer text-end">
                               {{ $movies->links() }}
                               <a href="{{ route('dashboard') }}" class="btn btn-danger">Back to Dashboard</a>
                          </div> --}}
 
-                    </div>
-               </div>
+                </div>
+            </div>
 
 
-          </div>
-     </div>
+        </div>
+    </div>
 
 
 
@@ -102,68 +102,68 @@
 
 <!-- Container-fluid Ends-->
 @push('scripts')
-     <script>
-          $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-               $('#create_pin').on('submit', function(e) {
-                    e.preventDefault();
-                    var formData = new FormData(this);
-                    $.ajax({
-                         url: "{{ route('dashboard.movie.store_movie_provider', $movie->id) }}",
-                         type: "POST",
-                         data: formData,
-                         cache: false,
-                         contentType: false,
-                         processData: false,
-                         beforeSend: function() {
-                              $('#submit').attr('disabled', 'disabled');
-                              $('#submit').html('Please wait...');
-                              Swal.fire({
-                                   title: 'Please Wait !',
-                                   text: 'Provider is being added',
-                                   allowOutsideClick: false,
-                                   showCancelButton: false,
-                                   showConfirmButton: false,
-                                   willOpen: () => {
-                                        Swal.showLoading();
-                                   },
-                              });
-                         },
-                         success: function(response) {
-                              if (response.status == 1) {
+            $('#create_pin').on('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: "{{ route('dashboard.movie.store_movie_provider', $movie->id) }}",
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('#submit').attr('disabled', 'disabled');
+                        $('#submit').html('Please wait...');
+                        Swal.fire({
+                            title: 'Please Wait !',
+                            text: 'Provider is being added',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+                    },
+                    success: function(response) {
+                        if (response.status == 1) {
 
-                                   Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success',
-                                        text: response.message,
-                                        showConfirmButton: true,
-                                        timer: 1500
-                                   });
-                                   $('#submit').removeAttr('disabled');
-                                   $('#submit').html('Save');
-                                   $('#create_pin')[0].reset();
-                              } else {
-                                   Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: response.message,
-                                   });
-                                   $('#submit').removeAttr('disabled');
-                                   $('#submit').html('Save');
-                              }
-                         },
-                         error: function(xhr, ajaxOptions, thrownError) {
-                              console.log(xhr);
-                              Swal.fire({
-                                   icon: 'error',
-                                   title: 'Oops...',
-                                   text: 'Something went wrong! Please try again later.',
-                              });
-                              $('#submit').removeAttr('disabled');
-                              $('#submit').html('Save');
-                         }
-                    });
-               });
-          });
-     </script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message,
+                                showConfirmButton: true,
+                                timer: 1500
+                            });
+                            $('#submit').removeAttr('disabled');
+                            $('#submit').html('Save');
+                            $('#create_pin')[0].reset();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.message,
+                            });
+                            $('#submit').removeAttr('disabled');
+                            $('#submit').html('Save');
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log(xhr);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong! Please try again later.',
+                        });
+                        $('#submit').removeAttr('disabled');
+                        $('#submit').html('Save');
+                    }
+                });
+            });
+        });
+    </script>
 @endpush

@@ -37,46 +37,65 @@
             width: 300px;
         }
     </style>
-    <form id="formId" method="get" class="input-group ">
-        <span class="input-group-text">Select Year</span>
-        <input type="text" class="form-control " style="max-width:150px; cursor: pointer;" value=" {{$_GET['year'] ?? 2023}} " name="year" id="datepicker" onChange="form.submit()" />
-    </form>
     <div class="row">
+        <div class="col-xl-12 box-col-12 des-xl-100 top-dealer-sec">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="text-center">
+                        <h4> User Register Performance by Month </h4>
+                    </div>
+                    <hr>
+                    <h6 class="text-center mb-3">
+                        Search
+                    </h6>
+                    <form id="formId" method="get" class="input-group ">
+                        <span class="input-group-text">Select Year</span>
+                        <input type="text" class="form-control " style="max-width:150px; cursor: pointer;" value=" {{$_GET['year'] ?? 2023}} " name="year" id="datepicker" onChange="form.submit()" />
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <h4 class="mt-5 text-lg font-bold">Chart view</h4>
+                        <canvas id="myChart" height="300px"></canvas>
 
-        <h5 class="mt-5">User Register Performance by Month</h5>
-        <canvas id="myChart" height="300px"></canvas>
-
-
-        <h5 class="mt-5">Table View</h5>
-        <table class="table table-striped table-responsive">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Register At</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($users as $data)
-                <tr>
-                    <td scope="row">{{ $data->id }}</td>
-                    <td>{{ $data->name }}</td>
-                    <td>{{ $data->email }}</td>
-                    <td>{{ $data->created_at->format('M Y') }}</td>
-                    <td>
-                        <button class="btn"><a href="{{ asset('dashboard/feedback/edit/' . $data->id) }}">Processing</a></button>
-                        <button class="btn"> <a href="{{ asset('dashboard/feedback/delete/' . $data->id) }}">Delete</a></button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        <h4 class="mt-5 text-lg font-bold">Table View</h4>
+                        <table class="table table-striped table-responsive">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Register At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($users as $data)
+                                <tr>
+                                    <td scope="row">{{ $data->id }}</td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>{{ $data->email }}</td>
+                                    <td>{{ $data->created_at->format('M Y') }}</td>
+                                    <td>
+                                        <button class="btn"><a href="{{ asset('dashboard/feedback/edit/' . $data->id) }}">Processing</a></button>
+                                        <button class="btn"> <a href="{{ asset('dashboard/feedback/delete/' . $data->id) }}">Delete</a></button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
 
 
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
     </div>
+
 </div>
 
 

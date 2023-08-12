@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
-use App\Models\MovieProvider;
+use App\Models\Reaction;
+use Illuminate\Support\Facades\Auth;use App\Models\MovieProvider;
 use App\Models\MovieTracking;
 
 class HomeController extends Controller
@@ -34,6 +35,23 @@ class HomeController extends Controller
             'movie' => $movie,
         ];
         return view('home.movie.movie_detail', $data);
+    }
+    public function movie_detail_copy($id)
+    {
+
+        $movie = Movie::with('providers')->find($id);
+        $reaction = Reaction::where('movie_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+        if ($movie == null) {
+            return abort(404);
+        }
+        // dd($movie);
+        $data = [
+            'movie' => $movie,
+            'reaction' =>$reaction,
+        ];
+        return view('home.movie.movie_detail_copy', $data);
     }
 
     public function outsite(Request $request, $movie_id)

@@ -25,6 +25,14 @@
         rel="stylesheet">
     @include('layouts.dashboard.partials.css')
 
+    <style>
+        body {
+            background-image: url('img/netflix.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -48,7 +56,7 @@
                                 <div class="input-group"><span class="input-group-text"><i
                                             class="icon-email"></i></span>
                                     <input class="form-control" type="email" name="email" id="email"
-                                        required="" placeholder="Test@gmail.com">
+                                        required="" placeholder="your Email">
                                 </div>
                                 <span id="emailError" class="error-message" style="color: red; font-size: 10px"></span>
                             </div>
@@ -64,18 +72,22 @@
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </div>
-                                <span id="passwordError" class="error-message" style="color: red; font-size: 10px"></span>
+                                <span id="passwordError" class="error-message"
+                                    style="color: red; font-size: 10px"></span>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
-                                    <input id="checkbox1" type="checkbox">
-                                    <label class="text-muted" for="checkbox1">Remember password</label>
-                                </div><a class="link" href="{{ route('forgetpass') }}">Forgot password?</a>
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        Remember password
+                                    </label>
+                                </div>
+                                <a class="link" href="{{ route('forgetpass') }}">Forgot password?</a>
                             </div>
                             <div class="form-group">
                                 <button class="btn btn-primary btn-block inline-block" type="submit">Sign in</button>
                             </div>
-                            <p>Don't have account?<a class="ms-2" href="{{ route('Registration') }}">Create
+                            <p>Don't have account?<a class="ms-2" href="{{ route('registration') }}">Create
                                     Account</a></p>
                         </form>
                     </div>
@@ -142,7 +154,7 @@
                     if (data.status == 0) {
                         $("#Login").resetForm();
                         Swal.fire({
-                                title: "finished!",
+                                title: "Finished!",
                                 text: data.message,
                                 type: "success",
                                 confirmButtonClass: 'btn-success',
@@ -150,7 +162,7 @@
                             })
                             .then((result) => {
                                 if (result.value) {
-                                    window.location.assign('/dashboard');
+                                    window.location.assign('/');
                                 }
                             });
                     } else {

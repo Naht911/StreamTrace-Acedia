@@ -4,42 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+
 
 
 class FeedbackController extends Controller
 {
     function feedback()
     {
-
         return view('home/feedback');
     }
-    public function showAll()
+    public function list_feedback(Request $request)
     {
-        $feedback = feedback::all();
-        $feedback2 = feedback::all();
 
-        if ($feedback) {
-            return view('dashboard.feedback.viewfeedback')->with(
+        if ($request->status) {
+            $feedback = feedback::where('status', $request->status);
+        } else {
+            $feedback =  new feedback;
+        }
+        $data = $feedback->paginate(6);
+        // $data3 = feedback::all()->where('status', 1);
+        if ($data) {
+            return view('dashboard.feedback.list_feedback', ['status' => $request->status])->with(
                 [
-                    'data' =>
-                    $feedback,
+                    // 'data1' =>
+                    // $data1,
                     'data2' =>
-                    $feedback2
+                    $data,
+                    // 'data3' =>
+                    // $data3,
 
                 ]
             );
+        } else {
+            return abort(404);
         }
     }
 
 
-    public function add(Request $request)
+    public function create_feedback(Request $request)
     {
         if ($request) {
             $check =  feedback::create([
                 'title' => $request->title,
                 'email' => $request->email,
                 'content' => $request->content,
+                'status' => 'received',
             ]);
         }
         if ($check) {
@@ -70,21 +81,26 @@ class FeedbackController extends Controller
     //         ], 404);
     //     }
     // }
-    function editView($id)
+    function edit_feedback($id)
     {
-        $data = feedback::where('id', $id)->get();
-        return view('dashboard.feedback.edit_feedback')->with('data', $data);
+        $data = feedback::find($id)->first();
+
+        return view('dashboard.feedback.edit_feedback', [
+            'data' => $data,
+
+        ]);
     }
 
-    public function edit(Request $request)
+    public function update_feedback(Request $request, $id)
     {
         if ($request) {
-            $check =  feedback::where('id', $request->id)->update([
+            $check =  feedback::where('id', $id)->update([
                 'email' => $request->email,
                 'title' => $request->title,
                 'content' => $request->content,
-                'content_handle' => $request->contentHandle,
-                'date_handle' => $request->dateHandle,
+                'status' => 'pending',
+                'content_handle' => $request->content_handle,
+
             ]);
         }
         if ($check) {
@@ -97,7 +113,7 @@ class FeedbackController extends Controller
                 $feedback = feedback::all();
 
                 if ($feedback) {
-                    return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
+                    return redirect()->route('dashboard.feedback',  ['data' => $feedback,]);
                     // return view('admin.viewfeedback')->with(
                     //     [
                     //         'data' =>
@@ -109,12 +125,42 @@ class FeedbackController extends Controller
             }
         } else {
             $feedback = feedback::all();
-            return redirect()->route('dashboard.feedback.viewFeedback',  ['data' => $feedback,]);
+            return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
+        }
+    }
+    public function complete_processing(Request $request)
+    {
+
+        $check =  feedback::where('id', $request->id)->update([
+            'status' => 'completed',
+        ]);
+
+
+        if ($check) {
+            $data = feedback::find($check)->first();
+
+
+            Mail::send('emails.completed_feedback', ['data' => $data], function ($email) use ($data) {
+                $email->subject('acedia - password retrieval');
+                $email->to($data->email);
+            });
+
+            $feedback = feedback::paginate(10);
+            if ($feedback) {
+                $feedback = feedback::all();
+
+                if ($feedback) {
+                    return redirect()->route('dashboard.feedback',  ['data' => $feedback,]);
+                }
+            }
+        } else {
+            $feedback = feedback::all();
+            return redirect()->route('dashboard.feedback.feedback',  ['data' => $feedback,]);
         }
     }
 
 
-    public function delete($id)
+    public function delete_feedback($id)
     {
         $feedback = feedback::where('id', $id)->first();
         if ($feedback) {

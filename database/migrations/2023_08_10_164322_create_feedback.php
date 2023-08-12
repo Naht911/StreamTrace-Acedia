@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('email');
             $table->text('title');
             $table->text('content');
+            $table->string('status');
             $table->date('date_handle')->nullable();
             $table->text('content_handle')->nullable();
+
             $table->timestamps();
         });
     }

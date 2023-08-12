@@ -17,6 +17,8 @@ class Movie extends Model
         return $this->belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
     }
 
+
+
     public function providers()
     {
         return $this->belongsToMany(StreamingServiceProvider::class, 'movie_provider', 'movie_id', 'streaming_service_provider_id')
