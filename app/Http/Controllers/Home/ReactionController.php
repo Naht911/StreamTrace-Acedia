@@ -77,7 +77,7 @@ class ReactionController extends Controller
                 'is_tracked' => false,
             ]);
         }
-        if($act == null){
+        if ($act == null) {
             return response()->json([
                 'status' => -1,
                 'message' => 'Act less',
@@ -148,6 +148,48 @@ class ReactionController extends Controller
                 'is_thumbs_down' => $reaction->is_thumbs_down == 1,
                 'is_thumbs_up' => $reaction->is_thumbs_up == 1,
                 'is_tracked' => $reaction->is_tracked == 1,
+            ]);
+        }
+    }
+
+    public function postStar(Request $request)
+    {
+        if (!Auth::user()) {
+            return response()->json([
+                'status' => -1,
+                'message' => 'Please login first',
+                'is_tracked' => false
+            ]);
+        }
+        $id = $request->id ?? null;
+        if ($id == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Movie not found!',
+                'is_tracked' => false
+            ]);
+        }
+        $movie = Movie::find($id);
+        if ($movie == null) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Movie not found!',
+                'is_tracked' => false
+            ]);
+        }
+
+
+
+        $rating = StarRating::where('movie_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+        if ($rating) {
+            $rating = new StarRating;
+            $rating->user_id = Auth::id();
+            $rating->rating = $request->input('rating');
+            return response()->json([
+                'status' => 1,
+                'message' => 'Add to watchlist successfully',
             ]);
         }
     }

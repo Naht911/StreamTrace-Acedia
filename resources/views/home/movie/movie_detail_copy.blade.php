@@ -1,28 +1,63 @@
 @extends('layouts.home.home_layout')
 @section('title', 'Home')
 @push('css')
+    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+
+    <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
 @endpush
 
 
 @section('content')
+    <style>
+        .star-rating {
+            white-space: nowrap;
+        }
+
+        .star-rating [type="radio"] {
+            display: none;
+        }
+
+        .star-rating i {
+            font-size: 1.2em;
+            transition: 0.3s;
+        }
+
+        .star-rating label:is(:hover, :has(~ :hover)) i {
+            transform: scale(1.35);
+            color: #fffdba;
+            animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
+        }
+
+        .star-rating label:has(~ :checked) i {
+            color: #faec1b;
+            text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
+        }
+
+        @keyframes jump {
+
+            0%,
+            50% {
+                transform: translatey(0) scale(1.35);
+            }
+
+            100% {
+                transform: translatey(-15%) scale(1.35);
+            }
+        }
+    </style>
     <div class="banner">
         <video src="https://youtu.be/KU9X4Xyb8JE" poster="/assets/home/img/dark-winds.webp"></video>
         <div class="banner-content">
             <div class="poster">
                 <div class="img">
-                    <img src="/assets/home/img/dark-winds (1).webp" alt="" srcset="" />
-                    <div class="content">
+                    <img src="/assets/home/img/dark-winds (1).webp" style="width:100%; height:570px; object-fit: cover;"
+                        alt="" srcset="" />
+                    <div class="content" style="justify-content: space-around;">
                         <li>
 
                             <a id="check" data-id="{{ $movie->id }}">
                                 <i class="fa-solid fa-bookmark {{ $reaction->is_tracked == 1 ? 'active' : null }}"></i>
                                 Track Show
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <i class="fa-solid fa-check"></i>
-                                See All
                             </a>
                         </li>
                         <li>
@@ -40,6 +75,21 @@
                         </li>
                     </div>
                 </div>
+                {{-- Star Rating --}}
+
+                <p  class="text-center text-xl my-10" style="margin: 10px auto;"><span class="star-rating" id="star-rating" data-id="{{ $movie->id }}">
+                        <label for="rate-1" style="--i:1"><i class="fa-solid fa-star text-white"></i></label>
+                        <input type="radio" name="rating" id="rate-1" value="1">
+                        <label for="rate-2" style="--i:2"><i class="fa-solid fa-star text-white"></i></label>
+                        <input type="radio" name="rating" id="rate-2" value="2" checked>
+                        <label for="rate-3" style="--i:3"><i class="fa-solid fa-star text-white"></i></label>
+                        <input type="radio" name="rating" id="rate-3" value="3">
+                        <label for="rate-4" style="--i:4"><i class="fa-solid fa-star text-white"></i></label>
+                        <input type="radio" name="rating" id="rate-4" value="4">
+                        <label for="rate-5" style="--i:5"><i class="fa-solid fa-star text-white"></i></label>
+                        <input type="radio" name="rating" id="rate-5" value="5">
+                    </span></p>
+                {{-- End Star Rating --}}
                 <div class="poster-content">
                     <div class="title">
                         <h3>RATING</h3>
@@ -268,7 +318,6 @@
                 }
             });
             var id = $("#check").data("id");
-            console.log('ok', id);
 
             $("#check").click(function() {
                 $.ajax({
@@ -354,6 +403,37 @@
                 });
             });
 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var id = $(".star-rating").data("id");
+            var rating = $('input[name="rating"]:checked').val();
+
+            console.log('ok', id);
+            console.log('rating', rating);
+
+
+            $(".star-rating input").click(function() {
+                 rating = $('input[name="rating"]:checked').val();
+                $.ajax({
+                    url: "{{ route('home.movie.handle_rating') }}",
+                    method: 'POST',
+                    dataType: "json",
+                    data: {
+                        id: id,
+                        rating: rating,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(result) {
+                        console.log(result);
+                    },
+                    error: function(e) {
+                        console.log(e)
+                    }
+                });
+            });
         });
     </script>
 @endpush

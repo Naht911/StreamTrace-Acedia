@@ -16,6 +16,9 @@
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/style.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/responsive.css') }}">
+     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+
+<link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
 
 </head>
 
@@ -105,6 +108,8 @@
      </script>
 
      <script src="/assets/home/js/javascript.js"></script>
+     <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
+     <script src="//unpkg.com/alpinejs" defer></script>
      @stack('scripts')
 </body>
 
