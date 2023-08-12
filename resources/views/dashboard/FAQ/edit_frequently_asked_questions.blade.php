@@ -11,64 +11,52 @@
 @section('content')
     @yield('breadcrumb-list')
     <!-- Container-fluid starts-->
+    <div class="container-fluid dashboard-default-sec">
+        <div class="row">
+            <div style="" class="card">
 
-    <div style="margin-left: 40px; margin-top: 80px">
-        <h2 style="text-align: center; margin-left: -50px">Edit feedback</h2>
-        <div style="width: 90%">
-            @if (Session::has('alert'))
-                <div class="alert alert-success">
-                    {{ Session::get('alert') }}
+                <div style="width: 90%">
+                    @if (Session::has('alert'))
+                        <div class="alert alert-success">
+                            {{ Session::get('alert') }}
+                        </div>
+                    @endif
+                    {{-- <form action="{{ url('dashboard/feedback/update_feedback') }}" method="POST" enctype="multipart/form-data"
+                id="myForm"> --}}
+
+                    @csrf
+                    {{-- @foreach ($data as $item) --}}
+                    <div class="card-body">
+                        <h4 class="display-3 ">Create Frequently Asked Questions</h4> <br>
+                        <form class="needs-validation" method="POST" {{-- action="{{ route('dashboard.feedback.update_feedback') }}"  --}} enctype="multipart/form-data">
+                            @csrf
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label" for="validationCustom01">Question</label>
+                                    <textarea rows="5" class="form-control" id="validationCustom01" name="question" type="text" required="">{{ $data->question }}</textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label" for="validationCustom02">Answer</label>
+                                    <textarea rows="5" class="form-control" id="validationCustom01" name="answer" type="text" required="">{{ $data->answer }}</textarea>
+                                </div>
+                                {{-- <div class="col-md-12">
+                                    <label class="form-label" for="validationCustom02">Content</label>
+                                    <input readonly class="form-control" id="validationCustom02" name="content"
+                                        type="text" value="{{ $item->content }}" required="">
+                                </div> --}}
+                            </div>
+                            <button class="btn btn-primary" type="submit">Submit form</button>
+                        </form>
+                    </div>
+                    {{-- @endforeach --}}
+
+                    {{-- </form> --}}
                 </div>
-            @endif
-            <form action="{{ url('dashboard/feedback/edit') }}" method="POST" enctype="multipart/form-data" id="myForm">
+            </div>
 
-                @csrf
-                @foreach ($data as $item)
-                    <div style="border:1px solid; padding: 50px; margin-left: 20px">
-                        <input readonly type="number" hidden class="form-control" name="id"
-                            value="{{ $item->id }}" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email:</label>
-                            <input style="height: 60px" type="text" class="form-control" name="email"
-                                value="{{ $item->question }}" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Title:</label>
-                            <input style="height: 60px" type="text" class="form-control" value="{{ $item->answer }}"
-                                name="title" id="title">
-                        </div>
-                        <div style="text-align: center">
-                            <button type="submit" class="btn btn-primary" id="submit"
-                                onclick="checkSubmit()">Submit</button>
-                        </div>
-                @endforeach
-
-                {{-- <div class="mb-3 form-check">
-                        <input type="checkbox" name="buttoncheck" class="form-check-input" id="myCheckbox">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div> --}}
         </div>
-        {{-- <br>
-                    <div style="border:1px solid; padding: 30px; margin-left: 20px">
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Processing content:</label>
-                            <input required type="text" class="form-control" name="contentHandle" id="contentHandle">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">processing date:</label>
-                            <input required type="date" class="form-control" name="dateHandle" id="dateHandle">
-                        </div>
-                        <button type="submit" class="btn btn-primary" id="submit"
-                            onclick="checkSubmit()">Submit</button>
-
-                    </div> --}}
-
-
-        </form>
     </div>
     </div>
-
-
 @endsection
 
 <!-- Container-fluid Ends-->
