@@ -41,7 +41,7 @@ class FAQController extends Controller
 
         // them 
         if ($request->all()) {
-            $data =  faq::create([
+            $data = faq::create([
                 'question' => $request->question,
                 'answer' => $request->answer,
             ]);
@@ -55,21 +55,21 @@ class FAQController extends Controller
     function edit_FAQ($id)
     {
 
-        $faq = faq::find($id)->first();
-        return view('dashboard.FAQ.edit_frequently_asked_questions',  ['data' => $faq]);
+        $faq = faq::find($id);
+        return view('dashboard.FAQ.edit_frequently_asked_questions', ['data' => $faq]);
     }
     function update_FAQ(Request $request, $id)
     {
         // them 
         if ($request) {
-            $check =  faq::where('id', $id)->update([
+            $check = faq::where('id', $id)->update([
                 'question' => $request->question,
                 'answer' => $request->answer,
             ]);
             if ($check) {
                 $data = faq::all();
             }
-            return redirect()->route('dashboard.FAQ',  ['data' => $data,]);
+            return redirect()->route('dashboard.FAQ', ['data' => $data,]);
         }
     }
     function delete_FAQ($id)
