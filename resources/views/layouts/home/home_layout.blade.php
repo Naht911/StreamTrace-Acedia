@@ -19,8 +19,8 @@
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/style.css') }}">
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/responsive.css') }}">
 
-     <script src="/assets/home/js/javascript_profile.js"></script>
-     <script src="/assets/home/js/js-popular.js"></script>
+
+     {{-- <script src="/assets/home/js/js-popular.js"></script> --}}
      @stack('css')
 
 </head>
@@ -111,6 +111,7 @@
      </script>
 
      <script src="/assets/home/js/javascript.js"></script>
+     {{-- <script src="/assets/home/js/javascript_profile.js"></script> --}}
      @stack('scripts')
 </body>
 
