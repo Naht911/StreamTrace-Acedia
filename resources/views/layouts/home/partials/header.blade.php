@@ -2,7 +2,7 @@
      <div class="container">
           <div class="header-left">
                <a href="{{ route('home') }}" class="header-logo">
-                    <img src="/assets/home/img/JustWatch-logo-large.webp" alt="" />
+                    <img src="{{ asset('img/acedia.png') }}" alt="" />
                </a>
           </div>
           <div class="header-right">
