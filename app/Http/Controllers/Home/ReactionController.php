@@ -75,6 +75,9 @@ class ReactionController extends Controller
             if ($act == 'tracked') {
                 $reaction->is_tracked = 1;
             }
+            if($act == 'watched'){
+                $reaction->is_watched = 1;
+            }
             $reaction->save();
 
             return response()->json([
@@ -83,6 +86,7 @@ class ReactionController extends Controller
                 'is_thumbs_down' => $act == 'thumbs_down',
                 'is_thumbs_up' => $act == 'thumbs_up',
                 'is_tracked' => $act == 'tracked',
+                'is_watched' => $act == 'watched',
             ]);
         } else {
             //nếu tìm thấy thì xử lý tùy tường hợp
@@ -100,14 +104,18 @@ class ReactionController extends Controller
                     $reaction->is_thumbs_up = 0;
                 }
                 $reaction->is_thumbs_down = abs($reaction->is_thumbs_down - 1);
+            } elseif ($act == 'watched') {
+                $reaction->is_watched = abs($reaction->is_watched - 1);
             }
+
             $reaction->save();
             return response()->json([
                 'status' => 1,
                 'message' => $act . ' successfully!',
-                'is_thumbs_down' => $reaction->is_thumbs_down == 1,
-                'is_thumbs_up' => $reaction->is_thumbs_up == 1,
+                'is_thumbs_down' => $reaction->is_thumbs_down == 1 ,
+                'is_thumbs_up' => $reaction->is_thumbs_up == 1 ,
                 'is_tracked' => $reaction->is_tracked == 1,
+                'is_watched' => $reaction->is_watched == 1,
             ]);
         }
     }

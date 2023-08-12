@@ -2357,6 +2357,19 @@ td {
     color: #ddad00;
     cursor: pointer;
 }
+.fa-thumbs-down.active {
+    color: #ddad00;
+    cursor: pointer;
+}
+
+.fa-check-double.active {
+    color: #ddad00;
+    cursor: pointer;
+}
+.fa-bookmark.active {
+    color: #ddad00;
+    cursor: pointer;
+}
 
 .setting .content .content-setting {
     display: flex;

@@ -103,6 +103,8 @@ class HomeController extends Controller
                     $wathchlist = $wathchlist->where('is_thumbs_down', 1);
                     break;
             }
+        }else{
+            $wathchlist = $wathchlist->where('is_tracked', 1);
         }
 
 
