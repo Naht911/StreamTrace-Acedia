@@ -45,7 +45,7 @@
             <div class="row m-0">
                 <div class="col-12 p-0">
                     <div class="login-card">
-                        <form id="Registration" class="theme-form login-form" action="{{ route('registerPost') }}"
+                        <form id="Registration" class="theme-form login-form" action="{{ route('register.process') }}"
                             method="POST">
                             @csrf
                             <h4>Create your account</h4>
@@ -75,7 +75,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="icon-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password"
-                                        required="" placeholder="password" value="Aq111111">
+                                        required="" placeholder="password">
                                     <span class="input-group-text" id="toggleIconPassword"
                                         onclick="togglePasswordVisibility('password')">
                                         <i class="fas fa-eye"></i>
@@ -237,7 +237,7 @@
             // Xử lý đăng nhập
             $("#Registration").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('registerPost') }}',
+                url: '{{ route('register.process') }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },

@@ -11,7 +11,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\PopularController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
-use App\Models\StreamingServiceProvider;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,17 +51,19 @@ Route::post('/create_feedback', [FeedbackController::class, 'create_feedback'])-
 Route::get('/FAQ', [FAQController::class, 'FAQ'])->name('FAQ');
 
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('loginPost');
-Route::get('/forget-password', [AuthController::class, 'forgetpass'])->name('forgetpass');
-Route::post('/forget-password', [AuthController::class, 'forgetpassPost'])->name('forgetpassPost');
-Route::get('/get-password/{user}/{token}', [AuthController::class, 'getpass'])->name('getpass');
-Route::post('/get-password/{user}/{token}', [AuthController::class, 'getpassPost'])->name('getpassPost');
-Route::get('/registration', [AuthController::class, 'Register'])->name('registration');
-Route::post('/registration', [AuthController::class, 'RegisterPost'])->name('registerPost');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
+
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
+Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('forgotPassword.process');
+
+Route::get('/reset-password/{user}/{token}', [AuthController::class, 'showResetPasswordForm'])->name('resetPassword');
+Route::post('/reset-password/{user}/{token}', [AuthController::class, 'processResetPassword'])->name('resetPassword.process');
+
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
 
 Route::prefix('dashboard')
     ->middleware([
@@ -105,6 +107,13 @@ Route::prefix('dashboard')
             Route::post('/edit_provider/{id?}', [StreamingProviderController::class, 'update_provider'])->where(['id' => '[0-9]+'])->name('dashboard.provider.update_provider');
             Route::post('/delete_provider', [StreamingProviderController::class, 'delete_provider'])->name('dashboard.provider.delete_provider');
         });
+
+        Route::prefix('user')->group(function () {
+            Route::get('/', [DashboardController::class, 'list_user'])->name('dashboard.user.list_user');
+            Route::get('/edit_user/{id?}', [DashboardController::class, 'edit_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.edit_user');
+            Route::post('/edit_user/{id?}', [DashboardController::class, 'update_user'])->where(['id' => '[0-9]+'])->name('dashboard.user.update_user');
+        });
+
         Route::prefix('feedback')->group(function () {
             Route::get('/{status?}', [FeedbackController::class, 'list_feedback'])->name('dashboard.feedback');
             Route::get('/edit_feedback/{id?}', [FeedbackController::class, 'edit_feedback'])->where(['id' => '[0-9]+'])->name('dashboard.feedback.edit_feedback');
@@ -118,7 +127,7 @@ Route::prefix('dashboard')
             Route::post('/create_FAQ', [FAQController::class, 'create_FAQ'])->name('dashboard.FAQ.create_FAQ');
             Route::get('/edit_FAQ/{id?}', [FAQController::class, 'edit_FAQ'])->name('dashboard.FAQ.edit_FAQ');
             Route::post('/edit_FAQ/{id?}', [FAQController::class, 'update_FAQ'])->name('dashboard.FAQ.update_FAQ');
-            Route::get('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');
+            Route::post('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');
         });
 
 

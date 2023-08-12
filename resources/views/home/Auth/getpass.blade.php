@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <title>Login</title>
+    <title>Reset Password</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
@@ -46,7 +46,7 @@
                 <div class="col-xl-12 p-0">
                     <div class="login-card">
                         <form id="reset_Password" class="theme-form login-form" method="POST"
-                            action="{{ route('getpassPost', ['user' => $user->id, 'token' => $token]) }}">
+                            action="{{ route('resetPassword.process', ['user' => $user->id, 'token' => $token]) }}">
                             @csrf
                             <h4>reset Password</h4>
                             <div class="form-group">
@@ -79,7 +79,7 @@
             // Xử lý đăng nhập
             $("#reset_Password").ajaxForm({
                 dataType: 'json',
-                url: '{{ route('getpassPost', ['user' => $user->id, 'token' => $token]) }}',
+                url: '{{ route('resetPassword.process', ['user' => $user->id, 'token' => $token]) }}',
                 beforeSend: function() {
                     Swal.showLoading()
                 },

@@ -13,12 +13,12 @@ use App\Models\PasswordResetToken;
 
 class AuthController extends Controller
 {
-    public function Register()
+    public function showRegistrationForm()
     {
-        return view('home/Auth/Registration');
+        return view('home.Auth.Registration');
     }
 
-    public function RegisterPost(Request $request)
+    public function processRegistration(Request $request)
     {
         try {
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -55,26 +55,32 @@ class AuthController extends Controller
         }
     }
 
-    public function login()
+    public function showLoginForm()
     {
-        return view('home/Auth/login');
+        return view('home.Auth.login');
     }
-    public function loginPost(Request $request)
+    public function processLogin(Request $request)
     {
         try {
-            $credetials = [
+            $credentials = [
                 'email' => $request->email,
                 'password' => $request->password,
             ];
 
+            $userExists = User::where('email', $request->email)->exists();
+            if (!$userExists) {
+                return response()->json(['status' => 1, 'message' => 'Email does not exist']);
+            }
+
             $remember = $request->has('remember');
-            if (Auth::attempt($credetials, $remember)) {
+
+            if (Auth::attempt($credentials, $remember)) {
                 return response()->json(['status' => 0, 'message' => 'Login Success']);
             }
 
             return response()->json(['status' => 1, 'message' => 'Error Email or Password']);
         } catch (\Exception $e) {
-            return response()->json(['status' => -1, 'message' => 'An error occurred while processing your request.']);
+            return response()->json(['status' => 1, 'message' => 'An error occurred while processing your request.']);
         }
     }
 
@@ -85,12 +91,12 @@ class AuthController extends Controller
     }
 
 
-    public function forgetpass()
+    public function showForgotPasswordForm()
     {
         return view('home.Auth.forget_password');
     }
 
-    public function forgetpassPost(Request $request)
+    public function processForgotPassword(Request $request)
     {
         try {
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -130,7 +136,7 @@ class AuthController extends Controller
     }
 
 
-    public function getpass(user $user, $token)
+    public function showResetPasswordForm(user $user, $token)
     {
         try {
             $user = User::findOrFail($user->id);
@@ -149,7 +155,7 @@ class AuthController extends Controller
         }
     }
 
-    public function getpassPost(Request $request, User $user, $token)
+    public function processResetPassword(Request $request, User $user, $token)
     {
 
         try {
