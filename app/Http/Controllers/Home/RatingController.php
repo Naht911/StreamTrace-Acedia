@@ -49,6 +49,9 @@ class RatingController extends Controller
                 'status' => 1,
                 'message' => 'Rated successfully',
             ]);
+        } else {
+            $rating->rating = $request->rating;
+            $rating->save();
         }
     }
 }
