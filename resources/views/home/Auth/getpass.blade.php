@@ -95,7 +95,7 @@
                             })
                             .then((result) => {
                                 if (result.value) {
-                                    window.location.assign('/login');
+                                    window.location.assign('/');
                                 }
                             });
                     } else {

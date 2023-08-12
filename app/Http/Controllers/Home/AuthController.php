@@ -46,7 +46,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
 
             $user->save();
-            
+
             Auth::login($user);
 
             return response()->json(['status' => 0, 'message' => 'Register successfully']);
@@ -81,7 +81,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
 
@@ -115,7 +115,7 @@ class AuthController extends Controller
                     'token' => $token,
                 ]);
             }
-            
+
             Auth::login($user);
 
             Mail::send('emails.check_email_forget', compact('user', 'passwordResetToken'), function ($email) use ($user) {
@@ -173,7 +173,11 @@ class AuthController extends Controller
 
             $passwordResetToken->delete();
 
-            return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
+            if (Auth::attempt(['email' => $user->email, 'password' => $request->password])) {
+                return response()->json(['status' => 0, 'message' => 'Your password has been reset successfully. You can now log in with your new password.']);
+            } else {
+                return response()->json(['status' => 1, 'message' => 'An error occurred while logging in with the new password.']);
+            }
         } catch (\Exception $e) {
             return response()->json(['status' => 1, 'message' => 'An error occurred while resetting the password.']);
         }

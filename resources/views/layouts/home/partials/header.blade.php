@@ -27,7 +27,7 @@
                 </div>
             @else
                 <div class="buttons">
-                    <a href="{{ route('login.show') }}">Sign In</a>
+                    <a href="{{ route('login') }}">Sign In</a>
                 </div>
             @endif
             <li class="toggleBtn">
