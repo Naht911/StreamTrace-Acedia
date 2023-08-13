@@ -70,7 +70,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/actived/{user}/{token}', [AuthController::class, 'actived'])->name('actived');
 
 
-Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
+// Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
 
 
 Route::prefix('profile')->group(function () {
@@ -94,7 +94,7 @@ Route::prefix('dashboard')
     ->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::prefix('movie')->group(function () {
-            Route::get('/', [MovieController::class, 'list_movie'])->name('dashboard.movie.list_movie');
+            // Route::get('/', [MovieController::class, 'list_movie'])->name('dashboard.movie.list_movie');
             Route::get('/{id}', [MovieController::class, 'detail_movie'])->where(['id' => '[0-9]+'])->name('dashboard.movie.detail_movie');
             Route::get('/list_movie', [MovieController::class, 'list_movie'])->name('dashboard.movie.list_movie');
             Route::get('/edit_movie/{id?}', [MovieController::class, 'edit_movie'])->where(['id' => '[0-9]+'])->name('dashboard.movie.edit_movie');
@@ -143,7 +143,7 @@ Route::prefix('dashboard')
         Route::prefix('FAQ')->group(function () {
             Route::get('/', [FAQController::class, 'control_FAQ'])->name('dashboard.FAQ');
             Route::get('/create_FAQ', [FAQController::class, 'create'])->name('dashboard.FAQ.create_FAQ');
-            Route::post('/create_FAQ', [FAQController::class, 'create_FAQ'])->name('dashboard.FAQ.create_FAQ');
+            Route::post('/create_FAQ', [FAQController::class, 'create_FAQ'])->name('dashboard.FAQ.store_FAQ');
             Route::get('/edit_FAQ/{id?}', [FAQController::class, 'edit_FAQ'])->name('dashboard.FAQ.edit_FAQ');
             Route::post('/edit_FAQ/{id?}', [FAQController::class, 'update_FAQ'])->name('dashboard.FAQ.update_FAQ');
             Route::post('/delete_FAQ/{id?}', [FAQController::class, 'delete_FAQ'])->name('dashboard.FAQ.delete_FAQ');

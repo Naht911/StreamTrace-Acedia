@@ -20,7 +20,7 @@
                 <form action="{{route('search_movie')}}" method="GET">
                     <input type="text" name="search_movie" id="search_movie" placeholder="Search for movies" class="searchInput" autofocus style="margin-left:15px; margin-top:15px"/>
                     <button type="submit" name="search-outline" class="search"><i class="fas fa-search"></i></button>
-                        
+
                     </div>
                 </form>
             </li>
@@ -36,6 +36,9 @@
                     @if (Auth::check())
                         <div class="row text-white">
                             <a href="{{ route('Profile') }}"> Profile </a>
+                        </div>
+                        <div class="row text-white">
+                            <a href="{{ route('dashboard') }}"> Dashboard </a>
                         </div>
                         <div class="row text-white">
                             <form action="{{ route('logout') }}" method="POST">
