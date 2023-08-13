@@ -10,6 +10,7 @@ use App\Models\Reaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MovieProvider;
 use App\Models\MovieTracking;
+use App\Models\StarRating;
 use App\Models\StreamingServiceProvider;
 use NunoMaduro\Collision\Provider;
 
@@ -170,18 +171,23 @@ class HomeController extends Controller
 
     public function movie_detail($id)
     {
-
         $movie = Movie::with('providers')->find($id);
         $reaction = Reaction::where('movie_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+        $rating = StarRating::where('movie_id', $id)
             ->where('user_id', Auth::id())
             ->first();
         if ($movie == null) {
             return abort(404);
         }
+
         $data = [
             'movie' => $movie,
             'reaction' => $reaction,
+            'rating' => $rating,
         ];
+        // dd($rating);
         $movie->count_view = $movie->count_view + 1;
         $movie->save();
         return view('home.movie.movie_detail', $data);
