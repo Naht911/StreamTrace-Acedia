@@ -1,6 +1,6 @@
 # Home Page
 
-![Home Page](https://streamtrace.xyz/) 
+https://streamtrace.xyz
 
 # How to Install
 
