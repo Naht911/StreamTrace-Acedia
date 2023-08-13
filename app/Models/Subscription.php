@@ -10,11 +10,30 @@ class Subscription extends Model
     use HasFactory;
     protected $table = 'subscription';
 
-    protected $fillable = ['id', 'user_id', 'streaming_service_id', 'custom_name', 'price', 'type_price_id', 'subscription_date', 'expiration_date', 'status', 'created_at', 'updated_at'];
-
-    //mỗi phim có nhiều reaction
-    public function users()
+    //một user có nhiều subscription
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    //mỗi subscription thuộc về 1 type_price
+    public function typePrice()
+    {
+        return $this->belongsTo(TypePrice::class, 'type_price_id', 'id');
+    }
+    //mỗi subscription thuộc về 1 streaming_service_provider
+    public function streamingServiceProvider()
+    {
+        return $this->belongsTo(StreamingServiceProvider::class, 'streaming_service_id', 'id');
+    }
+
+    //hàm lấy tất cả các subscription của 1 user.
+    //sử dụng Eager Loading để lấy luôn tên của type_price và streaming_service_provider
+    public function getAllSubscriptionOfUser($user_id)
+    {
+        return Subscription::where('user_id', $user_id)
+            ->with('typePrice')
+            ->with('streamingServiceProvider')
+            ->get();
     }
 }

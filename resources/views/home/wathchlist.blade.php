@@ -1,5 +1,5 @@
 @extends('layouts.home.home_layout')
-@section('title', 'My Wtachlist')
+@section('title', 'My Watchlist')
 @push('css')
      <style>
           .card-custom {

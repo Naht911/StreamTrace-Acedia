@@ -44,10 +44,6 @@ class User extends Authenticatable
         return $this->belongsTo(Watchlist::class, 'watchlist_user', 'user_id', 'watchlist_id');
     }
 
-    public function subscriptions()
-    {
-        return $this->belongsTo(Subscription::class, 'user_id', 'id');
-    }
 
     /**
      * The attributes that should be cast.
@@ -58,4 +54,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //1 user có nhiều subscription
+    public function subscription()
+    {
+        return $this->hasMany(Subscription::class, 'user_id', 'id');
+    }
 }
