@@ -200,24 +200,18 @@ class AuthController extends Controller
         }
     }
 
-    public function actived(user $user, $token)
+    public function actived(Request $request, $userId, $token)
     {
-        try {
-            $user = User::findOrFail($user->id);
+        $user = User::find($userId);
 
-            $accuracy = PasswordResetToken::where('email', $user->email)
-                ->where('token', $token)
-                ->first();
-
-            if (!$accuracy) {
-                return abort(404);
-            }
-
-
+        if ($user && $user->verify_token === $token) {
             $user->email_verified_at = now();
             $user->save();
+
+            // Redirect the user to a success page or some other action
             return view('home.Auth.login');
-        } catch (\Exception $e) {
+        } else {
+            // Redirect the user to a failure page or some other action
             return view('home.Auth.login');
         }
     }

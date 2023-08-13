@@ -66,7 +66,7 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::post('/actived/{user}/{token}', [AuthController::class, 'actived'])->name('actived.process');
+// Route::post('/actived/{user}/{token}', [AuthController::class, 'actived'])->name('actived');
 Route::get('/actived/{user}/{token}', [AuthController::class, 'actived'])->name('actived');
 
 
