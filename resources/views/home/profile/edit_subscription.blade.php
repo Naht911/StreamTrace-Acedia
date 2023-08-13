@@ -93,7 +93,7 @@
      <!-- MODAL -->
      <div id="popup-setting-name">
           <h2>Update name</h2>
-          <form method="POST" action="{{ route('change-name') }}">
+          <form method="POST" action="{{ route('profile.update_name') }}">
                @csrf
                <div class="form-group">
                     <input type="text" id="new_name" name="new_name" value="{{ Auth::user()->name }}" required />
@@ -108,7 +108,7 @@
 
      <div id="popup-setting-password">
           <h2>Change password</h2>
-          <form id="changePasswordForm" action="{{ route('change-password') }}" method="POST">
+          <form id="changePasswordForm" action="{{ route('profile.update_password') }}" method="POST">
                @csrf
                <div class="form-group">
                     <input id="current_password" name="current_password" type="password" class="form-control" required />
