@@ -28,7 +28,7 @@
                     {{-- @foreach ($data as $item) --}}
                     <div class="card-body">
                         <h4 class="display-3 text-center">Create Frequently Asked Questions</h4> <br>
-                        <form class="needs-validation" method="POST" {{-- action="{{ route('dashboard.feedback.update_feedback') }}"  --}} enctype="multipart/form-data">
+                        <form class="needs-validation" method="POST" action="{{ route('dashboard.FAQ.store_FAQ') }}"  enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">
                                 <div class="col-md-12">
