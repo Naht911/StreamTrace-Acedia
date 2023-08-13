@@ -11,7 +11,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\PopularController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
-use App\Http\Controllers\Home\profileController;
+use App\Http\Controllers\Home\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,10 +64,18 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/profile', [profileController::class, 'show'])->name('Profile');
-Route::post('/change-name', [profileController::class, 'changeName'])->name('change-name');
-Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
 
+
+Route::prefix('profile')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
+    Route::post('/store_subscription', [ProfileController::class, 'store_subscription'])->name('profile.store_subscription');
+    Route::get('/edit_subscription/{id?}', [ProfileController::class, 'edit_subscription'])->where(['id' => '[0-9]+'])->name('profile.edit_subscription');
+    Route::post('/update_subscription/{id?}', [ProfileController::class, 'update_subscription'])->where(['id' => '[0-9]+'])->name('profile.update_subscription');
+    Route::post('/change-name', [ProfileController::class, 'changeName'])->name('profile.update_name');
+    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.update_password');
+
+});
 
 Route::prefix('dashboard')
     ->middleware([

@@ -9,7 +9,13 @@ class Subscription extends Model
 {
     use HasFactory;
     protected $table = 'subscription';
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'subscription_date' => 'datetime',
+        'expiration_date' => 'datetime',
 
+    ];
     //một user có nhiều subscription
     public function user()
     {
