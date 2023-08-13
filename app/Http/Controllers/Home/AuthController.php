@@ -41,11 +41,23 @@ class AuthController extends Controller
 
             $user = new User();
 
+            $token = strtoupper(Str::random(20));
+
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
+            $user->verify_token = $token;
+
 
             $user->save();
+
+
+            Mail::send('emails.account_verification', ['user' => $user], function ($email) use ($user) {
+                $email->subject('acedia - password retrieval');
+                $email->to($user->email);
+            });
+
+
 
             Auth::login($user);
 
@@ -54,7 +66,6 @@ class AuthController extends Controller
             return response()->json(['status' => 1, 'message' => 'An error occurred during registration']);
         }
     }
-
     public function showLoginForm()
     {
         return view('home.Auth.login');
@@ -186,6 +197,28 @@ class AuthController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json(['status' => 1, 'message' => 'An error occurred while resetting the password.']);
+        }
+    }
+
+    public function actived(user $user, $token)
+    {
+        try {
+            $user = User::findOrFail($user->id);
+
+            $accuracy = PasswordResetToken::where('email', $user->email)
+                ->where('token', $token)
+                ->first();
+
+            if (!$accuracy) {
+                return abort(404);
+            }
+
+
+            $user->email_verified_at = now();
+            $user->save();
+            return view('home.Auth.login');
+        } catch (\Exception $e) {
+            return view('home.Auth.login');
         }
     }
 }
