@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $bookmarks = DB::table('reaction')
             ->join('movie', 'reaction.movie_id', '=', 'movie.id')
             ->select('movie.title', 'movie.poster_url', DB::raw('count(*) as total'), DB::raw('SUM(reaction.is_thumbs_up) as thumbs_up'), DB::raw('SUM(reaction.is_thumbs_down) as thumbs_down'))
-            ->groupBy('movie.id', 'movie.title', 'movie.poster_url') // Group by movie columns
+            ->groupBy('movie.id', 'movie.title', 'movie.poster_url')
             ->orderBy('total', 'desc')
             ->take(5)
             ->get();
@@ -167,10 +167,11 @@ class DashboardController extends Controller
     public function top_bookmark(Request $request)
     {
         $year = $request->year ?? null;
-        $bookmarks = DB::table('reaction')->whereYear('reaction.updated_at', $year)
+        $bookmarks = DB::table('reaction')
+            ->whereYear('reaction.updated_at', $year)
             ->join('movie', 'reaction.movie_id', '=', 'movie.id')
             ->select('movie.title', DB::raw('count(*) as total'), DB::raw('SUM(reaction.is_thumbs_up) as thumbs_up'), DB::raw('SUM(reaction.is_thumbs_down) as thumbs_down'))
-            ->groupBy('movie_id')
+            ->groupBy('movie.id', 'movie.title') // Group by movie columns
             ->orderBy('total', 'desc')
             ->take(5)
             ->get();
