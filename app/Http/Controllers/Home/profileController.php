@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function show()
     {
         //danh sách các quan hệ
-        $relations = ['subscription'];
+        // $relations = ['subscription'];
         $user = Auth::user();
         $subscriptions = Subscription::where('user_id', $user->id)
             ->with('typePrice')
