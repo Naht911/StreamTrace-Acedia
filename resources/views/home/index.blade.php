@@ -279,10 +279,10 @@
                               <img src="{{$primeVideo->logo}}" alt="" />
                               <div class="title">Prime Video</div>
                          </a>
-                         @foreach($newest_primeVideo as $prime)
+                         @foreach($newest_primeVideo as $key => $prime)
                          <div class="center">
                               <div class="item">
-                                   <div class="number">1</div>
+                                   <div class="number">{{$key+1}}</div>
                                    <div class="image">
                                         <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
@@ -303,10 +303,10 @@
                               <img src="{{$netflix->logo}}" alt="" />
                               <div class="title">Netflix</div>
                          </a>
-                         @foreach($newest_netflix as $prime)
+                         @foreach($newest_netflix as $key => $prime)
                          <div class="center">
                               <div class="item">
-                                   <div class="number">1</div>
+                                   <div class="number">{{$key+1}}</div>
                                    <div class="image">
                                         <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
@@ -326,10 +326,10 @@
                               <img src="{{$appleTV->logo}}" alt="" />
                               <div class="title">Netflix</div>
                          </a>
-                         @foreach($newest_appleTV as $prime)
+                         @foreach($newest_appleTV as $key => $prime)
                          <div class="center">
                               <div class="item">
-                                   <div class="number">1</div>
+                                   <div class="number">{{$key+1}}</div>
                                    <div class="image">
                                         <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
