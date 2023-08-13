@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.dashboard_layout')
-@section('title', 'User Performance')
+@section('title', 'Top Streaming Services')
 
 
 @push('css')
@@ -42,7 +42,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="text-center">
-                        <h4> User Register Performance by Month </h4>
+                        <h4> Top Bookmark By Year </h4>
                     </div>
                     <hr>
                     <h6 class="text-center mb-3">
@@ -62,23 +62,18 @@
                         <table class="table table-striped table-responsive">
                             <thead class="thead-inverse">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Register At</th>
+                                    <th>Provider Name</th>
+                                    <th>Total View</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $data)
+                                @foreach ($providers as $data)
                                 <tr>
-                                    <td scope="row">{{ $data->id }}</td>
-                                    <td>{{ $data->name }}</td>
-                                    <td>{{ $data->email }}</td>
-                                    <td>{{ $data->created_at->format('M Y') }}</td>
+                                    <td scope="row">{{ $data->name }}</td>
+                                    <td>{{ $data->count }}</td>
                                     <td>
-                                        <button class="btn"><a href="{{ asset('dashboard/feedback/edit/' . $data->id) }}">Processing</a></button>
-                                        <button class="btn"> <a href="{{ asset('dashboard/feedback/delete/' . $data->id) }}">Delete</a></button>
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -119,8 +114,11 @@
     });
 </script>
 <script type="text/javascript">
+
+
     var count = JSON.parse('{!! $count !!}');
 
+    console.log(count)
     var data = {}
 
     if (count.length == 0) {
@@ -134,12 +132,12 @@
         }
     } else {
         data = {
-            labels: Object.keys(count),
+            labels: count.map(item => item.name),
             datasets: [{
-                label: 'Users',
+                label: 'Provider name',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: Object.values(count),
+                data: count.map(item => item.count),
             }]
         }
     }

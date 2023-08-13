@@ -138,5 +138,7 @@ Route::prefix('dashboard')
         Route::prefix('performance')->group(function () {
 
             Route::get('/user_performance', [DashboardController::class, 'user_performance'])->name('dashboard.performance.user_performance');
+            Route::get('/top_bookmark', [DashboardController::class, 'top_bookmark'])->name('dashboard.performance.top_bookmark');
+            Route::get('/top_provider', [DashboardController::class, 'top_provider'])->name('dashboard.performance.top_provider');
         });
     });

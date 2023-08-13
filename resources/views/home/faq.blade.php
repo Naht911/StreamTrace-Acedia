@@ -503,7 +503,7 @@
                     <a
                         class="navbar-brand inline-flex align-items-center mr-auto hover:no-underline"
                         title="Home"
-                        href="/hc/en-us"
+                        href="{{route('home')}}"
                     >
                         <img
                             class="block img-fluid"

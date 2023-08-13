@@ -261,8 +261,8 @@
         <div class="container">
             <div class="popular">
                 <div class="card-slider">
+                    @foreach ($movies as $movie)
                     <div class="card">
-                        @foreach ($movies as $movie)
                             <div class="image">
                                 <img src={{ $movie->poster_url }} alt="" />
                             </div>
@@ -279,9 +279,9 @@
                                     </li>
                                 </ul>
                             </div>
-                        @endforeach
 
-                    </div>
+                        </div>
+                        @endforeach
                     <div class="card">
                         <div class="image">
                             <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
