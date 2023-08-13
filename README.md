@@ -1,29 +1,7 @@
-# Cách Cài Đặt
+# Home Page
 
-### Clone dự án về
+https://streamtrace.xyz
 
-Copy file tạo file .env > copy nội dung file .evn.example qua
-
-Chỉnh sửa thông tin database trong file .env
-
-### Chạy các lệnh sau theo thứ tự:
-
-```
-composer install
-php artisan key:generate
-```
-
-### Tạo database tên ```streamtrace_acedia``` và chạy lệnh sau:
-
-```
-php artisan migrate
-```
-
-### Mở cửa sổ console mới (Ctrl + j ) và chạy tiếp lệnh sau: 
-
-```
-php artisan serve
-```
 # How to Install
 
 ### Clone the project about
