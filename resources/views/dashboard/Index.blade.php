@@ -18,7 +18,7 @@
         <div class="row mb-3" style="height:200px">
             <div class="col-6">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 dark:text-white">Welcome {{ Auth::user()->name }}</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 ">Welcome {{ Auth::user()->name }}</h5>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         Stream Trace Acedia helps Entertainment brands around the world get to grips with new challenges and opportunities.
                     </p>
@@ -36,7 +36,7 @@
             <div class="col-2">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                     <h3 class="text-4xl text-gray-400"><i class="fa-solid fa-user"></i></h3>
-                    <p class="mb-2 font-semibold tracking-tight text-gray-400 dark:text-white">No. of Users</p>
+                    <p class="mb-2 font-semibold tracking-tight text-gray-400 ">No. of Users</p>
                     <h5 class="mb-3 text-2xl font-bold text-teal-800 dark:text-gray-400">{{$totalUser}}</h5>
                     <a href="#" class="inline-flex items-center text-blue-600 hover:underline">
                         See more
@@ -51,7 +51,7 @@
             <div class="col-2">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                     <h3 class="text-4xl text-gray-400"><i class="fa-solid fa-film"></i></h3>
-                    <p class="mb-2 font-semibold tracking-tight text-gray-400 dark:text-white">No. of Movies</p>
+                    <p class="mb-2 font-semibold tracking-tight text-gray-400 ">No. of Movies</p>
                     <h5 class="mb-3 text-2xl font-bold text-teal-800 dark:text-gray-400">{{$totalMovie}}</h5>
                     <a href="#" class="inline-flex items-center text-blue-600 hover:underline">
                         See more
@@ -66,7 +66,7 @@
             <div class="col-2">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                     <h3 class="text-4xl text-gray-400"><i class="fa-brands fa-youtube"></i></h3>
-                    <p class="mb-2 font-semibold tracking-tight text-gray-400 dark:text-white">No. of Providers</p>
+                    <p class="mb-2 font-semibold tracking-tight text-gray-400 ">No. of Providers</p>
                     <h5 class="mb-3 text-2xl font-bold text-teal-800 dark:text-gray-400">{{$totalProvider}}</h5>
                     <a href="#" class="inline-flex items-center text-blue-600 hover:underline">
                         See more
@@ -83,7 +83,7 @@
         <div class="row mb-3">
             <div class="col-6">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 dark:text-white">Top 5 Movie</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 ">Top 5 Movie</h5>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($bookmarks as $item)
                             <li class="py-3 sm:py-4">
@@ -92,7 +92,7 @@
                                         <img class="w-10 h-10 rounded-full" src={{ $item->poster_url }} alt="Movies">
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        <p class="text-sm font-medium text-gray-900 truncate ">
                                             {{ $item->title }}
                                         </p>
                                         <p class="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -103,7 +103,7 @@
                                         </p>
                                     </div>
                                     <span>User added to wacthlist:</span>
-                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 "
                                         style="font-size: 30px">
                                         {{ $item->total }}
                                     </div>
@@ -115,7 +115,7 @@
             </div>
             <div class="col-6">
                 <div class="p-6 h-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 dark:text-white">Top 5 Providers</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-teal-800 ">Top 5 Providers</h5>
                     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($providers as $item)
                             <li class="py-3 sm:py-4">
@@ -124,7 +124,7 @@
                                         <img class="w-10 h-10 rounded-full" src={{ $item->logo }} alt="Providers">
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                        <p class="text-sm font-medium text-gray-900 truncate ">
                                             {{ $item->name }}
                                         </p>
                                         {{-- <p class="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -135,7 +135,7 @@
                                         </p> --}}
                                     </div>
                                     <span>User choosed:</span>
-                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+                                    <div class="inline-flex items-center text-base font-semibold text-gray-900 "
                                         style="font-size: 30px">
                                         {{ $item->count }}
                                     </div>
