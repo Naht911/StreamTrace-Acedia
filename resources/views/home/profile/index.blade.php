@@ -101,7 +101,7 @@
                                              <td>
                                                   <div>
                                                        <a class="btn btn-sm btn-info" href="{{ route('profile.edit_subscription', $subscription->id ) }}">Edit</a>
-                                                       <a class="btn btn-sm btn-danger">Delete</a>
+                                                       <a class="btn btn-sm btn-danger" onclick="del_subscription({{ $subscription->id }})">Delete</a>
                                                   </div>
                                              </td>
                                         </tr>
@@ -394,6 +394,57 @@
                         }
                     });
                 }})
+        }
+        function del_subscription(id){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton:true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    //gửi ajax để update tên mới
+                    $.ajax({
+                        url: "{{ route('profile.delete_subscription') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "id": id
+                        },
+                        success: function(response) {
+                            if (response.status == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                    timer: 1500
+                                });
+                                //reload page after 2s
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            console.log(xhr);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong! Please try again later.',
+                            });
+                        }
+                    });
+                }});
         }
      </script>
 @endpush

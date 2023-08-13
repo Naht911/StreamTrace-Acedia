@@ -74,6 +74,7 @@ Route::prefix('profile')->group(function () {
     Route::post('/store_subscription', [ProfileController::class, 'store_subscription'])->name('profile.store_subscription');
     Route::get('/edit_subscription/{id?}', [ProfileController::class, 'edit_subscription'])->where(['id' => '[0-9]+'])->name('profile.edit_subscription');
     Route::post('/update_subscription/{id?}', [ProfileController::class, 'update_subscription'])->where(['id' => '[0-9]+'])->name('profile.update_subscription');
+    Route::post('/delete_subscription', [ProfileController::class, 'delete_subscription'])->name('profile.delete_subscription');
     Route::post('/change-name', [ProfileController::class, 'changeName'])->name('profile.update_name');
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.update_password');
 
