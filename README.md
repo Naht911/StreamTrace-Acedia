@@ -35,3 +35,8 @@ import the .sql file
 ```
 php artisan serve
 ```
+
+# Account for test 
+
+username: admin@admin.com
+password: Hanyeu911
