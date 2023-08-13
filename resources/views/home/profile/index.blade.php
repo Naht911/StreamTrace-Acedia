@@ -43,7 +43,7 @@
                                              <div class="title">User Name:</div>
                                              <span>{{ $user->name }}</span>
                                         </div>
-                                        <div class="setting-acc show-modal-name" onclick="toggleName()">Change</div>
+                                        <div class="setting-acc show-modal-name" onclick="change_name('{{ $user->name }}')">Change</div>
                                    </div>
 
                                    <div class="content-setting">
@@ -56,7 +56,7 @@
                                    <div class="content-setting">
                                         <div class="content-acc">
                                              <div class="title">Password:</div>
-                                             <span class="setting-acc" onclick="togglePassword()">Change your Password</span>
+                                             <span class="setting-acc" onclick="change_pass()">Change your Password</span>
                                         </div>
                                    </div>
 
@@ -80,13 +80,19 @@
                                    </tr>
 
                                    @foreach ($subscriptions as $subscription)
-                                        {{ $subscription->typePrice }} <br>
                                         <tr>
                                              <td>{{ $loop->index + 1 }}</td>
-                                             <td><img src="{{ $subscription->streamingServiceProvider->logo }}" alt="" width="50px" height="50px"></td>
+                                             <td>
+                                                  @if ($subscription->streamingServiceProvider != null)
+                                                       <img src="{{ asset($subscription->streamingServiceProvider->logo) }}" width="50px" height="50px">
+                                                  @else
+                                                       <span>No logo</span>
+                                                  @endif
+
+                                             </td>
                                              <td>{{ $subscription->custom_name }}</td>
                                              <td>{{ $subscription->subscription_url }}</td>
-                                             <td>{{ $subscription->expiration_date }}</td>
+                                             <td>{{ $subscription->expiration_date ? $subscription->expiration_date->format("Y-m-d") : null }}</td>
                                              <td>
                                                   {{ $subscription->price }}
                                                   {{ $subscription->typePrice ? '(' . $subscription->typePrice->name . ')' : null }}
@@ -94,8 +100,8 @@
                                              <td>{{ $subscription->note }}</td>
                                              <td>
                                                   <div>
-                                                       <button class="edit">Edit</button>
-                                                       <button class="delete">Delete</button>
+                                                       <a class="btn btn-sm btn-info" href="{{ route('profile.edit_subscription', $subscription->id ) }}">Edit</a>
+                                                       <a class="btn btn-sm btn-danger">Delete</a>
                                                   </div>
                                              </td>
                                         </tr>
@@ -110,12 +116,12 @@
                                    @csrf
                                    <div class="form-group">
                                         <label for="custom_name">Custom name (option)</label>
-                                        <input type="text" class="form-control" placeholder="Custom name" />
+                                        <input type="text" class="form-control" placeholder="Custom name" name="custom_name" />
                                         <small> <i>Movie name or your username at the streaming provider</i></small>
                                    </div>
                                    <div class="form-goup">
-                                        <label for="custom_url">Provider</label>
-                                        <select name="streaming_service_provider_id" id="streaming_service_provider_id" class="form-control">
+                                        <label for="provider_id">Provider</label>
+                                        <select name="provider_id" id="provider_id" class="form-control">
                                              <option value="">Other</option>
                                              @foreach ($providers as $provider)
                                                   <option value="{{ $provider->id }}">
@@ -125,8 +131,8 @@
                                         </select>
                                    </div>
                                    <div class="form-goup">
-                                        <label for="custom_url">URL (option)</label>
-                                        <input type="text" class="form-control" placeholder="URL" />
+                                        <label for="subscription_url">URL (option)</label>
+                                        <input type="text" class="form-control" placeholder="URL" name="subscription_url" id="subscription_url" />
                                         <small> URL of the movie or the streaming provider that don't contain at the selection above</small>
                                    </div>
                                    <div class="form-goup">
@@ -147,7 +153,7 @@
                                    </div>
                                    <div class="form-goup">
                                         <label for="amount">Price</label>
-                                        <input type="text" class="form-control" placeholder="price" />
+                                        <input type="text" class="form-control" placeholder="price" id="price" name="price" />
                                    </div>
                                    <div class="form-goup">
                                         <label for="currency">Type</label>
@@ -161,7 +167,7 @@
                                         </select>
                                    </div>
                                    <div class="form-goup">
-                                        <label for="note">Note</label>
+                                        <label for="note">Note (option)</label>
                                         <textarea name="note" id="note" cols="30" rows="10" class="form-control"></textarea>
                                    </div>
                                    <hr>
@@ -174,49 +180,6 @@
                     </div>
                </div>
           </div>
-     </div>
-     <!-- SETTING --end -->
-
-     <!-- MODAL -->
-     <div id="popup-setting-name">
-          <h2>Update name</h2>
-          <form method="POST" action="{{ route('change-name') }}">
-               @csrf
-               <div class="form-group">
-                    <input type="text" id="new_name" name="new_name" value="{{ Auth::user()->name }}" required />
-                    <label for="username" class="form-label">Name</label>
-               </div>
-               <div class="button-movie">
-                    <button type="submit" class="button">Save</button>
-                    <button type="button" class="button" onclick="toggleName()">Skip</button>
-               </div>
-          </form>
-     </div>
-
-     <div id="popup-setting-password">
-          <h2>Change password</h2>
-          <form id="changePasswordForm" action="{{ route('change-password') }}" method="POST">
-               @csrf
-               <div class="form-group">
-                    <input id="current_password" name="current_password" type="password" class="form-control" required />
-                    <label for="current_password" class="form-label">Current Password</label>
-                    <div class="error-message" style="color: red;" id="current_password_error"></div>
-               </div>
-               <div class="form-group">
-                    <input id="new_password" name="new_password" type="password" class="form-control" required />
-                    <label for="new_password" class="form-label">New Password</label>
-                    <div class="error-message" style="color: red;" id="new_password_error"></div>
-               </div>
-               <div class="form-group">
-                    <input id="confirm_new_password" name="confirm_new_password" type="password" class="form-control" required />
-                    <label for="confirm_new_password" class="form-label">Confirm New Password</label>
-                    <div class="error-message" style="color: red;" id="confirm_new_password_error"></div>
-               </div>
-               <div class="button-movie">
-                    <button class="button" id="passwordButton">Save</button>
-                    <button class="button" onclick="togglePassword()">Skip</button>
-               </div>
-          </form>
      </div>
 
 
@@ -241,7 +204,7 @@
                     e.preventDefault();
                     var formData = new FormData(this);
                     $.ajax({
-                         url: "",
+                         url: "{{ route('profile.store_subscription') }}",
                          type: "POST",
                          data: formData,
                          cache: false,
@@ -252,7 +215,7 @@
                               $('#submit').html('Please wait...');
                               Swal.fire({
                                    title: 'Please Wait !',
-                                   text: 'Provider is being added',
+                                   text: 'Subscription is being added',
                                    allowOutsideClick: false,
                                    showCancelButton: false,
                                    showConfirmButton: false,
@@ -274,6 +237,13 @@
                                    $('#submit').removeAttr('disabled');
                                    $('#submit').html('Save');
                                    $('#create_pin')[0].reset();
+                                   $('#add_subscription').trigger('reset');
+                                   //reload page after 2s
+                                   setTimeout(function() {
+                                        location.reload();
+                                   }, 2000);
+
+
                               } else {
                                    Swal.fire({
                                         icon: 'error',
@@ -299,5 +269,131 @@
 
 
           });
+     </script>
+     <script>
+        function change_name(name){
+            //dùng sweetalert2 để hiện form nhập tên mới
+            Swal.fire({
+                title: 'Change name',
+                input: 'text',
+                inputValue: name,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                showLoaderOnConfirm: true,
+                preConfirm: (new_name) => {
+                    //gửi ajax để update tên mới
+                    $.ajax({
+                        url: "{{ route('profile.update_name') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "new_name": new_name
+                        },
+                        success: function(response) {
+                            if (response.status == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                    timer: 1500
+                                });
+                                //reload page after 2s
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            console.log(xhr);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong! Please try again later.',
+                            });
+                        }
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            });
+
+        }
+        function change_pass(){
+            //dùng sweetalert2 để hiện form nhập tên mới
+            Swal.fire({
+                title: 'Change password',
+                html:
+                    '<input id="swal-input1" class="swal2-input" placeholder="Old password" type="password">' +
+                    '<input id="swal-input2" class="swal2-input" placeholder="New password" type="password">' +
+                    '<input id="swal-input3" class="swal2-input" placeholder="Confirm new password" type="password">'+
+                    '<span class="text-danger" id="error"></span>',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const old_pass = Swal.getPopup().querySelector('#swal-input1').value
+                    const new_pass = Swal.getPopup().querySelector('#swal-input2').value
+                    const confirm_new_pass = Swal.getPopup().querySelector('#swal-input3').value
+                    if (!old_pass || !new_pass || !confirm_new_pass) {
+                        Swal.showValidationMessage(`Please enter all fields`)
+                    }
+                    if(new_pass != confirm_new_pass){
+                        Swal.showValidationMessage(`New password and confirm new password must be the same`)
+                    }
+                    //check validate, Password must be at least 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number.
+                    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+                    if(!regex.test(new_pass)){
+                        Swal.showValidationMessage(`Password must be at least 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number.`)
+                    }
+                    return { old_pass: old_pass, new_pass: new_pass, confirm_new_pass: confirm_new_pass }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //gửi ajax để update tên mới
+                    $.ajax({
+                        url: "{{ route('profile.update_password') }}",
+                        type: "POST",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "old_pass": result.value.old_pass,
+                            "new_pass": result.value.new_pass,
+                            "confirm_new_pass": result.value.confirm_new_pass
+                        },
+                        success: function(response) {
+                            if (response.status == 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                    timer: 1500
+                                });
+                                //reload page after 2s
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            console.log(xhr);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong! Please try again later.',
+                            });
+                        }
+                    });
+                }})
+        }
      </script>
 @endpush
