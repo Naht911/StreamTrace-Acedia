@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $bookmarks = DB::table('reaction')
             ->join('movie', 'reaction.movie_id', '=', 'movie.id')
             ->select('movie.title', 'movie.poster_url', DB::raw('count(*) as total'), DB::raw('SUM(reaction.is_thumbs_up) as thumbs_up'), DB::raw('SUM(reaction.is_thumbs_down) as thumbs_down'))
-            ->groupBy('movie_id')
+            ->groupBy('movie.id', 'movie.title', 'movie.poster_url') // Group by movie columns
             ->orderBy('total', 'desc')
             ->take(5)
             ->get();
@@ -58,7 +58,7 @@ class DashboardController extends Controller
 
         $providers = DB::table('movie_tracking_out')
             ->join('streaming_service_provider', 'movie_tracking_out.streaming_service_provider_id', '=', 'streaming_service_provider.id')
-            ->select('streaming_service_provider.name','streaming_service_provider.logo', 'movie_tracking_out.count')
+            ->select('streaming_service_provider.name', 'streaming_service_provider.logo', 'movie_tracking_out.count')
             ->take(5)
             ->get();
 
