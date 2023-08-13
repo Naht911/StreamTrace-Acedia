@@ -272,7 +272,7 @@
      </div>
      <div class="stream-chart">
           <div class="container">
-               <h2>Today's streaming charts</h2>
+               <h2>Your's subscription details</h2>
                <div class="brand">
                     <div class="brand-item">
                          <a href="" class="top">
