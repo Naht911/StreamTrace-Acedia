@@ -21,13 +21,44 @@ class HomeController extends Controller
         $movies = Movie::query()->with($relations);
         $top_ten = $movies->orderBy('count_view', 'desc')->take(10)->get();
         $new_ten = Movie::orderBy('created_at', 'desc')->take(20)->get();
+
         $movies = $movies->get();
         $providers = StreamingServiceProvider::all();
+        $primeVideo = $providers->where('id', 8)->first();
+        $netflix = $providers->where('id', 9)->first();
+        $appleTV = $providers->where('id', 10)->first();
+
+        $movie_primeVideo = MovieProvider::where('streaming_service_provider_id', 8)->get();
+        $movie_netflix = MovieProvider::where('streaming_service_provider_id', 9)->get();
+        $movie_appleTV = MovieProvider::where('streaming_service_provider_id', 10)->get();
+        $movies_1 = [];
+        $movies_2 = [];
+        $movies_3 = [];
+        foreach ($movie_primeVideo as $movie) {
+            $movies_1[] = $movie->movie_id;
+        }
+        $newest_primeVideo = Movie::whereIn('id', $movies_1)->orderBy('created_at', 'DESC')->take(3)->get();
+        foreach ($movie_netflix as $movie) {
+            $movies_2[] = $movie->movie_id;
+        }
+        $newest_netflix = Movie::whereIn('id', $movies_2)->orderBy('created_at', 'DESC')->take(3)->get();
+        foreach ($movie_appleTV as $movie) {
+            $movies_3[] = $movie->movie_id;
+        }
+        $newest_appleTV = Movie::whereIn('id', $movies_3)->orderBy('created_at', 'DESC')->take(3)->get();
+
         $data = [
             'movies' => $movies,
             'top_ten' => $top_ten,
             'new_ten' => $new_ten,
             'providers' => $providers,
+            'newest_primeVideo' => $newest_primeVideo,
+            'newest_netflix' => $newest_netflix,
+            'newest_appleTV' => $newest_appleTV,
+            'primeVideo' => $primeVideo,
+            'netflix' => $netflix,
+            'appleTV' => $appleTV,
+
         ];
 
         return view('home.index', $data);

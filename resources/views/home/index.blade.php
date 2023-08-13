@@ -276,156 +276,73 @@
                <div class="brand">
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="img/icon.webp" alt="" />
-                              <div class="title">Netflix</div>
+                              <img src="{{$primeVideo->logo}}" alt="" />
+                              <div class="title">Prime Video</div>
                          </a>
+                         @foreach($newest_primeVideo as $prime)
                          <div class="center">
                               <div class="item">
                                    <div class="number">1</div>
                                    <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
+                                        <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
                                    <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
+                                        <h3>{{$prime->title}}</h3>
+                                        <p>{{$prime->duration}}</p>
                                    </div>
                                    <div class="up-down">
                                         <i class="fa-solid fa-sort-up"></i>
                                    </div>
                               </div>
                          </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">2</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-down"></i>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">3</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
-                                   </div>
-                              </div>
-                         </div>
+                         @endforeach
+                         
                     </div>
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="img/icon (2).webp" alt="" />
+                              <img src="{{$netflix->logo}}" alt="" />
                               <div class="title">Netflix</div>
                          </a>
+                         @foreach($newest_netflix as $prime)
                          <div class="center">
                               <div class="item">
                                    <div class="number">1</div>
                                    <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
+                                        <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
                                    <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
+                                        <h3>{{$prime->title}}</h3>
+                                        <p>{{$prime->duration}}</p>
                                    </div>
                                    <div class="up-down">
                                         <i class="fa-solid fa-sort-up"></i>
                                    </div>
                               </div>
                          </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">2</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-down"></i>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">3</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
-                                   </div>
-                              </div>
-                         </div>
+                         @endforeach
                     </div>
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="img/icon (1).webp" alt="" />
-                              <div class="title">Amazon Prime Video</div>
+                              <img src="{{$appleTV->logo}}" alt="" />
+                              <div class="title">Netflix</div>
                          </a>
+                         @foreach($newest_appleTV as $prime)
                          <div class="center">
                               <div class="item">
                                    <div class="number">1</div>
                                    <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
+                                        <img src="{{asset($prime->poster_url)}}" alt="" />
                                    </div>
                                    <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
+                                        <h3>{{$prime->title}}</h3>
+                                        <p>{{$prime->duration}}</p>
                                    </div>
                                    <div class="up-down">
                                         <i class="fa-solid fa-sort-up"></i>
                                    </div>
                               </div>
                          </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">2</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-down"></i>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">3</div>
-                                   <div class="image">
-                                        <img src="img/dark-winds (1).webp" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>Painkiller</h3>
-                                        <p>(Season 1)</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
-                                   </div>
-                              </div>
-                         </div>
+                         @endforeach
                     </div>
 
                </div>
