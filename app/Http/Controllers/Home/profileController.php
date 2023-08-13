@@ -278,6 +278,13 @@ class ProfileController extends Controller
                 ]);
             }
         }
+        //check xem user sửa subscription của chính mình hay không
+        if ($subscription->user_id != $user->id) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'You do not have permission to edit this subscription',
+            ]);
+        }
         //update subscription
         $subscription->custom_name = $custom_name;
         $subscription->streaming_service_id = $streaming_service_id;
