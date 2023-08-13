@@ -104,7 +104,7 @@ class HomeController extends Controller
                     $wathchlist = $wathchlist->where('is_thumbs_down', 1);
                     break;
             }
-        }else{
+        } else {
             $wathchlist = $wathchlist->where('is_tracked', 1);
         }
 
@@ -125,11 +125,16 @@ class HomeController extends Controller
         return view('home.wathchlist', $data);
     }
 
-    public function search(Request $request)
+    public function search_movie(Request $request)
     {
-        $keyword = $request->keyword;
-        $movies = Movie::where('name', 'like', '%' . $keyword . '%')->get();
-        return view('home.search', compact('movies'));
+        // $keyword = $request->keyword;
+        // $movies = Movie::where('name', 'like', '%' . $keyword . '%')->get();
+        // return view('home.search', compact('movies'));
+        if (isset($_GET['search_movie'])) {
+            $search = $_GET['search_movie'];
+            $movies = Movie::where('title', 'like', '%' . $search . '%')->get();
+        }
+        return view('home.search', compact('movies', 'search'));
     }
 
     public function movie_detail($id)

@@ -13,10 +13,18 @@
                     <li><a href="{{ route('home.wathchlist') }}" class="{{ routeActive('home.wathchlist') }}">Watchlist</a></li>
                </div>
                <li class="search-icon">
-                    <label class="icon">
-                         <span class="fas fa-search"></span>
-                    </label>
-                    <input type="text" placeholder="Search for movies" />
+                    
+                    
+                    <form action="{{route('search_movie')}}" method="GET">
+                         <div class="form-group">
+                              <label class="icon">
+                                   {{-- <span class="fas fa-search"></span> --}}
+                                   <br>
+                              </label>
+                         <input type="text" placeholder="Search for movies" name="search_movie" autofocus style="margin-left: 15px"/>
+                         <button type="submit" name="search" class="search"></button>  
+                         </div>
+                    </form>
                </li>
                @if (!Auth::check())
                     <div class="buttons">

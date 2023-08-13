@@ -31,6 +31,8 @@ Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
     // ->middleware(['auth'])
     ->name('home.wathchlist');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
+// Search movie:
+Route::get('/search', [HomeController::class, 'search_movie'])->name('search_movie');
 
 Route::get('/list_popular', [PopularController::class, 'list_popular'])->name('home.movie.list_popular');
 Route::post('/filter_popular', [PopularController::class, 'filter_popular'])->name('home.movie.filter_popular');
