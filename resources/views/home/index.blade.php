@@ -199,7 +199,7 @@
 
      <div class="titles">
           <div class="container">
-               <div class="title">Top 10 in 🇺🇸 today</div>
+               <div class="title">Top 10 in US today</div>
                <div class="card-sliders card-sliders-2">
                     <div class="card-slider swiper-wrapper">
                          @foreach ($top_ten as $item)

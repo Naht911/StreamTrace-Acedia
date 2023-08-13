@@ -9,7 +9,7 @@
             <div class="items">
                 <li><a href="{{ route('home') }}" class="{{ routeActive('home') }}">Home</a></li>
                 <li><a href="{{ route('new') }}" class="{{ routeActive('new') }}">New</a></li>
-                <li><a href="{{ route('popular') }}" class="{{ routeActive('popular') }}">Popular</a></li>
+                {{-- <li><a href="{{ route('popular') }}" class="{{ routeActive('popular') }}">Popular</a></li> --}}
                 <li><a href="{{ route('home.wathchlist') }}" class="{{ routeActive('home.wathchlist') }}">Watchlist</a>
                 </li>
             </div>
