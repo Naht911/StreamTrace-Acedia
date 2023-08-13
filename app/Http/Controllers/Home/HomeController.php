@@ -21,8 +21,9 @@ class HomeController extends Controller
         $movies = Movie::query()->with($relations);
         $top_ten = $movies->orderBy('count_view', 'desc')->take(10)->get();
         $new_ten = Movie::orderBy('created_at', 'desc')->take(20)->get();
+        $
 
-        $movies = $movies->get();
+            $movies = $movies->get();
         $providers = StreamingServiceProvider::all();
         $primeVideo = $providers->where('id', 8)->first();
         $netflix = $providers->where('id', 9)->first();
