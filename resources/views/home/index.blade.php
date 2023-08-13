@@ -509,20 +509,20 @@
      <div class="titles titles-2">
           <div class="container">
                <div class="title">
-                    <h2>Top 10 TV shows this week</h2>
+                    <h2>Top 10 this week</h2>
                     <p>Explore this week’s most popular TV shows and find out where to stream them.</p>
                </div>
                <div class="card-sliders card-sliders-2">
                     <div class="card-slider swiper-wrapper">
-                         @foreach ($new_ten as $item)
+                         @foreach ($new_ten as $key => $item)
                               <div class="card-rating swiper-slide">
                                    <div class="image">
-                                        <div class="number">1</div>
-                                        <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
+                                        <div class="number">{{$key+1}}</div>
+                                        <img src="{{$item->porter_url}}" alt="" />
                                         <div class="hover">
                                              <div class="content">
                                                   <button class="info">
-                                                       <img src="/assets/home/img/icon (1).webp" alt="" />
+                                                       <img src="{{$item->porter_url}}" alt="" />
                                                        <span>Watch TV</span>
                                                   </button>
                                              </div>
@@ -535,178 +535,6 @@
                                    </div>
                               </div>
                          @endforeach
-
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">2</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">3</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">9</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="card-rating swiper-slide">
-                              <div class="image">
-                                   <div class="number">10</div>
-                                   <img src="/assets/home/img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                                   <div class="hover">
-                                        <div class="content">
-                                             <button class="info">
-                                                  <img src="/assets/home/img/icon (1).webp" alt="" />
-                                                  <span>Watch TV</span>
-                                             </button>
-                                        </div>
-                                        <ul>
-                                             <li>
-                                                  <a><i class="fa-solid fa-bookmark"></i></a>
-                                             </li>
-                                        </ul>
-                                   </div>
-                              </div>
-                         </div>
                     </div>
                </div>
           </div>
