@@ -20,7 +20,7 @@
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/responsive.css') }}">
 
 
-     {{-- <script src="/assets/home/js/js-popular.js"></script> --}}
+     <script src="/assets/home/js/js-popular.js"></script>
      @stack('css')
 
 </head>
