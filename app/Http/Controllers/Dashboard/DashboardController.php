@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\MovieProvider;
+use App\Models\Reaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -45,46 +47,28 @@ class DashboardController extends Controller
         //         // echo $provider->pivot->url . "\n";
         //     }
         // }
+        $bookmarks = DB::table('reaction')
+            ->join('movie', 'reaction.movie_id', '=', 'movie.id')
+            ->select('movie.title', 'movie.poster_url', DB::raw('count(*) as total'), DB::raw('SUM(reaction.is_thumbs_up) as thumbs_up'), DB::raw('SUM(reaction.is_thumbs_down) as thumbs_down'))
+            ->groupBy('movie_id')
+            ->orderBy('total', 'desc')
+            ->take(5)
+            ->get();
 
 
-        return view('dashboard.index');
-    }
+        $providers = DB::table('movie_tracking_out')
+            ->join('streaming_service_provider', 'movie_tracking_out.streaming_service_provider_id', '=', 'streaming_service_provider.id')
+            ->select('streaming_service_provider.name','streaming_service_provider.logo', 'movie_tracking_out.count')
+            ->take(5)
+            ->get();
 
-
-    // public function user_performance()
-    // {
-    //     $users = User::all();
-
-    //     if ($users) {
-    //         return view('dashboard.performance.user_performance')->with(
-    //             [
-    //                 'data' =>$users,
-    //             ]
-    //         );
-    //     }
-    // }
-
-    public function user_performance(Request $request)
-    {
-        $year = $request->year ?? null;
-        $users = User::whereYear('created_at', $year)->get();
-        $data_user = [];
-        foreach ($users as $user) {
-            $month = $user->created_at->format('F');
-            if (isset($data_user[$month])) {
-                $data_user[$month]++;
-            } else {
-                $data_user[$month] = 1;
-            }
-        }
-        $data_user = json_encode($data_user);
         $data = [
-            'count' => $data_user,
-            'users' => $users,
+            'bookmarks' => $bookmarks,
+            'providers' => $providers,
         ];
-
-        return view('dashboard.performance.user_performance', $data);
+        return view('dashboard.index', $data);
     }
+
 
     public function list_user(Request $request)
     {
@@ -155,5 +139,67 @@ class DashboardController extends Controller
             'status' => 1,
             'message' => 'Update user successfully'
         ]);
+    }
+
+
+    public function user_performance(Request $request)
+    {
+        $year = $request->year ?? null;
+        $users = User::whereYear('created_at', $year)->get();
+        $data_user = [];
+        foreach ($users as $user) {
+            $month = $user->created_at->format('F');
+            if (isset($data_user[$month])) {
+                $data_user[$month]++;
+            } else {
+                $data_user[$month] = 1;
+            }
+        }
+        $data_user = json_encode($data_user);
+        $data = [
+            'count' => $data_user,
+            'users' => $users,
+        ];
+
+        return view('dashboard.performance.user_performance', $data);
+    }
+
+    public function top_bookmark(Request $request)
+    {
+        $year = $request->year ?? null;
+        $bookmarks = DB::table('reaction')->whereYear('reaction.updated_at', $year)
+            ->join('movie', 'reaction.movie_id', '=', 'movie.id')
+            ->select('movie.title', DB::raw('count(*) as total'), DB::raw('SUM(reaction.is_thumbs_up) as thumbs_up'), DB::raw('SUM(reaction.is_thumbs_down) as thumbs_down'))
+            ->groupBy('movie_id')
+            ->orderBy('total', 'desc')
+            ->take(5)
+            ->get();
+        $count = json_encode($bookmarks, true);
+        $data = [
+            'count' => $count,
+            'bookmarks' => $bookmarks
+        ];
+        return view('dashboard.performance.top_bookmark', $data);
+    }
+
+    public function top_provider(Request $request)
+    {
+        $year = $request->year ?? null;
+
+        $providers = DB::table('movie_tracking_out')->whereYear('movie_tracking_out.updated_at', $year)
+            ->join('streaming_service_provider', 'movie_tracking_out.streaming_service_provider_id', '=', 'streaming_service_provider.id')
+            ->select('streaming_service_provider.name', 'movie_tracking_out.count')
+            ->take(5)
+            ->get();
+
+
+        $count = json_encode($providers, true);
+        $data = [
+            'count' => $count,
+            'providers' => $providers
+        ];
+
+
+        return view('dashboard.performance.top_provider', $data);
     }
 }

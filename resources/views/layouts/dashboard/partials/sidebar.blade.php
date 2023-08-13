@@ -3,7 +3,7 @@
         <div><img class="rounded-full" src="/assets/images/dashboard/1.png" alt=""></div>
 
         <div class="ml-5">
-            <div class="text-xl font-bold">Name</div>
+            <div class="text-xl font-bold">{{ Auth::user()->name }}</div>
             <span class="badge badge-primary">Admin</span>
         </div>
 
@@ -117,12 +117,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="">
+                                <a href="{{ route('dashboard.performance.top_bookmark') }}" class="{{ routeActive('dashboard.performance.top_bookmark') }}">
                                     <i class="fa-solid fa-ranking-star mb-1"></i><span> Top Bookmark </span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="">
+                                <a href="{{ route('dashboard.performance.top_provider') }}" class="{{ routeActive('dashboard.performance.top_provider') }}">
                                     <i class="fa-solid fa-ranking-star mb-1"></i><span> Top Streaming Service </span>
                                 </a>
                             </li>
