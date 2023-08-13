@@ -23,6 +23,13 @@ php artisan key:generate
 php artisan migrate
 ```
 
+### Or
+
+```
+import the .sql file
+```
+
+
 ### Open new console windows (Ctrl + j ) and run the following commands:
 
 ```
