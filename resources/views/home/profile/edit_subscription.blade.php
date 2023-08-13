@@ -154,7 +154,7 @@
                     e.preventDefault();
                     var formData = new FormData(this);
                     $.ajax({
-                         url: "{{ route('profile.update_subscription') }}",
+                         url: "{{ route('profile.update_subscription', $subscription->id) }}",
                          type: "POST",
                          data: formData,
                          cache: false,

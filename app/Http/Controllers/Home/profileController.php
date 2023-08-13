@@ -183,11 +183,17 @@ class ProfileController extends Controller
     {
         $subscription_id = $request->id;
         if ($subscription_id == null) {
-            return redirect()->route('Profile')->with('error', 'Subscription does not exist.');
+            return response()->json([
+                'status' => 0,
+                'message' => 'Subscription does not exist.',
+            ]);
         }
         $subscription = Subscription::find($subscription_id);
         if (!$subscription) {
-            return redirect()->route('Profile')->with('error', 'Subscription does not exist.');
+            return response()->json([
+                'status' => 0,
+                'message' => 'Subscription does not exist.',
+            ]);
         }
         $user = User::find(Auth::user()->id);
         $custom_name = $request->input('custom_name');

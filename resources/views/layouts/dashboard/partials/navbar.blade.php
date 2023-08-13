@@ -11,7 +11,7 @@
                 <ul class="nav-menus">
                     {{-- <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li> --}}
 
-                    <li class="onhover-dropdown">
+                    {{-- <li class="onhover-dropdown">
                         <div class="notification-box"><i data-feather="bell"></i><span class="dot-animated"></span>
                         </div>
                         <ul class="notification-dropdown onhover-show-div">
@@ -47,7 +47,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="onhover-dropdown p-0">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: block;">
                             @csrf
@@ -55,6 +55,11 @@
                             <i class="fa-solid fa-right-from-bracket"></i><span>Log out</span>
                             </button>
                         </form>
+                    </li>
+                    <li class="onhover-dropdown p-0">
+                        <a href="{{ route('home') }}" class="btn btn-primary-light px-3 py-2">
+                            <i class="fa-solid fa-home"></i><span>Back to Home</span>
+                        </a>
                     </li>
                 </ul>
             </div>

@@ -180,40 +180,40 @@
                                                        <div class=" d-flex justify-content-between gx-3"></div>
                                                        <div class="btn-group w-100" role="group" aria-label="Basic mixed styles form-control">
                                                             @if ($i->is_tracked == 1)
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-gray form-control" title="Untrack">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-warning-custom form-control" title="Untrack">
                                                                       <i class="fa-solid fa-bookmark"></i>
                                                                  </button>
                                                             @else
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-warning-custom form-control" title="Track">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="tracked" class="btn btn-gray form-control" title="Track">
                                                                       <i class="fa-solid fa-bookmark"></i>
                                                                  </button>
                                                             @endif
                                                             @if ($i->is_watched == 0)
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-warning-custom form-control" title="Watched">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-gray form-control" title="Watched">
                                                                       <i class="fa-solid fa-check-double"></i>
                                                                  </button>
                                                             @else
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-gray form-control" title="Unwatched">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="watched" class="btn btn-warning-custom form-control" title="Unwatched">
                                                                       <i class="fa-solid fa-check-double"></i>
                                                                  </button>
                                                             @endif
 
                                                             @if ($i->is_thumbs_up == 1)
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-gray form-control" title="Dislike">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-warning-custom form-control" title="Dislike">
                                                                       <i class="fa-solid fa-thumbs-up"></i>
                                                                  </button>
                                                             @else
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-warning-custom form-control" title="Like">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_up" class="btn btn-gray form-control" title="Like">
                                                                       <i class="fa-solid fa-thumbs-up"></i>
                                                                  </button>
                                                             @endif
 
                                                             @if ($i->is_thumbs_down == 1)
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-gray form-control" title="Undislike">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-warning-custom form-control" title="Undislike">
                                                                       <i class="fa-solid fa-thumbs-down"></i>
                                                                  </button>
                                                             @else
-                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-warning-custom form-control" title="Dislike">
+                                                                 <button name="reaction" data-id="{{ $i->movie->id }}" data-act="thumbs_down" class="btn btn-gray form-control" title="Dislike">
                                                                       <i class="fa-solid fa-thumbs-down"></i>
                                                                  </button>
                                                             @endif
