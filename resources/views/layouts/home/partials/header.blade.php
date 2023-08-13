@@ -30,7 +30,7 @@
                 <div class="detail">
                     @if (Auth::check())
                         <div class="row text-white">
-                            <a href="faq.html"> Profile </a>
+                            <a href="{{ route('Profile') }}"> Profile </a>
                         </div>
                         <div class="row text-white">
                             <form action="{{ route('logout') }}" method="POST">
