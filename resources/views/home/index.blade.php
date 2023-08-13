@@ -272,7 +272,7 @@
      </div>
      <div class="stream-chart">
           <div class="container">
-               <h2>Today's streaming charts</h2>
+               <h2>Your's subscription details</h2>
                <div class="brand">
                     <div class="brand-item">
                          <a href="" class="top">
@@ -356,12 +356,12 @@
                          @foreach ($new_ten as $item)
                               <div class="card swiper-slide">
                                    <div class="image">
-                                        <img src="{{ asset($item->poster_url) }}" alt="" />
+                                        <img src="{{asset($item->poster_url)}}" alt="" />
                                    </div>
                                    <div class="hover">
                                         <div class="content">
-                                             <a href="chitiet.html" class="info">
-                                                  <img src="img/icon (1).webp" alt="" />
+                                             <a href="{{ route('home.movie.movie_detail', $item->id) }}" class="info">
+                                                  <img src="{{asset($item->poster_url)}}" alt="" />
                                                   <span>Watch TV</span>
                                              </a>
                                         </div>
@@ -373,134 +373,7 @@
                                    </div>
                               </div>
                          @endforeach
-
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
                          </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                         <div class="card swiper-slide">
-                              <div class="image">
-                                   <img src="img/guardians-of-the-galaxy-vol-3.webp" alt="" />
-                              </div>
-                              <div class="hover">
-                                   <div class="content">
-                                        <a href="chitiet.html" class="info">
-                                             <img src="img/icon (1).webp" alt="" />
-                                             <span>Watch TV</span>
-                                        </a>
-                                   </div>
-                                   <ul>
-                                        <li>
-                                             <a class="book"><i class="fa-solid fa-bookmark"></i></a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </div>
-                    </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                </div>
@@ -518,13 +391,15 @@
                               <div class="card-rating swiper-slide">
                                    <div class="image">
                                         <div class="number">{{$key+1}}</div>
-                                        <img src="{{$item->porter_url}}" alt="" />
+                                        <div class="image">
+                                             <img src="{{asset($item->poster_url)}}" alt="" />
+                                        </div>
                                         <div class="hover">
                                              <div class="content">
-                                                  <button class="info">
-                                                       <img src="{{$item->porter_url}}" alt="" />
+                                                  <a href="{{ route('home.movie.movie_detail', $item->id) }}" class="info">
+                                                       <img src="{{asset($prime->poster_url)}}" alt="" />
                                                        <span>Watch TV</span>
-                                                  </button>
+                                                  </a>
                                              </div>
                                              <ul>
                                                   <li>
