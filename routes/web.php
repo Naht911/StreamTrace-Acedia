@@ -11,7 +11,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\PopularController;
 use App\Http\Controllers\Home\RatingController;
 use App\Http\Controllers\Home\ReactionController;
-
+use App\Http\Controllers\Home\profileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +25,12 @@ use App\Http\Controllers\Home\ReactionController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/new', [HomeController::class, 'new'])->name('new');
+Route::get('/popular', [HomeController::class, 'popular'])->name('popular');
 Route::get('/wathchlist', [HomeController::class, 'wathchlist'])
-    ->middleware(['auth'])
+    // ->middleware(['auth'])
     ->name('home.wathchlist');
+Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::get('/list_popular', [PopularController::class, 'list_popular'])->name('home.movie.list_popular');
 Route::post('/filter_popular', [PopularController::class, 'filter_popular'])->name('home.movie.filter_popular');
@@ -53,17 +56,18 @@ Route::get('/FAQ', [FAQController::class, 'FAQ'])->name('FAQ');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
-
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
 Route::post('/forgot-password', [AuthController::class, 'processForgotPassword'])->name('forgotPassword.process');
-
 Route::get('/reset-password/{user}/{token}', [AuthController::class, 'showResetPasswordForm'])->name('resetPassword');
 Route::post('/reset-password/{user}/{token}', [AuthController::class, 'processResetPassword'])->name('resetPassword.process');
-
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'processRegistration'])->name('register.process');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/profile', [profileController::class, 'show'])->name('Profile');
+Route::post('/change-name', [profileController::class, 'changeName'])->name('change-name');
+Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+
 
 Route::prefix('dashboard')
     ->middleware([

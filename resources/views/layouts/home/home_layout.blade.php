@@ -20,6 +20,9 @@
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/home/css/responsive.css') }}">
 
 
+     {{-- <script src="/assets/home/js/js-popular.js"></script> --}}
+     @stack('css')
+
 </head>
 
 <body>
@@ -108,6 +111,7 @@
      </script>
 
      <script src="/assets/home/js/javascript.js"></script>
+     {{-- <script src="/assets/home/js/javascript_profile.js"></script> --}}
      @stack('scripts')
 </body>
 

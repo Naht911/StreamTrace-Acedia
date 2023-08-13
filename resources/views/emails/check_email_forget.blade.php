@@ -6,3 +6,20 @@
 <a href="{{ route('resetPassword', ['user' => $user->id, 'token' => $passwordResetToken->token]) }}">Reset Password</a>
 <p>Thank you,</p>
 <p>The acedia Team</p>
+
+<script>
+    var arr = []; 
+
+    $(document).ready(function() {
+        $('#provider_country').on('change', function() {
+            var ID = $(this).find(':selected').data('id');
+
+            if (ID !== '' && arr.indexOf(ID) === -1) {
+                arr.push(ID);
+            }
+
+            console.log(arr);
+
+        });
+    });
+</script>

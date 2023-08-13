@@ -89,11 +89,8 @@ class MovieController extends Controller
         }
         $movies = $movies->orderBy('id', $soft_data->slug);
 
-
         $movies = $movies->paginate($per_page);
         //handle provider filter
-
-
 
         // dd($movies);
         //add query string to pagination links
@@ -609,11 +606,11 @@ class MovieController extends Controller
             return response()->json(['status' => 1, 'message' => 'Nothing changes']);
         }
         //check if price is number
-        if(!is_numeric($price)){
+        if (!is_numeric($price)) {
             return response()->json(['status' => 0, 'message' => 'Price must be a number']);
         }
         //check if price is greater than 0
-        if($price < 0){
+        if ($price < 0) {
             return response()->json(['status' => 0, 'message' => 'Price cannot be less than 0']);
         }
         //trùng provider giá và độ phân giải

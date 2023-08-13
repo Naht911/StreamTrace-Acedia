@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\faq;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Reaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MovieProvider;
 use App\Models\MovieTracking;
+use App\Models\StreamingServiceProvider;
+use NunoMaduro\Collision\Provider;
 
 class HomeController extends Controller
 {
@@ -19,26 +22,104 @@ class HomeController extends Controller
         $top_ten = $movies->orderBy('count_view', 'desc')->take(10)->get();
         $new_ten = Movie::orderBy('created_at', 'desc')->take(20)->get();
         $movies = $movies->get();
-
+        $providers = StreamingServiceProvider::all();
         $data = [
             'movies' => $movies,
             'top_ten' => $top_ten,
             'new_ten' => $new_ten,
+            'providers' => $providers,
         ];
 
         return view('home.index', $data);
     }
+    public function faq()
+    {
+        $faq = faq::orderBy('id', 'DESC')->get();
+        $data = [
+            'faq' => $faq,
+        ];
+        return view('home.faq', $data);
+    }
+    public function new()
+    {
+        $relations = ['genres', 'providers', 'providers_distinct'];
+        $movies = Movie::query()->with($relations);
+        $providers = StreamingServiceProvider::all();
+        $movie_primeVideo = MovieProvider::where('streaming_service_provider_id', 8)->get();
+        $movie_netflix = MovieProvider::where('streaming_service_provider_id', 9)->get();
+        $movie_appleTV = MovieProvider::where('streaming_service_provider_id', 10)->get();
+        $movies_1 = [];
+        $movies_2 = [];
+        $movies_3 = [];
+        foreach ($movie_primeVideo as $movie) {
+            $movies_1[] = $movie->movie_id;
+        }
+        $newest_primeVideo = Movie::whereIn('id', $movies_1)->orderBy('created_at', 'DESC')->take(6)->get();
+        foreach ($movie_netflix as $movie) {
+            $movies_2[] = $movie->movie_id;
+        }
+        $newest_netflix = Movie::whereIn('id', $movies_2)->orderBy('created_at', 'DESC')->take(6)->get();
+        foreach ($movie_appleTV as $movie) {
+            $movies_3[] = $movie->movie_id;
+        }
+        $newest_appleTV = Movie::whereIn('id', $movies_3)->orderBy('created_at', 'DESC')->take(6)->get();
+
+        // return response()->json($newest);
+
+        $data = [
+            'movies' => $movies,
+            'newest_primeVideo' => $newest_primeVideo,
+            'newest_netflix' => $newest_netflix,
+            'newest_appleTV' => $newest_appleTV,
+            'providers' => $providers,
+        ];
+
+        return view('home.new', $data);
+    }
     public function wathchlist()
     {
         //get all movie in watchlist
+        $reaction = request()->reaction;
+
         $relations = ['movie'];
-        $wathchlist = Reaction::where('user_id', Auth::id())
-            ->where('is_tracked', 1)
-            ->with($relations)
-        ->get();
+        $wathchlist = Reaction::query()->with($relations);
+        $wathchlist = $wathchlist->where('user_id', Auth::id());
+        $list_copy = $wathchlist->get();
+        $count_tracked = $list_copy->where('is_tracked', 1)->count();
+        $count_watched = $list_copy->where('is_watched', 1)->count();
+        $count_thumbs_up = $list_copy->where('is_thumbs_up', 1)->count();
+        $count_thumbs_down = $list_copy->where('is_thumbs_down', 1)->count();
+        if ($reaction != null) {
+            switch ($reaction) {
+                case 'tracked':
+                    $wathchlist = $wathchlist->where('is_tracked', 1);
+                    break;
+                case 'watched':
+                    $wathchlist = $wathchlist->where('is_watched', 1);
+                    break;
+                case 'thunbs_up':
+                    $wathchlist = $wathchlist->where('is_thumbs_up', 1);
+                    break;
+                case 'thunbs_down':
+                    $wathchlist = $wathchlist->where('is_thumbs_down', 1);
+                    break;
+            }
+        }else{
+            $wathchlist = $wathchlist->where('is_tracked', 1);
+        }
+
+
+        // $wathchlist = $wathchlist->orderBy('id', 'desc');
+        $wathchlist = $wathchlist->paginate(20);
+
         // dd($wathchlist);
         $data = [
             'wathchlist' => $wathchlist,
+            'count_tracked' => $count_tracked,
+            'count_watched' => $count_watched,
+            'count_thumbs_up' => $count_thumbs_up,
+            'count_thumbs_down' => $count_thumbs_down,
+
         ];
 
         return view('home.wathchlist', $data);

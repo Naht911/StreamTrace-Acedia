@@ -8,7 +8,8 @@
           <div class="header-right">
                <div class="items">
                     <li><a href="{{ route('home') }}" class="{{ routeActive('home') }}">Home</a></li>
-                    {{-- <li><a href="popular.html">New</a></li> --}}
+                    <li><a href="{{ route('new') }}" class="{{ routeActive('new') }}">New</a></li>
+                    <li><a href="{{ route('popular') }}" class="{{ routeActive('popular') }}">Popular</a></li>
                     <li><a href="{{ route('home.wathchlist') }}" class="{{ routeActive('home.wathchlist') }}">Watchlist</a></li>
                </div>
                <li class="search-icon">
@@ -38,7 +39,7 @@
                               </div>
                          @endif
                          <div class="row text-white">
-                              <a href="faq.html"> FAQ </a>
+                              <a href="{{route('faq')}}"> FAQ </a>
                          </div>
                     </div>
                </li>
