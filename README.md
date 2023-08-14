@@ -36,6 +36,12 @@ import the .sql file
 php artisan serve
 ```
 
+## Email notification
+
+Change your gmail smtp settings config\mail.php
+
+
+
 # Account for test 
 
 username: admin@admin.com
