@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -79,19 +80,21 @@ class AuthController extends Controller
             ];
 
             $userExists = User::where('email', $request->email)->exists();
-            if (!$userExists) {
-                return response()->json(['status' => 1, 'message' => 'Email does not exist']);
-            }
+            // if (!$userExists) {
+            //     return response()->json(['status' => 1, 'message' => 'Email does not exist']);
+            // }
 
             $remember = $request->has('remember');
 
             if (Auth::attempt($credentials, $remember)) {
+                NotificationController::checkAdnAddNoti(Auth::user()->id);
                 return response()->json(['status' => 0, 'message' => 'Login Success']);
             }
 
-            return response()->json(['status' => 1, 'message' => 'Error Email or Password']);
+            return response()->json(['status' => 1, 'message' => 'Login failed. Please check your credentials and try again.']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 1, 'message' => 'An error occurred while processing your request.']);
+            // dd($e);
+            return response()->json(['status' => 419, 'message' => 'Something went wrong. Please try again later.']);
         }
     }
 

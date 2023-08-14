@@ -73,14 +73,15 @@ Route::get('/actived/{user}/{token}', [AuthController::class, 'actived'])->name(
 // Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
 
 
-Route::prefix('profile')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('Profile');
+Route::prefix('profile')->middleware(['auth'])->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->middleware(['auth'])->name('Profile');
     Route::post('/store_subscription', [ProfileController::class, 'store_subscription'])->name('profile.store_subscription');
     Route::get('/edit_subscription/{id?}', [ProfileController::class, 'edit_subscription'])->where(['id' => '[0-9]+'])->name('profile.edit_subscription');
     Route::post('/update_subscription/{id?}', [ProfileController::class, 'update_subscription'])->where(['id' => '[0-9]+'])->name('profile.update_subscription');
     Route::post('/delete_subscription', [ProfileController::class, 'delete_subscription'])->name('profile.delete_subscription');
     Route::post('/change-name', [ProfileController::class, 'changeName'])->name('profile.update_name');
     Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.update_password');
+    Route::get('/notification', [ProfileController::class, 'notification'])->name('profile.notification');
 
 });
 

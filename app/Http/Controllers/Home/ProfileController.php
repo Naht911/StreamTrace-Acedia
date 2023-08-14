@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -306,12 +307,11 @@ class ProfileController extends Controller
             'status' => 1,
             'message' => 'Update subscription successfully',
         ]);
-
     }
 
     public function delete_subscription(Request $request)
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json([
                 'status' => 0,
                 'message' => 'You must login to delete subscription.',
@@ -350,7 +350,7 @@ class ProfileController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Please login to do this action.',
@@ -372,7 +372,7 @@ class ProfileController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'status' => 0,
                 'message' => 'Please login to do this action.',
@@ -409,5 +409,22 @@ class ProfileController extends Controller
             'status' => 1,
             'message' => 'Update password successfully.',
         ]);
+    }
+
+    public function notification()
+    {
+        $user = User::find(Auth::user()->id);
+        $noti = Notification::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $data = [
+            'noti' => $noti,
+
+        ];
+        //make notification is read
+        foreach ($noti as $n) {
+            $n->is_read = 1;
+            $n->save();
+        }
+
+        return view('home.profile.notification', $data);
     }
 }
