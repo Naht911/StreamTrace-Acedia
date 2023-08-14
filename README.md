@@ -38,7 +38,7 @@ php artisan serve
 
 ## Email notification
 
-Change your gmail smtp settings config\mail.php
+Change your gmail smtp settings  at config\mail.php file
 
 
 
