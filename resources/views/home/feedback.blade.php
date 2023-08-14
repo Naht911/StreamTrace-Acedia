@@ -27,12 +27,22 @@
             </div>
             <div class="row-bottom">
                 <div class="container">
-                    <div class="form-group">
-                        <label for="">Your email address </label>
-                        <input class="form-control" type="email" name="email" id="email" required=""
-                            placeholder="your Email">
-                        <span id="emailError" class="error-message" style="color: red; font-size: 17px"></span>
-                    </div>
+                    @if (!Auth::check())
+                        <div class="form-group">
+                            <label for="">Your email address </label>
+                            <input class="form-control" type="email" name="email" id="email" required=""
+                                placeholder="your Email">
+                            <span id="emailError" class="error-message" style="color: red; font-size: 17px"></span>
+                        </div>
+                    @else
+                        {{-- <div class="form-group">
+                            <label for="">Your email address </label>
+                            <input class="form-control" type="email" name="email" id="email" required=""
+                                placeholder="your Email" value="{{Auth::}}">
+                            <span id="emailError" class="error-message" style="color: red; font-size: 17px"></span>
+                        </div> --}}
+                    @endif
+
                     <div class="form-group">
                         <label for="">Subject </label>
                         <input type="text" name="title" id="subject" />

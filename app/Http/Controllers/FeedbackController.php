@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -13,6 +14,7 @@ class FeedbackController extends Controller
 {
     function feedback()
     {
+
         return view('home/feedback');
     }
     public function list_feedback(Request $request)
@@ -45,13 +47,23 @@ class FeedbackController extends Controller
 
     public function create_feedback(Request $request)
     {
-        if ($request) {
-            $check =  feedback::create([
-                'title' => $request->title,
-                'email' => $request->email,
-                'content' => $request->content,
-                'status' => 'received',
-            ]);
+
+        if ($request->all()) {
+            if ($request->email == null) {
+                $check =  feedback::create([
+                    'title' => $request->title,
+                    'email' => Auth::user()->email,
+                    'content' => $request->content,
+                    'status' => 'received',
+                ]);
+            } else {
+                $check =  feedback::create([
+                    'title' => $request->title,
+                    'email' => $request->email,
+                    'content' => $request->content,
+                    'status' => 'received',
+                ]);
+            }
         }
         if ($check) {
             // Lưu thông báo vào session
