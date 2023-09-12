@@ -71,7 +71,7 @@
                                    <tr>
                                         <th>#</th>
                                         <th>Provider</th>
-                                        <th>Custom name</th>
+                                        <th>Customer name</th>
                                         <th>Subscription URL</th>
                                         <th>Renewal date</th>
                                         <th>Amount</th>
@@ -94,7 +94,7 @@
                                              <td>{{ $subscription->subscription_url }}</td>
                                              <td>{{ $subscription->expiration_date ? $subscription->expiration_date->format("Y-m-d") : null }}</td>
                                              <td>
-                                                  {{ $subscription->price }}
+                                                  ${{ $subscription->price }}
                                                   {{ $subscription->typePrice ? '(' . $subscription->typePrice->name . ')' : null }}
                                              </td>
                                              <td>{{ $subscription->note }}</td>

@@ -15,9 +15,14 @@
             </div>
             <li class="search-icon">
                 <label class="icon">
-                    <span class="fas fa-search"></span>
+                    {{-- <span class="fas fa-search"></span> --}}
                 </label>
-                <input type="text" placeholder="Search for movies" />
+                <form action="{{route('search_movie')}}" method="GET">
+                    <input type="text" name="search_movie" id="search_movie" placeholder="Search for movies" class="searchInput" autofocus style="margin-left:15px; margin-top:15px"/>
+                    <button type="submit" name="search-outline" class="search"><i class="fas fa-search"></i></button>
+                        
+                    </div>
+                </form>
             </li>
             @if (!Auth::check())
                 <div class="buttons">
