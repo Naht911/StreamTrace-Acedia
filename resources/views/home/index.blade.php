@@ -399,7 +399,7 @@
                                         <div class="hover">
                                              <div class="content">
                                                   <a href="{{ route('home.movie.movie_detail', $item->id) }}" class="info">
-                                                       <img src="{{ asset($prime->poster_url) }}" alt="" />
+                                                       <img src="{{ asset($item->poster_url) }}" alt="" />
                                                        <span>Watch TV</span>
                                                   </a>
                                              </div>
