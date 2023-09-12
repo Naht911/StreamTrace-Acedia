@@ -31,11 +31,13 @@
                          <div class="brand-item">
                               <i class="fa-solid fa-plus"></i>
                          </div>
-                         @foreach($providers->take(3) as $item)
-                         <div class="brand-item">
-                              <img src="{{$item->logo}}" alt="" />
-                         </div>
-                         @endforeach
+                         @if ($providers->count() > 0)
+                              @foreach ($providers->take(3) as $item)
+                                   <div class="brand-item">
+                                        <img src="{{ $item->logo }}" alt="" />
+                                   </div>
+                              @endforeach
+                         @endif
                     </div>
                </div>
           </div>
@@ -270,84 +272,84 @@
                </div>
           </div>
      </div>
-     <div class="stream-chart">
+     {{-- <div class="stream-chart">
           <div class="container">
                <h2>Your's subscription details</h2>
                <div class="brand">
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="{{$primeVideo->logo}}" alt="" />
+                              <img src="{{ $primeVideo->logo }}" alt="" />
                               <div class="title">Prime Video</div>
                          </a>
-                         @foreach($newest_primeVideo as $key => $prime)
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">{{$key+1}}</div>
-                                   <div class="image">
-                                        <img src="{{asset($prime->poster_url)}}" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>{{$prime->title}}</h3>
-                                        <p>{{$prime->duration}}</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
+                         @foreach ($newest_primeVideo as $key => $prime)
+                              <div class="center">
+                                   <div class="item">
+                                        <div class="number">{{ $key + 1 }}</div>
+                                        <div class="image">
+                                             <img src="{{ asset($prime->poster_url) }}" alt="" />
+                                        </div>
+                                        <div class="title-movie">
+                                             <h3>{{ $prime->title }}</h3>
+                                             <p>{{ $prime->duration }}</p>
+                                        </div>
+                                        <div class="up-down">
+                                             <i class="fa-solid fa-sort-up"></i>
+                                        </div>
                                    </div>
                               </div>
-                         </div>
                          @endforeach
-                         
+
                     </div>
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="{{$netflix->logo}}" alt="" />
+                              <img src="{{ $netflix->logo }}" alt="" />
                               <div class="title">Netflix</div>
                          </a>
-                         @foreach($newest_netflix as $key => $prime)
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">{{$key+1}}</div>
-                                   <div class="image">
-                                        <img src="{{asset($prime->poster_url)}}" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>{{$prime->title}}</h3>
-                                        <p>{{$prime->duration}}</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
+                         @foreach ($newest_netflix as $key => $prime)
+                              <div class="center">
+                                   <div class="item">
+                                        <div class="number">{{ $key + 1 }}</div>
+                                        <div class="image">
+                                             <img src="{{ asset($prime->poster_url) }}" alt="" />
+                                        </div>
+                                        <div class="title-movie">
+                                             <h3>{{ $prime->title }}</h3>
+                                             <p>{{ $prime->duration }}</p>
+                                        </div>
+                                        <div class="up-down">
+                                             <i class="fa-solid fa-sort-up"></i>
+                                        </div>
                                    </div>
                               </div>
-                         </div>
                          @endforeach
                     </div>
                     <div class="brand-item">
                          <a href="" class="top">
-                              <img src="{{$appleTV->logo}}" alt="" />
+                              <img src="{{ $appleTV->logo }}" alt="" />
                               <div class="title">Netflix</div>
                          </a>
-                         @foreach($newest_appleTV as $key => $prime)
-                         <div class="center">
-                              <div class="item">
-                                   <div class="number">{{$key+1}}</div>
-                                   <div class="image">
-                                        <img src="{{asset($prime->poster_url)}}" alt="" />
-                                   </div>
-                                   <div class="title-movie">
-                                        <h3>{{$prime->title}}</h3>
-                                        <p>{{$prime->duration}}</p>
-                                   </div>
-                                   <div class="up-down">
-                                        <i class="fa-solid fa-sort-up"></i>
+                         @foreach ($newest_appleTV as $key => $prime)
+                              <div class="center">
+                                   <div class="item">
+                                        <div class="number">{{ $key + 1 }}</div>
+                                        <div class="image">
+                                             <img src="{{ asset($prime->poster_url) }}" alt="" />
+                                        </div>
+                                        <div class="title-movie">
+                                             <h3>{{ $prime->title }}</h3>
+                                             <p>{{ $prime->duration }}</p>
+                                        </div>
+                                        <div class="up-down">
+                                             <i class="fa-solid fa-sort-up"></i>
+                                        </div>
                                    </div>
                               </div>
-                         </div>
                          @endforeach
                     </div>
 
                </div>
           </div>
-     </div>
+     </div> --}}
      <div class="titles">
           <div class="container">
                <div class="title">Just added to your watched</div>
@@ -356,12 +358,12 @@
                          @foreach ($new_ten as $item)
                               <div class="card swiper-slide">
                                    <div class="image">
-                                        <img src="{{asset($item->poster_url)}}" alt="" />
+                                        <img src="{{ asset($item->poster_url) }}" alt="" />
                                    </div>
                                    <div class="hover">
                                         <div class="content">
                                              <a href="{{ route('home.movie.movie_detail', $item->id) }}" class="info">
-                                                  <img src="{{asset($item->poster_url)}}" alt="" />
+                                                  <img src="{{ asset($item->poster_url) }}" alt="" />
                                                   <span>Watch TV</span>
                                              </a>
                                         </div>
@@ -373,7 +375,7 @@
                                    </div>
                               </div>
                          @endforeach
-                         </div>
+                    </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                </div>
@@ -390,14 +392,14 @@
                          @foreach ($new_ten as $key => $item)
                               <div class="card-rating swiper-slide">
                                    <div class="image">
-                                        <div class="number">{{$key+1}}</div>
+                                        <div class="number">{{ $key + 1 }}</div>
                                         <div class="image">
-                                             <img src="{{asset($item->poster_url)}}" alt="" />
+                                             <img src="{{ asset($item->poster_url) }}" alt="" />
                                         </div>
                                         <div class="hover">
                                              <div class="content">
                                                   <a href="{{ route('home.movie.movie_detail', $item->id) }}" class="info">
-                                                       <img src="{{asset($prime->poster_url)}}" alt="" />
+                                                       <img src="{{ asset($prime->poster_url) }}" alt="" />
                                                        <span>Watch TV</span>
                                                   </a>
                                              </div>
